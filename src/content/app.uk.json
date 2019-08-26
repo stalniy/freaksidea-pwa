@@ -1,0 +1,48 @@
+{
+  "name": "Freaksidea.com",
+  "copyright": "© 2011-#{year} Sergii Stotskyi",
+  "topMenu": {
+    "friends": "Мої друзі",
+    "about": "Контакти"
+  },
+  "categories": {
+    "all": {
+      "title": "Свіжачок"
+    },
+    "backend": {
+      "title": "Backend"
+    },
+    "frontend": {
+      "title": "Прогрессивный Frontend"
+    },
+    "linux": {
+      "title": "Linux для Всех"
+    }
+  },
+  "tags": {
+    "doctrine": "Doctrine",
+    "i18n": "i18n",
+    "nodejs": "Node.js",
+    "pageSpeed": "скорость загрузки",
+    "optimization": "оптимизация",
+    "ruby": "Ruby",
+    "js": "JavaScript",
+    "symfony": "Symfony",
+    "bash": "Bash",
+    "observables": "observables",
+    "magento": "Magento",
+    "mvvm": "MVVM",
+    "spam": "спам",
+    "linux": "Linux",
+    "ko": "knockout.js",
+    "ajax": "AJAX",
+    "acl": "права доступа",
+    "fileManager": "файловый менеджер",
+    "casl": "CASL",
+    "xml": "XML"
+  },
+  "article": {
+    "author": "Автор: #{- author}",
+    "readMore": "Читати далі"
+  }
+}

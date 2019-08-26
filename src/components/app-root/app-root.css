@@ -1,0 +1,15 @@
+app-root {
+  display: block;
+  min-width: 350px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 30px;  
+}
+
+app-menu {
+  margin-top: 50px;
+}
+
+main {
+  margin-top: 35px;
+}

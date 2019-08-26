@@ -1,0 +1,25 @@
+{
+  "name": "freaksidea",
+  "private": true,
+  "version": "0.0.1",
+  "description": "freaksidea.com blog",
+  "author": "Sergii Stotskyi <sergiy.stotskiy@freaksidea.com>",
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "generate": "stencil generate"
+  },
+  "dependencies": {
+    "@stencil/core": "^1.2.4",
+    "@stencil/router": "^1.0.1",
+    "i18next": "^17.0.12",
+    "rollup": "^1.19.4"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^12.7.2",
+    "glob": "^7.1.4"
+  }
+}

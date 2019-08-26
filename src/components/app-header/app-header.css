@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+nav {
+  height: 20px;
+  text-align: right;
+}
+
+nav a {
+  font-size: 11px;
+  color: #ccc;
+  font-style: italic;
+}
+
+header {
+  display: flex;
+  align-items: flex-end;
+  height: 292px;
+}
+
+stencil-route-link {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.logo {
+  flex: 0 0 204px;
+  background: url(/assets/logo.jpg) no-repeat 0 0;
+  height: 100%;
+}
+
+.slogan {
+  flex: 1;
+  height: 220px;
+}
+
+.slogan img {
+  width: 100%;
+  max-width: 752px;
+}

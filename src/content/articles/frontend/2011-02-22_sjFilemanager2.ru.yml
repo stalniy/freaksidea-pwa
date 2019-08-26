@@ -1,0 +1,16 @@
+title: sjFilemanager - конфигурируем файловый менеджер
+summary: | 
+  В этой статье я расскажу о том как настроить sjFilemanager под свои нужды. 
+  И создам sjFilemanagerPlugin для Symfony 1.4
+category:
+  - frontend
+  - backend  
+tags:
+  - файловый менеджер 
+  - ajax 
+  - symfony plugin  
+content: |
+  Итак приступаем к делу! Конфигурация задается в виде ассоциативного массива*.
+
+
+  

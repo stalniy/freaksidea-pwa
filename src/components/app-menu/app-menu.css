@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+
+nav a {
+  display: inline-block;
+  font-size: 21px;
+  color: #323232;
+  margin-right: 35px;
+}
+
+/* #wrapper .act {
+    color: #69c;
+} */
