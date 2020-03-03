@@ -5,6 +5,7 @@ import iconsCss from '../styles/icons';
 import mdCss from '../styles/md';
 import i18n from '../services/i18n';
 import { getArticlesByCategory } from '../services/articles';
+import { setTitle, setMeta } from '../services/meta';
 import router from '../services/router';
 
 export default class PageArticles extends LitElement {
@@ -14,14 +15,16 @@ export default class PageArticles extends LitElement {
     category: { type: String },
     perPage: { type: Number },
     load: { type: Function },
+    setMeta: { type: Boolean }
   }
 
   constructor() {
     super();
 
     this.category = null;
-    this.perPage = 10;
+    this.perPage = 1;
     this.load = getArticlesByCategory;
+    this.setMeta = false;
     this._articles = null;
     this._page = 1;
     this._pagesAmount = 1;
@@ -44,10 +47,18 @@ export default class PageArticles extends LitElement {
 
   async update(changed) {
     if (this._articles === null || changed.has('category')) {
+      this._setMeta();
       await this._loadArticles();
     }
 
     return super.update(changed);
+  }
+
+  _setMeta() {
+    const prefix = `categories.${this.category === 'all' ? 'home' : this.category}`;
+    setTitle(i18n.t(`${prefix}.title`));
+    setMeta('keywords', i18n.t(`${prefix}.keywords`));
+    setMeta('description', i18n.t(`${prefix}.description`));
   }
 
   async _loadArticles() {
@@ -59,21 +70,13 @@ export default class PageArticles extends LitElement {
   }
 
   render() {
-    if (!this._articles) {
-      return null;
-    }
-
     const content = this._articles.length
       ? this._articles.map(this._renderArticle, this)
-      : i18n.t('article.emptyCategory');
+      : html`<slot name="empty">${i18n.t('article.emptyCategory')}</slot>`;
 
     return html`<section>
       ${content}
-      <fi-pager
-        pages="${this._pagesAmount}"
-        page="${this._page}"
-        hash="#content"
-      ></fi-pager>
+      <fi-pager pages="${this._pagesAmount}" page="${this._page}"></fi-pager>
     </section>`;
   }
 

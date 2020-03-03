@@ -7,8 +7,8 @@ import i18n from '../services/i18n';
 export default class PopularArticles extends LitElement {
   static cName = 'fi-popular-articles';
 
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
     this._articles = null;
   }
 

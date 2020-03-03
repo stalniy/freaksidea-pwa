@@ -1,6 +1,7 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import i18n, { interpolate } from '../services/i18n'
+import i18n, { interpolate } from '../services/i18n';
+import { setPageMeta } from '../services/articles';
 import { pages } from '../content/pages.pages';
 import iconCss from '../styles/icons';
 import mdCss from '../styles/md';
@@ -8,14 +9,13 @@ import pageCss from '../styles/page';
 
 export default class Page extends LitElement {
   static cName = 'fi-page';
-
   static properties = {
     name: { type: String },
     vars: { type: Object, attribute: false },
   }
 
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
 
     this.name = null;
     this._page = null;
@@ -26,6 +26,7 @@ export default class Page extends LitElement {
     if (this._page === null || changed.has('name')) {
       const response = await fetch(pages[i18n.locale()][this.name]);
       this._page = await response.json();
+      setPageMeta(this._page);
     }
 
     return super.update(changed);

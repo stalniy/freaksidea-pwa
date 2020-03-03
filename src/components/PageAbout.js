@@ -14,8 +14,8 @@ function calcYears() {
 export default class PageAbout extends LitElement {
   static cName = 'fi-page-about';
 
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
 
     this.vars = {
       years: calcYears(),

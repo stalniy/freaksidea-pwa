@@ -30,15 +30,17 @@ function fileNameId(page, lang, { relativePath, ext }) {
   return relativePath.slice(0, -index);
 }
 
+let pluginId = 1;
+
 export default (options = {}) => {
   const regex = options.matches || /\.summary$/;
-  const KEY = `SUMMARY_${Date.now()}:`;
+  const KEY = `SUMMARY_${pluginId++}:`;
   const availableLangs = options.langs || ['en'];
-  const summarizer = options.summarizer;
   const generatePageId = options.pageId || fileNameId;
+  const Summarizer = options.Summarizer;
 
   return {
-    name: 'content-summary',
+    name: `content-summary-${regex}`,
     resolveId(id, importee) {
       if (regex.test(id)) {
         const ext = extname(id);
@@ -55,6 +57,7 @@ export default (options = {}) => {
 
       const path = id.slice(KEY.length);
       const urls = {};
+      const summarizer = Summarizer ? new Summarizer() : null;
 
       await ls(path, async (file) => {
         const relativePath = file.path.slice(path.length + 1);

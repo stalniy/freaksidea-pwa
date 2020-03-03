@@ -1,4 +1,7 @@
 name: Freaksidea.com
+meta:
+  keywords: fullstack, software development
+  description: some description here
 copyright: "© 2011-%{year} Sergii Stotskyi"
 dateTimeFormats:
   default:
@@ -10,7 +13,7 @@ topMenu:
   about: Контакти
 categories:
   home:
-    title: Свіжачок
+    title: Свежачок
   backend:
     title: Backend
   frontend:
@@ -36,6 +39,7 @@ contacts:
 search:
   placeholder: Поиск
   title: Поиск "%{query}"
+  empty: За даным запросом ничего не найдено
 blocks:
   0step-checkout:
     title: 0 Step Checkout

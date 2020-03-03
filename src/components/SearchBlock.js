@@ -113,9 +113,8 @@ export default class SearchBlock extends LitElement {
 
   _renderSuggestions() {
     if (!this._suggestions.length) {
-      return null;
+      return '';
     }
-    console.log(this._suggestions)
 
     return html`
       <ul class="suggestions" @click="${this._pickSuggestion}">

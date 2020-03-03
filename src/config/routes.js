@@ -3,7 +3,7 @@ import { html } from 'lit-element';
 const articles = (category) => ({ match }) => ({
   body: match.params.alias && match.params.alias !== 'undefined'
     ? html`<fi-page-article alias="${match.params.alias}"></fi-page-article>`
-    : html`<fi-page-articles category="${category}"></fi-page-articles>`
+    : html`<fi-page-articles category="${category}" set-meta></fi-page-articles>`
 });
 
 export const routes = [

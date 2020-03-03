@@ -6,8 +6,8 @@ import i18n from '../services/i18n';
 export default class PopularTags extends LitElement {
   static cName = 'fi-popular-tags';
 
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
     this._tags = null;
   }
 
@@ -20,7 +20,7 @@ export default class PopularTags extends LitElement {
 
   render() {
     if (!this._tags) {
-      return null;
+      return html``;
     }
 
     return html`
@@ -32,12 +32,13 @@ export default class PopularTags extends LitElement {
   }
 
   _renderTag(tag) {
+    const style = `font-size: ${tag.weight * 200}%`;
     return html`
       <fi-link
         active
         to="search"
         .query="${{ q: tag.name }}"
-        style="font-size: ${tag.weight * 200}%"
+        style="${style}"
       >
         ${tag.name}
       </fi-link>

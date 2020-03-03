@@ -6,8 +6,8 @@ import articleCss from '../styles/article';
 export default class PageFriends extends Page {
   static cName = 'fi-page-friends';
 
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
 
     this.name = 'friends';
   }

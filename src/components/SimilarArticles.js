@@ -9,8 +9,8 @@ export default class SimilarArticles extends LitElement {
     to: { type: Object },
   };
 
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
     this.to = null;
     this._articles = null;
   }

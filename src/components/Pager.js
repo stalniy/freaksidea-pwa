@@ -2,7 +2,7 @@ import { LitElement, html, css, unsafeCSS } from 'lit-element';
 import arrowsImage from '../assets/arrs.jpg';
 import router from '../services/router';
 
-export default class Pagination extends LitElement {
+export default class Pager extends LitElement {
   static cName = 'fi-pager';
   static properties = {
     page: { type: Number },
@@ -10,8 +10,8 @@ export default class Pagination extends LitElement {
     hash: { type: String },
   }
 
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
 
     this.page = 1;
     this.pages = 1;
@@ -26,7 +26,7 @@ export default class Pagination extends LitElement {
 
   render() {
     if (this.pages < 2) {
-      return null;
+      return html``;
     }
 
     return html`
@@ -67,7 +67,7 @@ export default class Pagination extends LitElement {
   }
 }
 
-Pagination.styles = css`
+Pager.styles = css`
   :host {
     display: block;
   }

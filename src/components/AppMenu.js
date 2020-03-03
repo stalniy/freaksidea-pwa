@@ -8,8 +8,8 @@ export default class Menu extends LitElement {
     activeItem: { type: String },
   };
 
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
 
     this.items = [];
     this.activeItem = null;

@@ -13,43 +13,44 @@ import html from './tools/rollup-plugin-index-html';
 import contentSummary from './tools/rollup-plugin-summary';
 import { ArticleSummarizer, pageAlias } from './tools/summarizer/ArticleSummarizer';
 
-function production(plugin, options) {
-  return process.env.NODE_ENV === 'production' ? [plugin(options)] : [];
+const envify = (fn) => {
+  fn.env = (env, ...args) => {
+    return process.env.NODE_ENV === env ? [fn(...args)] : [];
+  };
+  return fn;
 }
 
 const indexHTML = html({
   dir: 'dist',
   template: fs.readFileSync('./public/index.html', 'utf8')
 });
+const output = envify(({ format, dir }) => ({
+  format,
+  dir,
+  sourcemap: true,
+  entryFileNames: process.env.NODE_ENV === 'production'
+    ? '[name].[hash].js'
+    : '[name].js',
+  plugins: [
+    ...envify(terser).env('production', {
+      // mangle: {
+      //   properties: {
+      //     regex: /^_/
+      //   }
+      // }
+    }),
+    indexHTML.addOutput()
+  ]
+}));
 
 export default {
   input: 'src/app.js',
   output: [
-    {
-      format: 'es',
-      dir: 'dist',
-      entryFileNames: process.env.NODE_ENV === 'production'
-        ? '[name].[hash].js'
-        : '[name].js',
-      plugins: [
-        ...production(terser),
-        indexHTML.addOutput()
-      ]
-    },
-    {
-      format: 'system',
-      dir: 'dist/legacy',
-      entryFileNames: process.env.NODE_ENV === 'production'
-        ? '[name].[hash].js'
-        : '[name].js',
-      plugins: [
-        ...production(terser),
-        indexHTML.addOutput()
-      ]
-    }
+    output({ format: 'es', dir: 'dist' }),
+    ...output.env('production', { format: 'system', dir: 'dist/legacy' }),
   ],
   plugins: [
-    ...production(minifyHTML),
+    ...envify(minifyHTML).env('production'),
     url(),
     globImport({
       include: 'src/**/*.js',
@@ -67,7 +68,7 @@ export default {
       namedExports: false,
     }),
     copy({
-      copyOnce: true,
+      copyOnce: process.env.NODE_ENV !== 'production',
       flatten: false,
       targets: [
         { src: ['public/**/*', '!public/index.html'], dest: 'dist/assets' }
@@ -79,7 +80,7 @@ export default {
     }),
     contentSummary({
       langs: ['ru', 'en', 'uk'],
-      summarizer: new ArticleSummarizer(),
+      Summarizer: ArticleSummarizer,
       pageId: pageAlias,
     }),
     replace({

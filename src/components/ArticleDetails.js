@@ -8,8 +8,8 @@ export default class ArticleDetails extends LitElement {
     category: { type: String },
   };
 
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
     this.article = null;
     this.category = '';
   }
@@ -49,6 +49,7 @@ ArticleDetails.styles = [
     }
 
     fi-link {
+      margin-right: 10px;
       color: var(--fi-link-active-color);
     }
 

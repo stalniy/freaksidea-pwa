@@ -11,8 +11,8 @@ export default class Link extends LitElement {
     active: { type: Boolean }
   };
 
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
 
     this.to = '';
     this.active = false;

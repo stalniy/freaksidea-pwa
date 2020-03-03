@@ -11,8 +11,8 @@ export default class Block extends LitElement {
     sticky: { type: Boolean },
   };
 
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
     this.name = '';
     this.sticky = false;
   }

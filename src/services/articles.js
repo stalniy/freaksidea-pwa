@@ -1,5 +1,6 @@
 import MiniSearch from 'minisearch';
 import { summaries, pages } from '../content/articles.summary';
+import { setTitle, setMeta } from './meta';
 
 function memoize(fn) {
   const cache = {};
@@ -12,6 +13,14 @@ function memoize(fn) {
 
     return cache[key];
   };
+}
+
+export function setPageMeta(page) {
+  const meta = page.meta || {};
+
+  setTitle(page.title);
+  setMeta('keywords', meta.keywords || '');
+  setMeta('description', meta.description || '');
 }
 
 export const getSummary = memoize(async (locale) => {

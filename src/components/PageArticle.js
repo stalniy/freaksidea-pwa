@@ -4,7 +4,7 @@ import iconsCss from '../styles/icons';
 import pageCss from '../styles/page';
 import mdCss from '../styles/md';
 import i18n from '../services/i18n';
-import { getArticleByAlias } from '../services/articles';
+import { getArticleByAlias, setPageMeta } from '../services/articles';
 
 export default class PageArticle extends LitElement {
   static cName = 'fi-page-article';
@@ -12,8 +12,8 @@ export default class PageArticle extends LitElement {
     alias: { type: String }
   };
 
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
     this.alias = '';
     this._article = null;
   }
@@ -25,6 +25,7 @@ export default class PageArticle extends LitElement {
   async update(changed) {
     if (this._article = null || changed.has('alias')) {
       this._article = await getArticleByAlias(i18n.locale(), this.alias);
+      setPageMeta(this._article);
     }
 
     return super.update(changed);
@@ -49,7 +50,7 @@ export default class PageArticle extends LitElement {
 
   _renderTags() {
     if (!this.hasTags) {
-      return null;
+      return '';
     }
 
     const tags = this._article.meta.keywords.map(tag => html`
