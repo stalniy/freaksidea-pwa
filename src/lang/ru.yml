@@ -1,0 +1,45 @@
+name: Freaksidea.com
+copyright: "© 2011-%{year} Sergii Stotskyi"
+dateTimeFormats:
+  default:
+    year: numeric
+    month: long
+    day: numeric
+topMenu:
+  friends: Мої друзі
+  about: Контакти
+categories:
+  home:
+    title: Свіжачок
+  backend:
+    title: Backend
+  frontend:
+    title: Прогрессивный Frontend
+  linux:
+    title: Linux для Всех
+article:
+  author: "Автор: "
+  readMore: Читати далі
+  emptyCategory: К сожалению в этой категории еще нет статей
+  popular: Популярные посты
+  emptyPopular: Пока еще нет популярных постов
+  popularTags: Теги
+  tagsTitle: "Теги:"
+  readSimilar: "ЧИТАЙТЕ ТАКЖЕ:"
+  authors:
+    sstotskyi: Сергей Стоцкий
+contacts:
+  name: Ваше имя
+  email: Ваш e-mail
+  message: Сообщение
+  submit: Отправить
+search:
+  placeholder: Поиск
+  title: Поиск "%{query}"
+blocks:
+  0step-checkout:
+    title: 0 Step Checkout
+    content: !md |
+      Хотите упростить процесс оформления заказа в Magento? [0 Step Checkout](https://github.com/stalniy/0step-checkout) поможет Вам решить эту проблему!
+
+      [![](http://freaksidea.com/uploads/php/magento/0-step-checkout/BOX-icon.jpg)](https://github.com/stalniy/0step-checkout)
