@@ -1,4 +1,5 @@
 import Polyglot from 'node-polyglot';
+import { pages as langUrls } from '../lang.pages';
 
 function createFormatter(Type) {
   const cache = {};
@@ -34,6 +35,13 @@ class I18n extends Polyglot {
     const actualDate = typeof date === 'string' ? new Date(date) : date;
 
     return dateTime(this.locale(), format, actualFormat).format(actualDate);
+  }
+
+  async load(lang) {
+    this.locale(lang);
+    const response = await fetch(langUrls[lang].default);
+    const messages = await response.json();
+    this.replace(messages);
   }
 }
 

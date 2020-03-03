@@ -27,7 +27,9 @@ function serializeSummary(rollup, name, summaries) {
 
 function fileNameId(page, lang, { relativePath, ext }) {
   const index = lang.length + ext.length + 1;
-  return relativePath.slice(0, -index);
+  const id = relativePath.slice(0, -index);
+
+  return id || 'default';
 }
 
 let pluginId = 1;

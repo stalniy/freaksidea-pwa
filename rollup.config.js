@@ -33,11 +33,14 @@ const output = envify(({ format, dir }) => ({
     : '[name].js',
   plugins: [
     ...envify(terser).env('production', {
-      // mangle: {
-      //   properties: {
-      //     regex: /^_/
-      //   }
-      // }
+      mangle: {
+        properties: {
+          reserved: [
+            '_classProperties'
+          ],
+          regex: /^_/
+        }
+      }
     }),
     indexHTML.addOutput()
   ]
@@ -47,7 +50,7 @@ export default {
   input: 'src/app.js',
   output: [
     output({ format: 'es', dir: 'dist' }),
-    ...output.env('production', { format: 'system', dir: 'dist/legacy' }),
+    ...output.env('production', { format: 'iife', dir: 'dist/legacy' }),
   ],
   plugins: [
     ...envify(minifyHTML).env('production'),
@@ -85,6 +88,7 @@ export default {
     }),
     replace({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.ARTICLES_PER_PAGE': 10,
     }),
     indexHTML
   ]

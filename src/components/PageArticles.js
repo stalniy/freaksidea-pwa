@@ -22,7 +22,7 @@ export default class PageArticles extends LitElement {
     super();
 
     this.category = null;
-    this.perPage = 1;
+    this.perPage = process.env.ARTICLES_PER_PAGE;
     this.load = getArticlesByCategory;
     this.setMeta = false;
     this._articles = null;
