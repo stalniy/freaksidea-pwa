@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit-element';
-import formCss from '../styles/form';
-import i18n from '../services/i18n';
+import { formCss } from '../styles';
+import { t } from '../directives/i18n';
+import { locale } from '../services/i18n';
 import { autoSuggestArticles } from '../services/articles';
 import router from '../services/router';
 
@@ -55,7 +56,7 @@ export default class SearchBlock extends LitElement {
 
   async _search() {
     if (this.value) {
-      this._suggestions = await autoSuggestArticles(i18n.locale(), this.value);
+      this._suggestions = await autoSuggestArticles(locale(), this.value);
     } else {
       this._suggestions = [];
     }
@@ -101,7 +102,7 @@ export default class SearchBlock extends LitElement {
       <form style="${styles}" @submit="${this._submit}">
         <div class="form-group ${this._suggestions.length ? 'focused' : ''}">
           <input
-            placeholder="${i18n.t('search.placeholder')}"
+            placeholder="${t('search.placeholder')}"
             .value="${this.value}"
             @input="${this._updateValue}"
           >

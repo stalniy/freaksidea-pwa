@@ -1,9 +1,11 @@
-import { LitElement, html, css } from 'lit-element';
+import { html, css } from 'lit-element';
 import blockCss from '../styles/block';
 import { getPopularTags } from '../services/articles';
-import i18n from '../services/i18n';
+import { locale } from '../services/i18n';
+import { t } from '../directives/i18n';
+import I18nElement from './I18nElement';
 
-export default class PopularTags extends LitElement {
+export default class PopularTags extends I18nElement {
   static cName = 'fi-popular-tags';
 
   constructor() {
@@ -11,11 +13,16 @@ export default class PopularTags extends LitElement {
     this._tags = null;
   }
 
-  async updated() {
+  async update(...args) {
     if (this._tags === null) {
-      this._tags = await getPopularTags(i18n.locale());
-      this.requestUpdate();
+      await this.reload();
     }
+
+    return super.update(...args);
+  }
+
+  async reload() {
+    this._tags = await getPopularTags(locale());
   }
 
   render() {
@@ -25,7 +32,7 @@ export default class PopularTags extends LitElement {
 
     return html`
       <section class="block">
-        <h3 class="title">${i18n.t('article.popularTags')}</h3>
+        <h3 class="title">${t('article.popularTags')}</h3>
         ${this._tags.map(this._renderTag, this)}
       </section>
     `;

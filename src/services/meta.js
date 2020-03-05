@@ -1,8 +1,8 @@
-import i18n from './i18n';
+import { t } from './i18n';
 
 export function setTitle(title) {
   const prefix = title ? `${title} - ` : '';
-  document.title = prefix + i18n.t('name');
+  document.title = prefix + t('name');
 }
 
 function getMetaTag(name) {
@@ -23,10 +23,28 @@ export function setMeta(name, content) {
     return;
   }
 
-  const defaultValue = i18n.t(`meta.${name}`);
+  const defaultValue = t(`meta.${name}`);
   const value = Array.isArray(content)
     ? content.concat(defaultValue).join(', ')
     : content || defaultValue;
 
   getMetaTag(name).setAttribute('content', value);
+}
+
+export function setRouteMeta({ response }) {
+  const html = document.documentElement;
+
+  if (html.lang !== response.params.lang) {
+    html.lang = response.params.lang;
+  }
+
+  if (!response.meta) {
+    return;
+  }
+
+  const prefix = `${response.meta.scope}.${response.name}`;
+
+  setTitle(t(`${prefix}.title`));
+  setMeta('keywords', t(`${prefix}.keywords`));
+  setMeta('description', t(`${prefix}.description`));
 }

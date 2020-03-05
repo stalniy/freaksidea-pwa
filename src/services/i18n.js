@@ -1,54 +1,68 @@
-import Polyglot from 'node-polyglot';
+import { registerTranslateConfig, use, get, listenForLangChanged } from "lit-translate";
+import { memoize } from './utils';
+import { fetch } from './http';
 import { pages as langUrls } from '../lang.pages';
 
-function createFormatter(Type) {
-  const cache = {};
-  return (locale, formatType, actualFormat) => {
-    const key = `${locale}.${formatType}`;
+function lookup(path, config) {
+  const keys = path.split('.');
+  let pointer = config.strings;
 
-    if (!cache[key]) {
-      cache[key] = new Type(locale, actualFormat);
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+
+    if (!pointer || !pointer[key]) {
+      return;
     }
 
-    return cache[key];
+    pointer = pointer[key];
   }
+
+  return pointer;
 }
 
-const dateTime = createFormatter(Intl.DateTimeFormat);
-
-class I18n extends Polyglot {
-  constructor(...args) {
-    super(...args);
-    this._dateTimeFormats = {};
-  }
-
-  extend(phrases, prefix = '') {
-    if (phrases.dateTimeFormats) {
-      this._dateTimeFormats = phrases.dateTimeFormats;
-    }
-
-    return super.extend(phrases, prefix);
-  }
-
-  d(date, format = 'default') {
-    const actualFormat = this._dateTimeFormats[format];
-    const actualDate = typeof date === 'string' ? new Date(date) : date;
-
-    return dateTime(this.locale(), format, actualFormat).format(actualDate);
-  }
-
-  async load(lang) {
-    this.locale(lang);
-    const response = await fetch(langUrls[lang].default);
-    const messages = await response.json();
-    this.replace(messages);
-  }
+function missingKey(path) {
+  console.warn(`missing i18n key: ${path}`);
+  return path;
 }
 
-const i18n = new I18n({});
-
-export default i18n;
+const VAR_REGEXP = /%\{(\w+)\}/g;
 
 export function interpolate(string, vars) {
-  return Polyglot.transformPhrase(string, vars, i18n.locale());
+  return string.replace(VAR_REGEXP, (_, varName) => vars[varName]);
+}
+
+const i18n = registerTranslateConfig({
+  loader: lang => fetch(langUrls[lang].default),
+  lookup,
+  interpolate,
+  empty: missingKey,
+});
+
+const dateTime = memoize((locale, format) => {
+  return new Intl.DateTimeFormat(locale, get(`dateTimeFormats.${format}`));
+});
+
+export const LOCALES = process.env.APP_LANGS;
+
+export const defaultLocale = LOCALES[0];
+
+export const locale = () => i18n.lang;
+
+export const t = get;
+
+export function setLocale(lang) {
+  if (!LOCALES.includes(lang)) {
+    throw new Error(`Locale ${lang} is not supported. Supported: ${LOCALES.join(', ')}`);
+  }
+
+  return use(lang);
+}
+
+export function d(date, format = 'default') {
+  const actualDate = typeof date === 'string' ? new Date(date) : date;
+  return dateTime(i18n.lang, format).format(actualDate);
+}
+
+export {
+  listenForLangChanged
 }

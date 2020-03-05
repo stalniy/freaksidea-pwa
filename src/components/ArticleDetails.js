@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
-import i18n from '../services/i18n';
+import { t, d } from '../directives/i18n';
 
 export default class ArticleDetails extends LitElement {
   static cName = 'fi-article-details';
@@ -20,17 +20,17 @@ export default class ArticleDetails extends LitElement {
 
     return html`
       <time datetime="${article.createdAt}" itemprop="datePublished">
-        ${i18n.d(article.createdAt)}
+        ${d(article.createdAt)}
       </time>
       <span>
-        ${i18n.t('article.author')}
-        <span itemprop="author">${i18n.t(`article.authors.${article.author}`)}</span>
+        ${t('article.author')}
+        <span itemprop="author">${t(`article.authors.${article.author}`)}</span>
       </span>
       <slot name="more">
         <fi-link to="${category}" hash="comments" .params="${article}">
           <i class="icon-comment"></i>${article.commentsCount || 0}
         </fi-link>
-        <fi-link to="${category}" .params="${article}" class="more">${i18n.t('article.readMore')}</fi-link>
+        <fi-link to="${category}" .params="${article}" class="more">${t('article.readMore')}</fi-link>
       </slot>
     `;
   }

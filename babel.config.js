@@ -8,9 +8,8 @@ const CONFIG = {
     presets: [
       ['@babel/preset-env', {
         loose: true,
-        targets: {
-          browsers: ['last 3 versions', 'ie >= 11', 'safari >= 10']
-        }
+        useBuiltIns: false,
+        targets: 'defaults',
       }]
     ],
   },

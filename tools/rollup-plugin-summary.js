@@ -42,7 +42,7 @@ export default (options = {}) => {
   const Summarizer = options.Summarizer;
 
   return {
-    name: `content-summary-${regex}`,
+    name: 'content-summary',
     resolveId(id, importee) {
       if (regex.test(id)) {
         const ext = extname(id);
@@ -75,6 +75,7 @@ export default (options = {}) => {
         const page = parse(source);
         const id = generatePageId(page, lang, { relativePath, file, ext });
 
+        this.addWatchFile(file.path);
         urls[lang] = urls[lang] || {};
         urls[lang][id] = this.emitFile({
           type: 'asset',

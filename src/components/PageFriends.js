@@ -1,18 +1,17 @@
-import { html } from 'lit-element';
-import Page from './Page';
+import { LitElement, html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import articleCss from '../styles/article';
+import { articleCss } from '../styles';
 
-export default class PageFriends extends Page {
+export default class PageFriends extends LitElement {
   static cName = 'fi-page-friends';
 
-  constructor() {
-    super();
-
-    this.name = 'friends';
+  render() {
+    return html`
+      <fi-page name="friends" .content="${this._renderFriends}"></fi-page>
+    `;
   }
 
-  renderContent(page) {
+  _renderFriends(page) {
     return page.items.map(friend => html`
       <div class="article">
         <h4 class="title">
@@ -25,6 +24,5 @@ export default class PageFriends extends Page {
 }
 
 PageFriends.styles = [
-  ...Page.styles,
   articleCss,
 ];

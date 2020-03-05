@@ -1,39 +1,36 @@
-import { LitElement, html, css } from 'lit-element';
+import { html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import articleCss from '../styles/article';
-import iconsCss from '../styles/icons';
-import mdCss from '../styles/md';
-import i18n from '../services/i18n';
+import { articleCss, iconsCss, mdCss } from '../styles';
+import { t } from '../directives/i18n';
+import { locale } from '../services/i18n';
 import { getArticlesByCategory } from '../services/articles';
-import { setTitle, setMeta } from '../services/meta';
 import router from '../services/router';
+import I18nElement from './I18nElement';
 
-export default class PageArticles extends LitElement {
+export default class PageArticles extends I18nElement {
   static cName = 'fi-page-articles';
 
   static properties = {
     category: { type: String },
     perPage: { type: Number },
     load: { type: Function },
-    setMeta: { type: Boolean }
   }
 
   constructor() {
     super();
 
     this.category = null;
-    this.perPage = process.env.ARTICLES_PER_PAGE;
+    this.perPage = Number(process.env.ARTICLES_PER_PAGE);
     this.load = getArticlesByCategory;
-    this.setMeta = false;
     this._articles = null;
     this._page = 1;
     this._pagesAmount = 1;
-    this._unsubscribe = null;
+    this._unwatchPage = null;
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this._unsubscribe = router.observe((route) => {
+    this._unwatchPage = router.observe((route) => {
       this._page = route.response.location.query.page || 1;
       this._articles = null;
       this.requestUpdate();
@@ -41,28 +38,20 @@ export default class PageArticles extends LitElement {
   }
 
   disconnectedCallback() {
-    this._unsubscribe();
+    this._unwatchPage();
     super.disconnectedCallback();
   }
 
   async update(changed) {
     if (this._articles === null || changed.has('category')) {
-      this._setMeta();
-      await this._loadArticles();
+      await this.reload();
     }
 
     return super.update(changed);
   }
 
-  _setMeta() {
-    const prefix = `categories.${this.category === 'all' ? 'home' : this.category}`;
-    setTitle(i18n.t(`${prefix}.title`));
-    setMeta('keywords', i18n.t(`${prefix}.keywords`));
-    setMeta('description', i18n.t(`${prefix}.description`));
-  }
-
-  async _loadArticles() {
-    const articles = await this.load(i18n.locale(), this.category);
+  async reload() {
+    const articles = await this.load(locale(), this.category);
     this._pagesAmount = Math.ceil(articles.length / this.perPage);
 
     const startIndex = (this._page - 1) * this.perPage;
@@ -72,7 +61,7 @@ export default class PageArticles extends LitElement {
   render() {
     const content = this._articles.length
       ? this._articles.map(this._renderArticle, this)
-      : html`<slot name="empty">${i18n.t('article.emptyCategory')}</slot>`;
+      : html`<slot name="empty">${t('article.emptyCategory')}</slot>`;
 
     return html`<section>
       ${content}

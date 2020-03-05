@@ -1,8 +1,7 @@
 import { LitElement, html, css } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import blockCss from '../styles/block';
 import mdCss from '../styles/md';
-import i18n from '../services/i18n';
+import { t, ut } from '../directives/i18n';
 
 export default class Block extends LitElement {
   static cName = 'fi-block';
@@ -20,8 +19,8 @@ export default class Block extends LitElement {
   render() {
     return html`
       <section class="block">
-        <h3 class="title">${i18n.t(`blocks.${this.name}.title`)}</h3>
-        <div class="md">${unsafeHTML(i18n.t(`blocks.${this.name}.content`))}</div>
+        <h3 class="title">${t(`blocks.${this.name}.title`)}</h3>
+        <div class="md">${ut(`blocks.${this.name}.content`)}</div>
       </section>
     `;
   }

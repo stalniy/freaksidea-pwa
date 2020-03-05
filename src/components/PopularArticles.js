@@ -1,10 +1,11 @@
 import { LitElement, html, css } from 'lit-element';
-import blockCss from '../styles/block';
-import iconsCss from '../styles/icons';
+import { blockCss, iconsCss } from '../styles';
 import { getArticlesByCategory } from '../services/articles';
-import i18n from '../services/i18n';
+import { locale } from '../services/i18n';
+import { t } from '../directives/i18n';
+import I18nElement from './I18nElement';
 
-export default class PopularArticles extends LitElement {
+export default class PopularArticles extends I18nElement {
   static cName = 'fi-popular-articles';
 
   constructor() {
@@ -14,20 +15,24 @@ export default class PopularArticles extends LitElement {
 
   async update(...args) {
     if (this._articles === null) {
-      this._articles = await getArticlesByCategory(i18n.locale(), 'important');
+      this._articles = await this.reload();
     }
 
     return super.update(...args);
   }
 
+  reload() {
+    return getArticlesByCategory(locale(), 'important');
+  }
+
   render() {
     const content = this._articles
       ? this._articles.map(this._renderArticle, this)
-      : i18n.t('article.emptyPopular');
+      : t('article.emptyPopular');
 
     return html`
       <section class="block">
-        <h3 class="title">${i18n.t('article.popular')}</h3>
+        <h3 class="title">${t('article.popular')}</h3>
         ${content}
       </section>
     `;

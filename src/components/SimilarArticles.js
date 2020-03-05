@@ -1,9 +1,11 @@
-import { LitElement, html, css, unsafeCSS } from 'lit-element';
-import i18n from '../services/i18n';
+import { html, css, unsafeCSS } from 'lit-element';
+import { t, d } from '../directives/i18n';
+import { locale } from '../services/i18n';
 import { getSimilarArticles } from '../services/articles';
 import arrowImage from '../assets/arrow-right.jpg';
+import I18nElement from './I18nElement';
 
-export default class SimilarArticles extends LitElement {
+export default class SimilarArticles extends I18nElement {
   static cName = 'fi-similar-articles';
   static properties = {
     to: { type: Object },
@@ -17,15 +19,19 @@ export default class SimilarArticles extends LitElement {
 
   async update(changed) {
     if (this._articles === null || changed.has('to')) {
-      this._articles = await getSimilarArticles(i18n.locale(), this.to);
+      await this.reload();
     }
 
     return super.update(changed);
   }
 
+  async reload() {
+    this._articles = await getSimilarArticles(locale(), this.to);
+  }
+
   render() {
     return html`
-      <h3>${i18n.t('article.readSimilar')}</h3>
+      <h3>${t('article.readSimilar')}</h3>
       <ul>${this._renderSimilarArticles()}</ul>
     `;
   }
@@ -36,7 +42,7 @@ export default class SimilarArticles extends LitElement {
         <fi-link to="${article.categories[0]}" .params="${article}" active>
           ${article.title}
         </fi-link>
-        <time>${`[${i18n.d(article.createdAt)}]`}</time>
+        <time>[${d(article.createdAt)}]</time>
       </li>
     `);
   }

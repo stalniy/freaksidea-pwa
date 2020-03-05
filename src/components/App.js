@@ -6,23 +6,34 @@ import gridCss from '../styles/grid';
 export default class App extends LitElement {
   static cName = 'fi-app';
   static properties = {
-    route: { type: Object, attribute: false }
+    ready: { type: Boolean }
+  };
+
+  constructor() {
+    super();
+    this._route = null;
+    this.ready = false;
   }
 
   connectedCallback() {
     super.connectedCallback();
     router.observe((route) => {
-      this.route = route.response;
-    });
+      this._route = route.response;
+      this.requestUpdate();
+    }, { initial: true });
   }
 
   render() {
+    if (!this._route || !this.ready) {
+      return html``;
+    }
+
     return html`
       <div class="wrapper">
-        <fi-header .items=${miscMenu}></fi-header>
-        <fi-menu .items=${categories} .activeItem=${this.route.name}></fi-menu>
+        <fi-header .items="${miscMenu}"></fi-header>
+        <fi-menu .items="${categories}" .activeItem="${this._route.name}"></fi-menu>
         <section class="row content" id="content">
-          <main>${this.route.body}</main>
+          <main>${this._route.body}</main>
           <aside>
             <fi-search-block reset-after-search></fi-search-block>
             <fi-popular-articles></fi-popular-articles>

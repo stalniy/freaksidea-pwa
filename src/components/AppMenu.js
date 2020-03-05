@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
-import i18n from '../services/i18n'
+import { t } from '../directives/i18n'
 
 export default class Menu extends LitElement {
   static cName = 'fi-menu';
@@ -30,7 +30,7 @@ export default class Menu extends LitElement {
   _renderLink(name) {
     return html`
       <fi-link to="${name}" .active="${this.activeItem === name}">
-        ${i18n.t(`categories.${name}.title`)}
+        ${t(`categories.${name}.title`)}
       </fi-link>
     `;
   }

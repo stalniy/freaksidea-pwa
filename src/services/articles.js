@@ -1,19 +1,8 @@
 import MiniSearch from 'minisearch';
 import { summaries, pages } from '../content/articles.summary';
 import { setTitle, setMeta } from './meta';
-
-function memoize(fn) {
-  const cache = {};
-  return (...args) => {
-    const key = JSON.stringify(args);
-
-    if (!cache[key]) {
-      cache[key] = fn(...args);
-    }
-
-    return cache[key];
-  };
-}
+import { memoize } from './utils';
+import { fetch } from './http';
 
 export function setPageMeta(page) {
   const meta = page.meta || {};
@@ -24,9 +13,7 @@ export function setPageMeta(page) {
 }
 
 export const getSummary = memoize(async (locale) => {
-  const url = summaries[locale];
-  const response = await fetch(url);
-  return response.json();
+  return fetch(summaries[locale]);
 });
 
 export async function getArticlesByCategory(locale, category = null) {
@@ -56,13 +43,7 @@ export const getPopularTags = memoize(async (locale) => {
 export const getArticleByAlias = memoize(async (locale, alias) => {
   const url = pages[locale][alias];
 
-  if (!url) {
-    return null;
-  }
-
-  const response = await fetch(url);
-
-  return response.json();
+  return url ? fetch(url) : null;
 });
 
 export async function getSimilarArticles(locale, article) {

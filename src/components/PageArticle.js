@@ -1,12 +1,12 @@
-import { LitElement, html, css } from 'lit-element';
+import { html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import iconsCss from '../styles/icons';
-import pageCss from '../styles/page';
-import mdCss from '../styles/md';
-import i18n from '../services/i18n';
+import { iconsCss, pageCss, mdCss } from '../styles';
+import { locale } from '../services/i18n';
+import { t } from '../directives/i18n';
 import { getArticleByAlias, setPageMeta } from '../services/articles';
+import I18nElement from './I18nElement';
 
-export default class PageArticle extends LitElement {
+export default class PageArticle extends I18nElement {
   static cName = 'fi-page-article';
   static properties = {
     alias: { type: String }
@@ -24,11 +24,19 @@ export default class PageArticle extends LitElement {
 
   async update(changed) {
     if (this._article = null || changed.has('alias')) {
-      this._article = await getArticleByAlias(i18n.locale(), this.alias);
-      setPageMeta(this._article);
+      await this.reload();
     }
 
     return super.update(changed);
+  }
+
+  async reload() {
+    const alias = this.alias.startsWith('show-')
+      ? this.alias.replace(/^show-\d+-/, '')
+      : this.alias;
+
+    this._article = await getArticleByAlias(locale(), alias);
+    setPageMeta(this._article);
   }
 
   render() {
@@ -58,7 +66,7 @@ export default class PageArticle extends LitElement {
     `);
 
     return html`
-      <span>${i18n.t('article.tagsTitle')}</span>
+      <span>${t('article.tagsTitle')}</span>
       ${tags}
     `;
   }
