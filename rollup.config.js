@@ -9,7 +9,7 @@ import replace from 'rollup-plugin-replace';
 import copy from 'rollup-plugin-copy';
 import { content, pageAlias } from 'rollup-plugin-content';
 import { legacyBundle } from 'rollup-plugin-legacy-bundle';
-import { parse } from 'xyaml-webpack-loader/rollup';
+import { parse } from 'xyaml-webpack-loader/parser';
 import indexHTML from './tools/index.html';
 import * as schema from './tools/contentSchemas';
 
