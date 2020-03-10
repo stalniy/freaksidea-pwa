@@ -1,6 +1,5 @@
 import { LitElement, html, css, unsafeCSS } from 'lit-element';
-import logoUrl from '../assets/logo.jpg';
-import sloganUrl from '../assets/slogan.jpg';
+import logoUrl from '../assets/main.jpg';
 import { t } from '../directives/i18n';
 
 export default class Header extends LitElement {
@@ -20,9 +19,8 @@ export default class Header extends LitElement {
         ${this.items.map(this._renderLink, this)}
       </nav>
       <header>
-        <fi-link to="home" class="logo"></fi-link>
-        <fi-link to="home" class="slogan">
-          <img src="${sloganUrl}" />
+        <fi-link to="home">
+          <img src="/${logoUrl}" />
         </fi-link>
       </header>
       <fi-lang-picker></fi-lang-picker>
@@ -58,27 +56,12 @@ Header.styles = css`
   header {
     display: flex;
     align-items: flex-end;
-    height: 292px;
+    min-height: 150px;
   }
 
-  stencil-route-link {
-    display: inline-block;
-    margin-left: 5px;
-  }
-
-  .logo {
-    flex: 0 0 204px;
-    background: url(${unsafeCSS(logoUrl)}) no-repeat 0 0;
-    height: 100%;
-  }
-
-  .slogan {
-    flex: 1;
-    height: 220px;
-  }
-
-  .slogan img {
+  header img {
     width: 100%;
-    max-width: 752px;
+    max-height: 400px;
+    object-fit: cover;
   }
 `;

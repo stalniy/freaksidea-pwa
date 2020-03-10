@@ -22,10 +22,7 @@ function stringify(querystring) {
     .join('&');
 }
 
-// TODO: unable to redirect to unknown route: https://github.com/pshrmn/curi/issues/234
-const matcher = prepareRoutes(routes);
-const router = createRouter(browser, matcher, {
-  external: { matcher },
+const router = createRouter(browser, prepareRoutes(routes), {
   history: {
     query: { parse, stringify }
   }

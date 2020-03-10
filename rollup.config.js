@@ -1,16 +1,17 @@
-import fs from 'fs';
 import babel from 'rollup-plugin-babel';
 import url from '@rollup/plugin-url';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import html from '@rollup/plugin-html';
 import { terser } from 'rollup-plugin-terser';
 import minifyHTML from 'rollup-plugin-minify-html-literals';
 import replace from 'rollup-plugin-replace';
 import copy from 'rollup-plugin-copy';
-import html from './tools/rollup-plugin-index-html';
-import contentSummary from './tools/rollup-plugin-summary';
-import legacy from './tools/rollup-plugin-legacy';
-import { ArticleSummarizer, pageAlias } from './tools/summarizer/ArticleSummarizer';
+import { content, pageAlias } from 'rollup-plugin-content';
+import { legacyBundle } from 'rollup-plugin-legacy-bundle';
+import { parse } from 'xyaml-webpack-loader/rollup';
+import indexHTML from './tools/index.html';
+import * as schema from './tools/contentSchemas';
 
 const env = (name, plugins) => {
   return process.env.NODE_ENV === name ? plugins : [];
@@ -38,37 +39,53 @@ export default {
       : '[name].js',
     plugins: [
       ...env('production', [
-        legacy({
-          polyfills: [
-            'core-js/modules/es.array.find',
-            'core-js/modules/es.array.from',
-            'core-js/modules/es.array.includes',
-            'core-js/modules/es.object.assign',
-            'core-js/modules/es.object.entries',
-            'core-js/modules/es.promise',
-            'core-js/modules/es.string.includes',
-            'core-js/modules/es.string.starts-with',
-            'core-js/modules/es.string.ends-with',
-            'core-js/modules/es.weak-set',
-            'core-js/modules/es.reflect.construct',
-            'ie11-custom-properties',
-            'regenerator-runtime/runtime',
-          ],
-          plugins: [
-            minify,
-            copy({
-              targets: [
-                { src: 'node_modules/@webcomponents/webcomponentsjs', dest: 'dist/legacy/' }
-              ]
-            }),
-          ]
-        }),
         minify,
       ]),
     ]
   },
   plugins: [
-    ...env('production', [minifyHTML()]),
+    ...env('production', [
+      minifyHTML(),
+      legacyBundle({
+        format: 'iife',
+        polyfills: [
+          'core-js/modules/es.array.find',
+          'core-js/modules/es.array.from',
+          'core-js/modules/es.array.includes',
+          'core-js/modules/es.object.assign',
+          'core-js/modules/es.object.entries',
+          'core-js/modules/es.promise',
+          'core-js/modules/es.string.includes',
+          'core-js/modules/es.string.starts-with',
+          'core-js/modules/es.string.ends-with',
+          'core-js/modules/es.weak-set',
+          'core-js/modules/es.reflect.construct',
+          'ie11-custom-properties',
+          'regenerator-runtime/runtime',
+        ],
+        plugins: [
+          resolve(),
+          commonjs(),
+          babel({
+            rootMode: 'upward',
+            inputSourceMap: true,
+            exclude: [
+              'node_modules/core-js/**/*.js',
+              'node_modules/regenerator-runtime/runtime.js'
+            ],
+            caller: {
+              output: 'es5'
+            },
+          }),
+          minify,
+          copy({
+            targets: [
+              { src: 'node_modules/@webcomponents/webcomponentsjs', dest: 'dist/legacy/' }
+            ]
+          }),
+        ]
+      }),
+    ]),
     url(),
     resolve(),
     babel({
@@ -83,37 +100,39 @@ export default {
     }),
     commonjs(),
     copy({
-      copyOnce: process.env.NODE_ENV !== 'production',
+      copyOnce: true,
       flatten: false,
       targets: [
-        { src: ['public/**/*', '!public/index.html'], dest: 'dist/assets' }
+        { src: 'public/**/*', dest: 'dist' }
       ]
     }),
-    contentSummary({
+    content({
       matches: /\.pages$/,
-      langs: SUPPORTED_LANGS
-    }),
-    contentSummary({
       langs: SUPPORTED_LANGS,
-      Summarizer: ArticleSummarizer,
+      summarizer: false,
+      pageSchema: false,
+      parse
+    }),
+    content({
+      langs: SUPPORTED_LANGS,
       pageId: pageAlias,
+      pageSchema: schema.article,
+      parse,
     }),
     replace({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.ARTICLES_PER_PAGE': 10,
+      'process.env.ARTICLES_PER_PAGE': '10',
       'process.env.APP_LANGS': JSON.stringify(SUPPORTED_LANGS),
     }),
     html({
-      includeLegacy: process.env.NODE_ENV === 'production',
-      template: './public/index.html',
-      assets: {
-        head: process.env.NODE_ENV === 'production'
-          ? [
-              { src: '/legacy/webcomponentsjs/webcomponents-loader.js', attrs: 'nomodule' },
-              { src: '/legacy/webcomponentsjs/custom-elements-es5-adapter.js', attrs: 'nomodule' }
-            ]
-          : []
-      }
+      title: 'Freaksidea.com',
+      publicPath: '/',
+      template: indexHTML,
+      attributes: {
+        html: null,
+        link: null,
+        script: null,
+      },
     }),
   ]
 };

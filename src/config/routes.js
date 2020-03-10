@@ -66,33 +66,22 @@ export const routes = [
   {
     name: 'notFound',
     path: '(.*)',
-    respond({ match, external }) {
+    respond({ match }) {
       const pathname = match.location.pathname;
       const index = pathname.indexOf('/', 1);
       const lang = index === -1 ? pathname.slice(1) : pathname.slice(1, index);
 
-      if (LOCALES.includes(lang)) {
-        return { body: html`<fi-page name="notfound"></fi-page>` };
-      }
-
-      // TODO: unable to redirect to unknown route: https://github.com/pshrmn/curi/issues/234
-      const matched = external.matcher.match({
-        pathname: `/${defaultLocale}${pathname}`,
-        query: match.location.query,
-        hash: match.location.hash
-      });
-
-      if (matched.match.name === match.name) {
-        return { body: html`<fi-page name="notfound"></fi-page>` }
+      if (!LOCALES.includes(lang)) {
+        const { search: query, hash } = window.location;
+        return {
+          redirect: {
+            url: `/${defaultLocale}${pathname}${query}${hash}`,
+          }
+        };
       }
 
       return {
-        redirect: {
-          name: matched.match.name,
-          params: matched.match.params,
-          query: match.location.query,
-          hash: match.location.hash,
-        }
+        body: html`<fi-page name="notfound"></fi-page>`
       };
     }
   }
