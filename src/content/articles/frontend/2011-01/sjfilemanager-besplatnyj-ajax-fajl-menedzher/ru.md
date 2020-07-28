@@ -18,7 +18,7 @@ meta:
 alias: sjfilemanager----besplatnyj-ajax-fajl-menedzher
 ---
 
-[![sjFilemanager](./708eccb6aa0dd09856174f11cde538dc.jpg)](/media/sjFilemanager/test/examples/ "sjFilemanager")
+![sjFilemanager](./708eccb6aa0dd09856174f11cde538dc.jpg)
 
 sjFilemanager сначала был разработан в личных целях, для создания чего-то "отличного", что можно будет переносить из проекта в проект. Но потом я решил поделиться им со всеми.
 
@@ -49,13 +49,11 @@ sjFilemanager сначала был разработан в личных цел�
 
 ## Демо
 
-Демо находится [ЗДЕСЬ](/media/sjFilemanager/test/examples/ "sjFilemanager demo").
-
 Скачать можно [ЗДЕСЬ](./sjFilemanager.zip).
 
 ## Технические детали
 
-Написан с использованием простой javascript библиотеки, имеет в арсенале inline window manager. Backend обслуживает PHP с помощью нескольких классов, документацию на которые можно найти [ЗДЕСЬ](/media/sjFilemanager/web/docs/ "Документация iFilemanager").
+Написан с использованием простой javascript библиотеки, имеет в арсенале inline window manager. Backend обслуживает PHP с помощью нескольких классов.
 
 Итак пришла пора немного рассказать об использовании :)
 
@@ -169,11 +167,11 @@ tinyMCE.init({
     plugins : "media,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras",
     editor_selector : "mceEditor",
     language : "en",
-    convert_urls: false, 
+    convert_urls: false,
     theme : "advanced",
     debug : false,
     paste_auto_cleanup_on_paste : true,
-    paste_convert_headers_to_strong : true,		
+    paste_convert_headers_to_strong : true,
     // Theme options
     theme_advanced_buttons1 :"undo,redo,|,bold,italic,underline,strikethrough,forecolor,backcolor,|,sub,sup,charmap,|,hr,removeformat",
     theme_advanced_buttons2 : "pastetext,pasteword,|,search,|,bullist,numlist,|,outdent,indent,|,link,unlink,image,media,cleanup,code,fullscreen",
@@ -193,14 +191,14 @@ tinyMCE.init({
 Открыв обычный advimage plugin увидим следующее (аналогичная ситуация со всеми плагинами в которых используется tinyMCE file\_browser\_callback опция):[![advimage](./3b8971deecefbc7defeedecc3a041994_500_0_0.jpg)](./3b8971deecefbc7defeedecc3a041994.jpeg "advimage")Ну и последнее - пишем свой callback для выбора нескольких файлов и отображения их пользователю:
 
 *   JavaScript:
-    
+
     ```php
     sjs('#container').onEvent('click', function(e){
         var $this = sjs.event.caller(e);
         if (!sjs.nodeName($this, 'a')) {
             return true;
         }
-        
+
         $this.parentNode.parentNode.removeChild($this.parentNode);
         return false;
     });
@@ -209,16 +207,16 @@ tinyMCE.init({
             var data = this.getChecked(), i = data.length,
                 wr = 0, url = "%url_to_upload_dir%" + this.getCurrentPath(),
                 ins = sjs('#container');
-                
+
             if (!i) {
                 return false;
             }
-            
+
             while (i--) {
                 var label = sjs(data[i].cells[1]).first()[0], html = '',
                     file  = url + sjs(data[i]).find('input[type="checkbox"]:checked')[0].value.trim();
                 wr = sjs('<div class="wrapps"></div>')
-                
+
                 if (/s+(?:jpe?g|gif|png)s+/i.test(' '+label.className+' ')) {
                     html = '<img src="' + file + '" alt="'+file+'" style="max-width:100px" />';
                 } else {
@@ -232,9 +230,9 @@ tinyMCE.init({
         return false;
     })
     ```
-    
+
 *   HTML:
-    
+
     ```html
     <html>
     ..........
@@ -243,9 +241,8 @@ tinyMCE.init({
     .........
     </html>
     ```
-    
 
-Результаты работы можно проверить [ЗДЕСЬ](/media/sjFilemanager/test/examples/ "Пример использования sjFilemanager"). Возникли вопросы? Пишите - постараюсь всем помочь :)
+Возникли вопросы? Пишите в комментариях - постараюсь всем помочь :)
 
 ## Планируется
 

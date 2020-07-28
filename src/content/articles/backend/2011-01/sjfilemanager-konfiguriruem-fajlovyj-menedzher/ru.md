@@ -64,8 +64,6 @@ $multiplier = ($unit == 'M' ? 1048576 : ($unit == 'K' ? 1024 : ($unit == 'G' ? 1
 $sjConfig['uploader']['max_size'] = 2048; #$multiplier * (float)$max_size;
 ```
 
-\* - конфигурация скопирована из [демо](/media/sjFilemanager/test/examples/)
-
 ## Параметры
 
 *   allowed\_actions \- список разрешенных действий для пользователя на данный момент доступны следующие: 'refresh','cut','copy','remove','paste','rename','perms','createDir','upload','download','dirInfo','transform'. При выполнение всех других действий пользователь получит в ответ "Access denied"
