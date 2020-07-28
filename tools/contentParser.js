@@ -24,7 +24,7 @@ export const markdownOptions = {
     },
     [`${__dirname}/tools/mdImage`]: {
       size: 'auto',
-      srcRoot: `${process.env.LIT_APP_PUBLIC_PATH || ''}/images`
+      srcRoot: `${process.env.LIT_APP_PUBLIC_PATH || ''}/media/assets`
     },
     [`${__dirname}/tools/mdTableContainer`]: {}
   }
@@ -48,7 +48,7 @@ export function parseFrontMatter(source, context) {
 
   return {
     ...file.data,
-    summary: summaryIndex === -1 ? '' : content.slice(0, summaryIndex),
+    summary: summaryIndex === -1 ? file.data.summary : content.slice(0, summaryIndex),
     content,
     headings: headings.map((h) => {
       const idIndex = h.indexOf(' id="');

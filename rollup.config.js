@@ -12,6 +12,7 @@ import { content, summary } from 'rollup-plugin-content';
 import { legacyBundle } from 'rollup-plugin-legacy-bundle';
 import xyaml from 'xyaml-webpack-loader/rollup';
 import { generateSW } from 'rollup-plugin-workbox';
+import { dirname, basename } from 'path';
 import indexHTML from './tools/index.html';
 import { parsexYaml, parseFrontMatter, markdownOptions } from './tools/contentParser';
 import { SearchIndex } from './tools/SearchIndex';
@@ -138,7 +139,7 @@ export default {
     }),
     copy({
       targets: [
-        { src: 'src/content/**/*.{png,jpeg,svg}', dest: `${DEST}/images` }
+        { src: 'src/content/**/*.{png,jpeg,svg,zip,tar,bz2,sh,php,js}', dest: `${DEST}/media/assets` },
       ]
     }),
     content({
@@ -154,6 +155,7 @@ export default {
       langs: SUPPORTED_LANGS,
       pageSchema: false,
       parse: parseFrontMatter,
+      pageId: (_, { relativePath }) => basename(dirname(relativePath)),
       plugins: [
         summary({
           fields: [

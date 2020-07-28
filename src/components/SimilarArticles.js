@@ -86,7 +86,12 @@ SimilarArticles.styles = css`
   }
 
   app-link {
-    color: #81a2be;
-    text-decoration
+    color: #39c;
+    text-decoration: underline;
+  }
+
+  app-link:hover {
+    color: #39c;
+    text-decoration: none;
   }
 `;

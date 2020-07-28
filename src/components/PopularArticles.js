@@ -23,7 +23,7 @@ export default class PopularArticles extends I18nElement {
 
   async reload() {
     const articles = await content('article').byCategories(locale(), 'important');
-    return articles.important;
+    return articles.important.slice(0, 10);
   }
 
   render() {
