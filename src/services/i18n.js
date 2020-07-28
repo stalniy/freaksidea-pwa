@@ -1,7 +1,7 @@
-import { registerTranslateConfig, use, get, listenForLangChanged } from "lit-translate";
+import { registerTranslateConfig, use, get, listenForLangChanged } from 'lit-translate';
 import { memoize } from './utils';
 import { fetch } from './http';
-import { pages as langUrls } from '../lang.pages';
+import { pages as langUrls } from '../content/app.i18n';
 
 function lookup(path, config) {
   const keys = path.split('.');
@@ -11,7 +11,7 @@ function lookup(path, config) {
     const key = keys[i];
 
     if (!pointer || !pointer[key]) {
-      return;
+      return undefined;
     }
 
     pointer = pointer[key];
@@ -21,7 +21,7 @@ function lookup(path, config) {
 }
 
 function missingKey(path) {
-  console.warn(`missing i18n key: ${path}`);
+  console.warn(`missing i18n key: ${path}`); // eslint-disable-line no-console
   return path;
 }
 
@@ -32,23 +32,26 @@ export function interpolate(string, vars) {
 }
 
 const i18n = registerTranslateConfig({
-  loader: lang => fetch(langUrls[lang].default),
+  async loader(lang) {
+    const response = await fetch(langUrls[lang].default);
+    return response.body;
+  },
   lookup,
   interpolate,
   empty: missingKey,
 });
 
-const dateTime = memoize((locale, format) => {
-  return new Intl.DateTimeFormat(locale, get(`dateTimeFormats.${format}`));
-});
+const dateTime = memoize((locale, format) => new Intl.DateTimeFormat(locale, get(`dateTimeFormats.${format}`)));
 
-export const LOCALES = process.env.APP_LANGS;
+export const LOCALES = process.env.SUPPORTED_LANGS;
 
 export const defaultLocale = LOCALES[0];
 
 export const locale = () => i18n.lang;
 
 export const t = get;
+
+export const translationExists = key => !!lookup(key, i18n);
 
 export function setLocale(lang) {
   if (!LOCALES.includes(lang)) {
@@ -65,4 +68,4 @@ export function d(date, format = 'default') {
 
 export {
   listenForLangChanged
-}
+};

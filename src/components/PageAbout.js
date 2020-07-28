@@ -24,7 +24,7 @@ export default class PageAbout extends LitElement {
 
   render() {
     return html`
-      <fi-page name="about" .vars="${this.vars}"></fi-page>
+      <app-page name="about" .vars="${this.vars}"></app-page>
       <fi-contact-form></fi-contact-form>
     `;
   }

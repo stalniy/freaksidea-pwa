@@ -1,44 +1,63 @@
 import { html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { iconsCss, mdCss, pageCss } from '../styles';
+import { iconsCss, mdCss, pageCss, codeCss } from '../styles';
 import I18nElement from './I18nElement';
 import { interpolate, locale } from '../services/i18n';
-import { fetch } from '../services/http';
-import { setPageMeta } from '../services/articles';
-import { pages } from '../content/pages.pages';
+import content from '../services/content';
+import { setPageMeta } from '../services/meta';
+import { tryToNavigateElement, scrollToSectionIn } from '../hooks/scrollToSection';
+
+function renderContent(page, vars) {
+  return unsafeHTML(interpolate(page.content, vars));
+}
 
 export default class Page extends I18nElement {
-  static cName = 'fi-page';
+  static cName = 'app-page';
   static properties = {
+    type: { type: String },
     name: { type: String },
     vars: { type: Object, attribute: false },
     content: { type: Function, attribute: false },
-  }
+    nav: { type: Array },
+    _page: { type: Object },
+  };
 
   constructor() {
     super();
 
     this._page = null;
+    this.nav = [];
     this.name = null;
-    this.vars = null;
-    this.content = this._renderContent;
-    this._unwatchLang = null;
+    this.vars = {};
+    this.type = 'page';
+    this.content = renderContent;
   }
 
-  async update(changed) {
-    if (this._page === null || changed.has('name')) {
+  connectedCallback() {
+    super.connectedCallback();
+    this.shadowRoot.addEventListener('click', (event) => {
+      tryToNavigateElement(this.shadowRoot, event.target);
+    }, false);
+  }
+
+  async updated(changed) {
+    if (this._page === null || changed.has('name') || changed.has('type')) {
       await this.reload();
     }
-
-    return super.update(changed);
   }
 
   async reload() {
-    this._page = await fetch(pages[locale()][this.name]);
+    this._page = await content(this.type).load(locale(), this.name);
     setPageMeta(this._page);
+    await this.updateComplete;
+    scrollToSectionIn(this.shadowRoot);
   }
 
   render() {
+    if (!this._page) {
+      return html``;
+    }
+
     return html`
       <article itemscope itemtype="http://schema.org/Article">
         <h1><i class="icon-idea"></i>${interpolate(this._page.title)}</h1>
@@ -56,4 +75,5 @@ Page.styles = [
   iconsCss,
   pageCss,
   mdCss,
+  codeCss,
 ];

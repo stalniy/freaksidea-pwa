@@ -47,3 +47,34 @@ blocks:
       Хотите упростить процесс оформления заказа в Magento? [0 Step Checkout](https://github.com/stalniy/0step-checkout) поможет Вам решить эту проблему!
 
       [![](http://freaksidea.com/uploads/php/magento/0-step-checkout/BOX-icon.jpg)](https://github.com/stalniy/0step-checkout)
+about:
+  script: !md |
+    ```js
+    // About me
+    const name = 'Sergii Stotskyi';
+    const skills = [
+      'JavaScript',
+      'Ruby on Rails',
+      'PHP',
+      'MySQL',
+      'PostgreSQL',
+      'MongoDB',
+      'ElasticSearch',
+      'RabbitMQ'
+    ];
+    const experience = [
+      '%{devExperienceInYears} years',
+      '%{leadingExperienceInYears} years of leading exp.'
+    ];
+    const hobbies = [
+      'Open Source Contribution',
+      'Books',
+      'Blogging',
+      'Skating',
+      'Kayak'
+    ];
+    const email = 'moc.liamg@yikstots.yigres'
+      .split('')
+      .reverse()
+      .join('');
+    ```

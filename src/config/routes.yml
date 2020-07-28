@@ -1,0 +1,50 @@
+routes:
+  - name: home
+    path: :lang
+    restrictions:
+      lang: ru
+    controller: Article
+    meta:
+      categories: [frontend, backend, linux]
+    sitemap:
+      priority: 1
+      changefreq: monthly
+      provider: langs
+    children:
+      - name: frontend
+        path: frontend/:alias?
+        # restrictions:
+        #   id: '[\w/-]+'
+        controller: Article
+        meta:
+          categories: [frontend]
+        sitemap:
+          priority: 1
+          changefreq: weekly
+          provider: pages
+      - name: backend
+        path: backend/:alias?
+        controller: Article
+        meta:
+          categories: [backend]
+        sitemap:
+          priority: 1
+          changefreq: monthly
+          provider: route
+      - name: linux
+        path: linux/:alias?
+        controller: Article
+        meta:
+          categories: [linux]
+      - name: about
+        path: writeme
+        controller: About
+      - name: page
+        path: :id
+        restrictions:
+          id: '[\w/-]+'
+        controller: Page
+        sitemap:
+          priority: 1
+          changefreq: yearly
+          provider: pages

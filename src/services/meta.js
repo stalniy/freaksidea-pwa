@@ -1,8 +1,7 @@
-import { t } from './i18n';
+import { t, translationExists } from './i18n';
 
 export function setTitle(title) {
-  const prefix = title ? `${title} - ` : '';
-  document.title = prefix + t('name');
+  document.title = title;
 }
 
 function getMetaTag(name) {
@@ -28,7 +27,7 @@ export function setMeta(name, content) {
     ? content.concat(defaultValue).join(', ')
     : content || defaultValue;
 
-  getMetaTag(name).setAttribute('content', value);
+  getMetaTag(name).setAttribute('content', value.replace(/[\n\r]+/g, ' '));
 }
 
 export function setRouteMeta({ response }) {
@@ -38,13 +37,23 @@ export function setRouteMeta({ response }) {
     html.lang = response.params.lang;
   }
 
-  if (!response.meta) {
-    return;
+  const prefix = `meta.${response.name}`;
+
+  if (translationExists(prefix)) {
+    setTitle(t(`${prefix}.title`));
+    setMeta('keywords', t(`${prefix}.keywords`));
+    setMeta('description', t(`${prefix}.description`));
+  } else {
+    setTitle();
+    setMeta('keywords');
+    setMeta('description');
   }
+}
 
-  const prefix = `${response.meta.scope}.${response.name}`;
+export function setPageMeta(page) {
+  const meta = page.meta || {};
 
-  setTitle(t(`${prefix}.title`));
-  setMeta('keywords', t(`${prefix}.keywords`));
-  setMeta('description', t(`${prefix}.description`));
+  setTitle(page.title);
+  setMeta('keywords', meta.keywords || '');
+  setMeta('description', meta.description || '');
 }

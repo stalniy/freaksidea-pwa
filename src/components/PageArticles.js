@@ -3,7 +3,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { articleCss, iconsCss, mdCss } from '../styles';
 import { t } from '../directives/i18n';
 import { locale } from '../services/i18n';
-import { getArticlesByCategory } from '../services/articles';
+import content from '../services/content';
 import router from '../services/router';
 import I18nElement from './I18nElement';
 
@@ -11,17 +11,15 @@ export default class PageArticles extends I18nElement {
   static cName = 'fi-page-articles';
 
   static properties = {
-    category: { type: String },
-    perPage: { type: Number },
-    load: { type: Function },
+    categories: { type: Array },
+    pageSize: { type: Number },
   }
 
   constructor() {
     super();
 
     this.category = null;
-    this.perPage = Number(process.env.ARTICLES_PER_PAGE);
-    this.load = getArticlesByCategory;
+    this.pageSize = Number(process.env.ARTICLES_PAGE_SIZE);
     this._articles = null;
     this._page = 1;
     this._pagesAmount = 1;
@@ -33,7 +31,6 @@ export default class PageArticles extends I18nElement {
     this._unwatchPage = router.observe((route) => {
       this._page = route.response.location.query.page || 1;
       this._articles = null;
-      this.requestUpdate();
     });
   }
 
@@ -43,7 +40,7 @@ export default class PageArticles extends I18nElement {
   }
 
   async update(changed) {
-    if (this._articles === null || changed.has('category')) {
+    if (this._articles === null || changed.has('categories')) {
       await this.reload();
     }
 
@@ -51,11 +48,16 @@ export default class PageArticles extends I18nElement {
   }
 
   async reload() {
-    const articles = await this.load(locale(), this.category);
-    this._pagesAmount = Math.ceil(articles.length / this.perPage);
+    const { pagesAmount, items } = await content('article').paginate(locale(), this.categories, {
+      page: this._page,
+      pageSize: this.pageSize
+    });
+    this._pagesAmount = pagesAmount;
+    this._articles = items;
+  }
 
-    const startIndex = (this._page - 1) * this.perPage;
-    this._articles = articles.slice(startIndex, startIndex + this.perPage);
+  _categoryOf(article) {
+    return this.categories.length === 1 ? this.categories[0] : article.categories[0];
   }
 
   render() {
@@ -69,19 +71,15 @@ export default class PageArticles extends I18nElement {
     </section>`;
   }
 
-  _categoryOf(article) {
-    return this.category === 'all' ? article.categories[0] : this.category;
-  }
-
   _renderArticle(article) {
     const category = this._categoryOf(article);
 
     return html`
       <article itemscope itemtype="http://schema.org/Article">
         <h2 itemprop="headline" class="title">
-          <fi-link to="${category}" .params=${article}>
+          <app-link to="${category}" .params=${article}>
             <i class="icon-idea"></i>${article.title}
-          </fi-link>
+          </app-link>
         </h2>
         <div itemprop="description" class="summary md">${unsafeHTML(article.summary)}</div>
         <fi-article-details .article="${article}" category="${category}"></fi-article-details>

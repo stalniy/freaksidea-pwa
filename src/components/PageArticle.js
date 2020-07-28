@@ -1,68 +1,64 @@
 import { html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { iconsCss, pageCss, mdCss } from '../styles';
-import { locale } from '../services/i18n';
+import { iconsCss, pageCss, mdCss, codeCss } from '../styles';
 import { t } from '../directives/i18n';
-import { getArticleByAlias, setPageMeta } from '../services/articles';
+import { setPageMeta } from '../services/meta';
 import I18nElement from './I18nElement';
+import { tryToNavigateElement, scrollToSectionIn } from '../hooks/scrollToSection';
 
 export default class PageArticle extends I18nElement {
   static cName = 'fi-page-article';
   static properties = {
-    alias: { type: String }
+    page: { type: Object }
   };
 
   constructor() {
     super();
-    this.alias = '';
-    this._article = null;
+    this.page = null;
   }
 
-  get hasTags() {
-    return !!(this._article.meta && this._article.meta.keywords);
+  _hasTags() {
+    return !!(this.page.meta && this.page.meta.keywords);
   }
 
-  async update(changed) {
-    if (this._article = null || changed.has('alias')) {
-      await this.reload();
+  connectedCallback() {
+    super.connectedCallback();
+    this.shadowRoot.addEventListener('click', (event) => {
+      tryToNavigateElement(this.shadowRoot, event.target);
+    }, false);
+  }
+
+  async updated(changed) {
+    if (this.page === null || changed.has('page')) {
+      setPageMeta(this.page);
+      await this.updateComplete;
+      scrollToSectionIn(this.shadowRoot);
     }
-
-    return super.update(changed);
-  }
-
-  async reload() {
-    const alias = this.alias.startsWith('show-')
-      ? this.alias.replace(/^show-\d+-/, '')
-      : this.alias;
-
-    this._article = await getArticleByAlias(locale(), alias);
-    setPageMeta(this._article);
   }
 
   render() {
+    const similarArticles = this._hasTags()
+      ? html`<fi-similar-articles .to="${this.page}"></fi-similar-articles>`
+      : '';
     return html`
       <article itemscope itemtype="http://schema.org/Article">
-        <h1><i class="icon-idea"></i>${this._article.title}</h1>
-        <div class="description md">${unsafeHTML(this._article.content)}</div>
-        <fi-article-details .article="${this._article}">
+        <h1><i class="icon-idea"></i>${this.page.title}</h1>
+        <div class="description md">${unsafeHTML(this.page.content)}</div>
+        <fi-article-details .article="${this.page}">
           <div class="tags" slot="more">${this._renderTags()}</div>
         </fi-article-details>
       </article>
-      ${this.hasTags
-        ? html`<fi-similar-articles .to="${this._article}"></fi-similar-articles>`
-        : ''
-      }
-
-    `
+      ${similarArticles}
+    `;
   }
 
   _renderTags() {
-    if (!this.hasTags) {
+    if (!this._hasTags()) {
       return '';
     }
 
-    const tags = this._article.meta.keywords.map(tag => html`
-      <fi-link to="search" .query="${{ q: tag }}" active>${tag}</fi-link>
+    const tags = this.page.meta.keywords.map(tag => html`
+      <app-link to="search" .query="${{ q: tag }}">${tag}</app-link>
     `);
 
     return html`
@@ -76,6 +72,7 @@ PageArticle.styles = [
   iconsCss,
   pageCss,
   mdCss,
+  codeCss,
   css`
     :host {
       display: block;
@@ -90,7 +87,7 @@ PageArticle.styles = [
       vertical-align: middle;
     }
 
-    fi-link {
+    app-link {
       margin-right: 5px;
     }
   `

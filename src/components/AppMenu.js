@@ -27,11 +27,9 @@ export default class Menu extends LitElement {
     `;
   }
 
-  _renderLink(name) {
+  _renderLink({ name, exact }) {
     return html`
-      <fi-link to="${name}" .active="${this.activeItem === name}">
-        ${t(`categories.${name}.title`)}
-      </fi-link>
+      <app-link to="${name}" nav="${exact ? 'exact' : ''}">${t(`categories.${name}.title`)}</app-link>
     `;
   }
 }
@@ -43,10 +41,16 @@ Menu.styles = css`
   --fi-menu-text-size: 21px;
 }
 
-fi-link {
+app-link {
   display: inline-block;
   font-size: var(--fi-menu-text-size);
-  color: var(--fi-menu-text-color);
-  margin-right: 35px;
+}
+
+app-link.active {
+  color: #81a2be;
+}
+
+app-link + app-link {
+  margin-left: 35px;
 }
 `;

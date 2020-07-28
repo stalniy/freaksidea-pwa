@@ -1,0 +1,9 @@
+topMenu:
+  - name: about
+
+menu:
+  - name: home
+    exact: true
+  - name: frontend
+  - name: backend
+  - name: linux

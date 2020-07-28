@@ -1,4 +1,5 @@
-import { LitElement, html, css, unsafeCSS } from 'lit-element';
+import { LitElement, html, css } from 'lit-element';
+import { codeCss } from '../styles';
 import logoUrl from '../assets/main.jpg';
 import { t } from '../directives/i18n';
 
@@ -15,53 +16,45 @@ export default class Header extends LitElement {
 
   render() {
     return html`
-      <nav>
-        ${this.items.map(this._renderLink, this)}
-      </nav>
       <header>
-        <fi-link to="home">
-          <img src="/${logoUrl}" />
-        </fi-link>
+        <app-link to="home">
+          <img src="${logoUrl}" />
+        </app-link>
       </header>
-      <fi-lang-picker></fi-lang-picker>
+      <!-- <fi-lang-picker></fi-lang-picker> -->
     `;
   }
 
-  _renderLink(name) {
+  _renderLink(route) {
     return html`
-      <fi-link to="${name}">${t(`topMenu.${name}`)}</fi-link>
+      <app-link to="${route.name}">${t(`topMenu.${route.name}`)}</app-link>
     `;
   }
 }
 
-Header.styles = css`
-  :host {
-    display: block;
-    --fi-header-menu-text: #ccc;
-    --fi-header-menu-size: 11px;
-  }
+Header.styles = [
+  codeCss,
+  css`
+    :host {
+      display: block;
+      --fi-header-menu-text: #ccc;
+      --fi-header-menu-size: 11px;
+    }
 
-  nav {
-    height: 20px;
-    text-align: right;
-  }
+    header {
+      display: flex;
+      align-items: flex-end;
+      min-height: 150px;
+    }
 
-  nav fi-link {
-    font-size: var(--fi-header-menu-size);
-    color: var(--fi-header-menu-text);
-    font-style: italic;
-    margin-left: 5px;
-  }
+    header img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+    }
 
-  header {
-    display: flex;
-    align-items: flex-end;
-    min-height: 150px;
-  }
-
-  header img {
-    width: 100%;
-    max-height: 400px;
-    object-fit: cover;
-  }
-`;
+    app-link[to="home"] {
+      text-decoration: none;
+    }
+  `
+];

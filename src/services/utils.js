@@ -15,3 +15,23 @@ export function memoize(fn, generateKey = json) {
 
   return memoized;
 }
+
+export function debounce(fn, timeout) {
+  let timerId;
+  return function (...args) {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => fn.apply(this, args), timeout);
+  };
+}
+
+export function interpolate(template, object) {
+  let hasMissing = false;
+  const result = template.replace(/:([\w_-]+)\??/g, (_, name) => {
+    if (!object[name] || object[name] === 'undefined') {
+      hasMissing = true;
+    }
+    return object[name];
+  });
+
+  return hasMissing ? null : result;
+}

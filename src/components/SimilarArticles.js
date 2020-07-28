@@ -1,7 +1,7 @@
 import { html, css, unsafeCSS } from 'lit-element';
 import { t, d } from '../directives/i18n';
 import { locale } from '../services/i18n';
-import { getSimilarArticles } from '../services/articles';
+import content from '../services/content';
 import arrowImage from '../assets/arrow-right.jpg';
 import I18nElement from './I18nElement';
 
@@ -26,7 +26,8 @@ export default class SimilarArticles extends I18nElement {
   }
 
   async reload() {
-    this._articles = await getSimilarArticles(locale(), this.to);
+    this._articles = await content('article').findSimilar(locale(), this.to);
+    console.log(this._articles)
   }
 
   render() {
@@ -39,9 +40,9 @@ export default class SimilarArticles extends I18nElement {
   _renderSimilarArticles() {
     return this._articles.map(article => html`
       <li>
-        <fi-link to="${article.categories[0]}" .params="${article}" active>
+        <app-link to="${article.categories[0]}" .params="${article}" active>
           ${article.title}
-        </fi-link>
+        </app-link>
         <time>[${d(article.createdAt)}]</time>
       </li>
     `);
@@ -82,5 +83,10 @@ SimilarArticles.styles = css`
   time:before {
     content: "\\2022";
     margin: 0 5px;
+  }
+
+  app-link {
+    color: #81a2be;
+    text-decoration
   }
 `;

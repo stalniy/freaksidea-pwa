@@ -53,7 +53,7 @@ export default class Pager extends LitElement {
     const { query } = this._current.response.location;
 
     return html`
-      <fi-link
+      <app-link
         to="${name}"
         hash="${this.hash}"
         .params="${params}"
@@ -62,7 +62,7 @@ export default class Pager extends LitElement {
         style="${page < 1 || page > this.pages ? 'display: none': ''}"
       >
         ${attrs.next || attrs.prev ? '' : page}
-      </fi-link>
+      </app-link>
     `;
   }
 }
@@ -72,18 +72,18 @@ Pager.styles = css`
     display: block;
   }
 
-  fi-link {
+  app-link {
     vertical-align: middle;
     margin-right: 5px;
     height: 20px;
     font-size: 17px;
     padding: 2px 6px;
     border-radius: 2px;
-    color: var(--fi-link-active-color);
+    color: var(--app-link-active-color);
   }
 
-  fi-link.active {
-    background-color: var(--fi-link-active-color);
+  app-link.active {
+    background-color: var(--app-link-active-color);
     color: #fff;
     text-decoration: none;
   }

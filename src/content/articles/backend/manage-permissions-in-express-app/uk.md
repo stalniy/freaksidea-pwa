@@ -1,3 +1,4 @@
+---
 title: Керування правами доступу в Expressjs за допомогою CASL
 alias: upravlenie-pravami-dostupa-v-expressjs-pri-pomoschi-casl
 author: sstotskyi
@@ -6,6 +7,7 @@ categories: [backend, important]
 meta:
   keywords: [casl, expressjs, somethingelse]
   description: ~
-content: !md |
-  UK test me here!
-  <cut/>
+---
+
+UK test me here!
+<summary-cut/>

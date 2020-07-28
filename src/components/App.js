@@ -1,7 +1,21 @@
 import { LitElement, html, css } from 'lit-element';
-import { miscMenu, categories } from '../config/routes';
+import { topMenu, menu } from '../config/menu.yml';
 import router from '../services/router';
 import gridCss from '../styles/grid';
+
+function createNotificationsRoot() {
+  const root = document.createElement('div');
+
+  Object.assign(root.style, {
+    position: 'fixed',
+    right: '10px',
+    bottom: '10px',
+    zIndex: 50,
+    width: '320px'
+  });
+  document.body.appendChild(root);
+  return root;
+}
 
 export default class App extends LitElement {
   static cName = 'fi-app';
@@ -23,17 +37,32 @@ export default class App extends LitElement {
     }, { initial: true });
   }
 
+  notify(message, options = {}) {
+    const notification = document.createElement('app-notification');
+
+    notification.message = message;
+
+    if (typeof options.onClick === 'function') {
+      notification.addEventListener('click', options.onClick, false);
+    }
+
+    this._notificationsRoot = this._notificationsRoot || createNotificationsRoot();
+    this._notificationsRoot.appendChild(notification);
+  }
+
   render() {
     if (!this._route || !this.ready) {
       return html``;
     }
 
+    console.log(this._route)
+
     return html`
       <div class="wrapper">
-        <fi-header .items="${miscMenu}"></fi-header>
-        <fi-menu .items="${categories}" .activeItem="${this._route.name}"></fi-menu>
+        <fi-header .items="${topMenu}"></fi-header>
+        <fi-menu .items="${menu}" .activeItem="${this._route.name}"></fi-menu>
         <section class="row content" id="content">
-          <main>${this._route.body}</main>
+          <main>${this._route.body.main}</main>
           <aside>
             <fi-search-block reset-after-search></fi-search-block>
             <fi-popular-articles></fi-popular-articles>

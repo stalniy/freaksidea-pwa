@@ -6,6 +6,6 @@ export default css`
   }
 
   .md a {
-    color: var(--fi-link-active-color);
+    color: var(--app-link-active-color);
   }
 `;

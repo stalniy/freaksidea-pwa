@@ -1,6 +1,6 @@
-import { LitElement, html, css } from 'lit-element';
+import { html, css } from 'lit-element';
 import { blockCss, iconsCss } from '../styles';
-import { getArticlesByCategory } from '../services/articles';
+import content from '../services/content';
 import { locale } from '../services/i18n';
 import { t } from '../directives/i18n';
 import I18nElement from './I18nElement';
@@ -21,8 +21,9 @@ export default class PopularArticles extends I18nElement {
     return super.update(...args);
   }
 
-  reload() {
-    return getArticlesByCategory(locale(), 'important');
+  async reload() {
+    const articles = await content('article').byCategories(locale(), 'important');
+    return articles.important;
   }
 
   render() {
@@ -41,9 +42,9 @@ export default class PopularArticles extends I18nElement {
   _renderArticle(article) {
     return html`
       <h4 itemscope>
-        <fi-link to="${article.categories[0]}" .params="${article}">
+        <app-link to="${article.categories[0]}" .params="${article}">
           <i class="icon-idea icon-sm"></i>${article.title}
-        </fi-link>
+        </app-link>
       </h4>
     `;
   }
@@ -61,6 +62,15 @@ PopularArticles.styles = [
       font-weight: normal;
       margin: 0;
       margin-bottom: 10px;
+    }
+
+    app-link {
+      text-decoration: underline;
+      color: inherit;
+    }
+
+    app-link:hover {
+      text-decoration: none;
     }
   `
 ];

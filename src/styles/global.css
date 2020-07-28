@@ -1,0 +1,16 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 8px;
+  --app-link-active-color: #39c;
+}
+
+body,
+a,
+button,
+input  {
+  font: normal 15px/21px Verdana, Arial, Helvetica, sans-serif;
+}

@@ -27,10 +27,10 @@ export default class ArticleDetails extends LitElement {
         <span itemprop="author">${t(`article.authors.${article.author}`)}</span>
       </span>
       <slot name="more">
-        <fi-link to="${category}" hash="comments" .params="${article}">
+        <app-link to="${category}" hash="comments" .params="${article}">
           <i class="icon-comment"></i>${article.commentsCount || 0}
-        </fi-link>
-        <fi-link to="${category}" .params="${article}" class="more">${t('article.readMore')}</fi-link>
+        </app-link>
+        <app-link to="${category}" .params="${article}" class="more">${t('article.readMore')}</app-link>
       </slot>
     `;
   }
@@ -48,12 +48,17 @@ ArticleDetails.styles = [
       margin-right: 10px;
     }
 
-    fi-link {
+    app-link {
       margin-right: 10px;
-      color: var(--fi-link-active-color);
+      color: var(--app-link-active-color);
+      text-decoration: underline;
     }
 
-    fi-link > [class^="icon-"] {
+    app-link:hover {
+      text-decoration: none;
+    }
+
+    app-link > [class^="icon-"] {
       margin-right: 5px;
     }
   `

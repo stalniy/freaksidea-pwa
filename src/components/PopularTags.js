@@ -1,6 +1,6 @@
 import { html, css } from 'lit-element';
 import blockCss from '../styles/block';
-import { getPopularTags } from '../services/articles';
+import content from '../services/content';
 import { locale } from '../services/i18n';
 import { t } from '../directives/i18n';
 import I18nElement from './I18nElement';
@@ -22,7 +22,7 @@ export default class PopularTags extends I18nElement {
   }
 
   async reload() {
-    this._tags = await getPopularTags(locale());
+    this._tags = await content('article').getPopularTags(locale());
   }
 
   render() {
@@ -41,14 +41,14 @@ export default class PopularTags extends I18nElement {
   _renderTag(tag) {
     const style = `font-size: ${tag.weight * 200}%`;
     return html`
-      <fi-link
+      <app-link
         active
         to="search"
         .query="${{ q: tag.name }}"
         style="${style}"
       >
         ${tag.name}
-      </fi-link>
+      </app-link>
     `;
   }
 }
@@ -64,11 +64,11 @@ PopularTags.styles = [
       font-weight: normal;
     }
 
-    fi-link {
+    app-link {
       vertical-align: baseline;
     }
 
-    fi-link + fi-link {
+    app-link + app-link {
       margin-left: 10px;
     }
   `
