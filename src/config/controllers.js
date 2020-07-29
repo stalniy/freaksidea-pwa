@@ -4,6 +4,12 @@ import content from '../services/content';
 import { interpolate } from '../services/utils';
 import { LOCALES, defaultLocale } from '../services/i18n';
 
+const OLD_URLS = {
+  php_and_somethings: '/ru/backend', // eslint-disable-line
+  javascript: '/ru/frontend',
+  writeme: '/ru/about'
+};
+
 export default {
   About: () => ({
     respond: () => ({
@@ -53,6 +59,13 @@ export default {
       const index = pathname.indexOf('/', 1);
       const lang = index === -1 ? pathname.slice(1) : pathname.slice(1, index);
       const { search: query, hash } = window.location;
+
+      if (OLD_URLS[lang]) {
+        const url = `${OLD_URLS[lang]}${index === - 1 ? '' : pathname.slice(index)}${query}${hash}`;
+        return {
+          redirect: { url }
+        };
+      }
 
       if (!LOCALES.includes(lang)) {
         return {
