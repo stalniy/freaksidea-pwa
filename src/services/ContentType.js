@@ -33,6 +33,10 @@ function markHints(result) {
   return hints;
 }
 
+function timeOf(date) {
+  return new Date(date).getTime();
+}
+
 export default class Content {
   constructor({ pages, summaries, searchIndexes }) {
     this._pages = pages;
@@ -140,7 +144,8 @@ export default class Content {
       return all;
     }, new Set());
 
-    return Array.from(similarItems);
+    return Array.from(similarItems)
+      .sort((item, anotherItem) => timeOf(anotherItem.createdAt) - timeOf(item.createdAt));
   }
 
   async find(indexName, locale, value) {
@@ -154,15 +159,38 @@ export default class Content {
     return summary.items[indexes[0]];
   }
 
+  _analyzeTags(tags, tagNames) {
+    let minCount = 0;
+    let maxCount = 0;
+
+    for (let i = 0; i < tagNames.length; i++) {
+      const count = tags[tagNames[i]].length;
+
+      if (count < minCount) {
+        minCount = count;
+      }
+
+      if (count > maxCount) {
+        maxCount = count;
+      }
+    }
+
+    return { maxCount, minCount };
+  }
+
   async getPopularTags(locale) {
     const summary = await this._getSummary(locale);
+    const tags = Object.keys(summary.byTags);
+    const { maxCount, minCount } = this._analyzeTags(summary.byTags, tags);
+    const diff = maxCount - minCount;
 
-    return Object.keys(summary.byTags)
+    return tags
       .map((name) => ({
         name,
-        weight: summary.byTags[name].length / summary.items.length,
+        weight: 1 - (maxCount - summary.byTags[name].length) / diff,
+        count: summary.byTags[name].length
       }))
-      .sort((tag, anotherTag) => anotherTag.weight - tag.weight)
+      .filter(tag => tag.weight >= 0.1)
       .slice(0, 30);
   }
 

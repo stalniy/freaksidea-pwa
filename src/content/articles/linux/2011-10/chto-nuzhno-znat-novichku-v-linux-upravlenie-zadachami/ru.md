@@ -2,7 +2,7 @@
 title: 'Что нужно знать новичку в Linux: управление задачами'
 summary: |
   Как и любая другая многозадачная система, Linux одновременно выполняет
-  несколько процессов. Вообще, не буду вводить Вас в заблуждение, потому что 
+  несколько процессов. Вообще, не буду вводить Вас в заблуждение, потому что
   обычный однопроцессорный компьютер может выполнять только одну задачу в данный
   момент времени, по-этому Linux ставит процессы в очередь на выполнения.
 author: sstotskyi
@@ -13,8 +13,7 @@ createdAt: 2011-10-08T11:36:00.000Z
 meta:
   keywords:
     - linux
-    - управление
-    - задачи
+    - управление задачами
 alias: chto-nuzhno-znat-novichku-v-linux-upravlenie-zadachami
 ---
 
@@ -31,7 +30,7 @@ alias: chto-nuzhno-znat-novichku-v-linux-upravlenie-zadachami
 Хотя может показаться, что эти знания достаточно абстрактны, но они могут найти свое практическое применение даже для среднего пользователя, который использует графический интерфейс. Возможно Вы еще не знаете, что большинство графических программ (если не все) можно запустить при помощи командной строки. Для примера попробуем запустить браузер, думаю у большинства linux-оидов стоит или Google Chrome или FireFox
 
 ```bash
-enej@linux:/home/pub/www/vv$ google-chrome 
+enej@linux:/home/pub/www/vv$ google-chrome
 Created new window in existing browser session.
 ```
 
@@ -46,7 +45,7 @@ Created new window in existing browser session.
 
 ```bash
 enej@linux:/home/pub/www/vv$ sudo nautilus /root/
-[sudo] password for enej: 
+[sudo] password for enej:
 ```
 
 Поскольку процесс был запущен не в фоновом режиме, то в этом окне терминала Вы больше не можете выполнять какие-либо действия (чтобы завершить процесс можно нажать CTRL + C).
@@ -65,7 +64,7 @@ enej@linux:/home/pub/www/vv$ google-chrome http://freaksidea.com &
 Но вдруг Вы забыли поставить ампресант в конце вызова, тогда существует другой способ. Нужно сначала остановить выполнение нажав CTRL + Z, тогда получаем управление командной строкой и можем вызвать команду **bg**, которая поставим последний запущенный процесс в фоновый режим. Сказанное на примере
 
 ```bash
-enej@linux:/home/pub/www/vv$ google-chrome http://freaksidea.com 
+enej@linux:/home/pub/www/vv$ google-chrome http://freaksidea.com
 ^Z
 [2]+  Stopped                 google-chrome http://freaksidea.com
 enej@linux:/home/pub/www/vv$ bg

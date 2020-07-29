@@ -14,7 +14,6 @@ meta:
   keywords:
     - knockout
     - observables
-    - bind
 alias: sozdanie-custom-bajndingov-v-knockout
 ---
 
@@ -79,13 +78,13 @@ ko.bindingHandlers.slideVisible = {
     update: function(element, valueAccessor, allBindingsAccessor) {
         // First get the latest data that we're bound to
         var value = valueAccessor(), allBindings = allBindingsAccessor();
-         
+
         // Next, whether or not the supplied model property is observable, get its current value
-        var valueUnwrapped = ko.utils.unwrapObservable(value); 
-         
+        var valueUnwrapped = ko.utils.unwrapObservable(value);
+
         // Grab some more data from another binding property
         var duration = allBindings.slideDuration || 400; // 400ms is default duration unless otherwise specified
-         
+
         // Now manipulate the DOM element
         if (valueUnwrapped) {
             $(element).slideDown(duration); // Make the element visible
@@ -101,7 +100,7 @@ ko.bindingHandlers.slideVisible = {
 ```html
 <div data-bind="slideVisible: giftWrap, slideDuration:600">You have selected the option</div>
 <label><input type="checkbox" data-bind="checked: giftWrap" /> Gift wrap</label>
- 
+
 <script type="text/javascript">
     var viewModel = {
         giftWrap: ko.observable(true)
@@ -123,7 +122,7 @@ ko.bindingHandlers.randomOrder = {
         var childElems = [];
         while(elem.firstChild)
             childElems.push(elem.removeChild(elem.firstChild));
- 
+
         // Put them back in a random order
         while(childElems.length) {
             var randomIndex = Math.floor(Math.random() * childElems.length),
@@ -172,7 +171,7 @@ ko.bindingHandlers.randomOrder = {
             childElems.push(child);
             child = ko.virtualElements.nextSibling(child);
         }
- 
+
         // Remove them all, then put them back in a random order
         ko.virtualElements.emptyNode(elem);
         while(childElems.length) {

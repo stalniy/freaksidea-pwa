@@ -13,7 +13,6 @@ meta:
   keywords:
     - javascript
     - knockout
-    - bind
 alias: obrabotka-sobytij-i-rabota-s-polyami-form-v-knockout
 ---
 
@@ -28,7 +27,7 @@ alias: obrabotka-sobytij-i-rabota-s-polyami-form-v-knockout
     You've clicked <span data-bind="text: numberOfClicks"></span> times
     <button data-bind="click: incrementClickCounter">Click me</button>
 </div>
- 
+
 <script type="text/javascript">
     var viewModel = {
         numberOfClicks : ko.observable(0),
@@ -82,7 +81,7 @@ alias: obrabotka-sobytij-i-rabota-s-polyami-form-v-knockout
     <div data-bind="event: { mouseover: enableDetails, mouseout: disableDetails }">Mouse over me</div>
     <div data-bind="visible: detailsEnabled">Details</div>
 </div>
- 
+
 <script type="text/javascript">
     var viewModel = {
         detailsEnabled: ko.observable(false),
@@ -108,7 +107,7 @@ alias: obrabotka-sobytij-i-rabota-s-polyami-form-v-knockout
     <!-- form contents go here -->
     <button type="submit">Submit</button>
 </div>
- 
+
 <script type="text/javascript">
     ko.applyBindings({
         doSomething: function(formElement) {
@@ -121,15 +120,15 @@ alias: obrabotka-sobytij-i-rabota-s-polyami-form-v-knockout
 Стоит обратить внимание, что КО в качестве первого аргумент для этого байндинга передает элемент формы, а не текущий контекст. Для решения подобных проблем существует 2 известных способа:
 
 *   передать контекст в качестве параметра
-    
+
     ```html
     <form data-bind="submit: function(form, event) { $root.doSomething($data, form, event) }">
         <input type="submit" value="submit" />
     </form>
     ```
-    
+
 *   использовать **ko.contextFor**
-    
+
     ```javascript
     ko.applyBindings({
        doSomething: function(form, event) {
@@ -138,7 +137,7 @@ alias: obrabotka-sobytij-i-rabota-s-polyami-form-v-knockout
        }
     });
     ```
-    
+
 
 Думаю второй более предпочтительнее ибо выглядит лучше и понятней.
 
@@ -157,7 +156,7 @@ alias: obrabotka-sobytij-i-rabota-s-polyami-form-v-knockout
     Your cellphone number:
     <input type='text' data-bind="value: cellphoneNumber, enable: hasCellphone" />
 </p>
- 
+
 <script type="text/javascript">
     var viewModel = {
         hasCellphone : ko.observable(false),
@@ -181,7 +180,7 @@ alias: obrabotka-sobytij-i-rabota-s-polyami-form-v-knockout
 ```html
 <p>Login name: <input data-bind="value: userName" /></p>
 <p>Password: <input type="password" data-bind="value: userPassword" /></p>
- 
+
 <script type="text/javascript">
     ko.applyBindings({
         userName: ko.observable(""),        // Initially blank
@@ -195,7 +194,7 @@ alias: obrabotka-sobytij-i-rabota-s-polyami-form-v-knockout
 ```html
 <p>Your value: <input data-bind="value: someValue, valueUpdate: 'afterkeydown'" /></p>
 <p>You have typed: <span data-bind="text: someValue"></span></p> <!-- updates in real-time -->
- 
+
 <script type="text/javascript">
     ko.applyBindings({
         someValue: ko.observable("edit me")
@@ -246,11 +245,11 @@ function PersonViewModel(name) {
     // Data
     this.name = ko.observable(name);
     this.editing = ko.observable(false);
-         
+
     // Behaviors
     this.edit = function() { this.editing(true) }
 }
- 
+
 ko.applyBindings(new PersonViewModel("Bert Bertington"));
 </script>
 ```
@@ -263,12 +262,12 @@ ko.applyBindings(new PersonViewModel("Bert Bertington"));
 
 ```html
 <p>Send me spam: <input type="checkbox" data-bind="checked: wantsSpam" /></p>
- 
+
 <script type="text/javascript">
     var viewModel = {
         wantsSpam: ko.observable(true) // Initially checked
     };
-     
+
     setTimeout(function() {
        // The checkbox becomes unchecked
        viewModel.wantsSpam(false);
@@ -287,13 +286,13 @@ ko.applyBindings(new PersonViewModel("Bert Bertington"));
     <div><input type="checkbox" value="almond" data-bind="checked: spamFlavors" /> Almond</div>
     <div><input type="checkbox" value="msg" data-bind="checked: spamFlavors" /> Monosodium Glutamate</div>
 </div>
- 
+
 <script type="text/javascript">
     var viewModel = {
         wantsSpam: ko.observable(true),
         spamFlavors: ko.observableArray(["cherry","almond"]) // Initially checks the Cherry and Almond checkboxes
     };
-     
+
     setTimeout(function() {
        // Now additionally checks the Monosodium Glutamate checkbox
        viewModel.spamFlavors.push("msg");
@@ -314,7 +313,7 @@ ko.applyBindings(new PersonViewModel("Bert Bertington"));
     <div><input type="radio" name="flavorGroup" value="almond" data-bind="checked: spamFlavor" /> Almond</div>
     <div><input type="radio" name="flavorGroup" value="msg" data-bind="checked: spamFlavor" /> Monosodium Glutamate</div>
 </div>
- 
+
 <script type="text/javascript">
     var viewModel = {
         wantsSpam: ko.observable(true),
@@ -335,7 +334,7 @@ ko.applyBindings(new PersonViewModel("Bert Bertington"));
 
 ```html
 <p>Choose some countries you'd like to visit: <select data-bind="options: availableCountries" size="5" multiple="true"></select></p>
- 
+
 <script type="text/javascript">
     var viewModel = {
         availableCountries : ko.observableArray(['France', 'Germany', 'Spain'])
@@ -347,25 +346,25 @@ ko.applyBindings(new PersonViewModel("Bert Bertington"));
 Данный байндинг имеет ряд необязательных параметров:
 
 *   **optionsCaption** - добавляет опцию в начало массива с указанным текстом и значением **undefined**. Используется в основном с обычным выпадающим списком в тех случаях когда нежелательно, чтобы один из вариантов был выбран по умолчанию. Например
-    
+
     ```html
     <select data-bind='options: myOptions, optionsCaption: "Select an item...", value: myChosenValue'></select>
     ```
-    
+
 *   **optionsText** - используется, чтобы указать текст для тега **<option>**, если элемент массива является объектом. В качестве аргумента принимает строку с именем поля в последнем. Также можно передать функцию, чтобы задать специфическую логику для вывода. В качестве параметра ей передается текущий элемент массива. Например
-    
+
     ```html
     <p>
-        Your country: 
+        Your country:
         <select data-bind="options: availableCountries, optionsText: 'countryName', value: selectedCountry, optionsCaption: 'Choose...'"></select>
     </p>
     <script type="text/javascript">
         // Constructor for an object with two properties
         var country = function(name, population) {
             this.countryName = name;
-            this.countryPopulation = population;    
-        };        
-     
+            this.countryPopulation = population;
+        };
+
         var viewModel = {
             availableCountries : ko.observableArray([
                 new country("UK", 65000000),
@@ -375,19 +374,19 @@ ko.applyBindings(new PersonViewModel("Bert Bertington"));
         };
     </script>
     ```
-    
+
     или с использованием _callback_
-    
+
     ```html
     <!-- viewModel the same as in example above -->
-    <select data-bind="options: availableCountries, 
-                       optionsText: function(item) { 
-                           return item.countryName + ' (pop: ' + item.countryPopulation + ')' 
-                       }, 
-                       value: selectedCountry, 
+    <select data-bind="options: availableCountries,
+                       optionsText: function(item) {
+                           return item.countryName + ' (pop: ' + item.countryPopulation + ')'
+                       },
+                       value: selectedCountry,
                        optionsCaption: 'Choose...'"></select>
     ```
-    
+
 *   **optionsValue** - по аналогии к предыдущему параметру, позволяет указать какое из свойств объекта будет использоваться для установки атрибута _value_ тега _<option>_.
 *   **selectedOptions** - последний параметр рассмотрим немного позже.
 
@@ -399,10 +398,10 @@ ko.applyBindings(new PersonViewModel("Bert Bertington"));
 
 ```html
 <p>
-    Choose some countries you'd like to visit: 
+    Choose some countries you'd like to visit:
     <select data-bind="options: availableCountries, selectedOptions: chosenCountries" size="5" multiple="true"></select>
 </p>
- 
+
 <script type="text/javascript">
     var viewModel = {
         availableCountries : ko.observableArray(['France', 'Germany', 'Spain']),
@@ -422,7 +421,7 @@ ko.applyBindings(new PersonViewModel("Bert Bertington"));
 
 ```html
 <p>
-    Choose some countries you'd like to visit: 
+    Choose some countries you'd like to visit:
     <select data-bind="options: availableCountries, selectedOptions: chosenCountries, optionsValue: 'code', optionsText: 'name'" size="5" multiple="true"></select>
 </p>
 <script type="text/javascript">
@@ -438,7 +437,7 @@ ko.applyBindings(new PersonViewModel("Bert Bertington"));
         ]),
         chosenCountries : ko.observableArray(['GR']) // Initially, only Germany is selected
     };
-    
+
     ko.applyBindings(viewModel)
 </script>
 ```

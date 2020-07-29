@@ -5,6 +5,25 @@ import { locale } from '../services/i18n';
 import { t } from '../directives/i18n';
 import I18nElement from './I18nElement';
 
+function renderTag(tag) {
+  return html`
+    <app-link
+      active
+      to="search"
+      .query="${{ q: tag.name }}"
+      style="${`font-size: ${fontSize(tag.weight)}px`}"
+    >
+      ${tag.name}
+    </app-link>
+  `;
+}
+
+function fontSize(weight) {
+  const minSize = 10;
+  const maxSize = 30;
+  return weight * (maxSize - minSize) + minSize;
+}
+
 export default class PopularTags extends I18nElement {
   static cName = 'fi-popular-tags';
 
@@ -33,22 +52,8 @@ export default class PopularTags extends I18nElement {
     return html`
       <section class="block">
         <h3 class="title">${t('article.popularTags')}</h3>
-        ${this._tags.map(this._renderTag, this)}
+        ${this._tags.map(renderTag)}
       </section>
-    `;
-  }
-
-  _renderTag(tag) {
-    const style = `font-size: ${tag.weight * 200}%`;
-    return html`
-      <app-link
-        active
-        to="search"
-        .query="${{ q: tag.name }}"
-        style="${style}"
-      >
-        ${tag.name}
-      </app-link>
     `;
   }
 }

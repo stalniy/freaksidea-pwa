@@ -17,7 +17,7 @@ meta:
 alias: sjfilemanager---evolyutsiya-php--ajax-fajlovyj-menedzher
 ---
 
-Когда-то, давным давно все началось с [этого](http://freaksidea.com/javascript/show-1-sjfilemanager-besplatnyi-ajax-fail-menedzher) и [этого](http://habrahabr.ru/blogs/javascript/113257/). Вообще-то благодаря тому, что я написал файловый менеджер я завел блог и получил аккаунт на [Хабре](http://habrahabr.ru/). С тех пор много чего изменилось и произошло.
+Когда-то, давным давно все началось с [этого](/javascript/show-1-sjfilemanager-besplatnyi-ajax-fail-menedzher) и [этого](http://habrahabr.ru/blogs/javascript/113257/). Вообще-то благодаря тому, что я написал файловый менеджер я завел блог и получил аккаунт на [Хабре](http://habrahabr.ru/). С тех пор много чего изменилось и произошло.
 
 ![sjFilemanager v1.0b](./sjFilemanager.png "sjFilemanager v1.0b")
 
@@ -25,10 +25,10 @@ alias: sjfilemanager---evolyutsiya-php--ajax-fajlovyj-menedzher
 
 Думаю для начала все хотят попробовать, что-там интересного
 
-*   [здесь](http://freaksidea.com/examples/sjFilemanager/fm-in-content), только файловый менеджер на странице
-*   [здесь](http://freaksidea.com/examples/sjFilemanager/mm-in-content), только редактор изображений на странице
-*   [здесь](http://freaksidea.com/examples/sjFilemanager/fm-in-window), только файловый менеджер в попапе
-*   [здесь](http://freaksidea.com/examples/sjFilemanager/fm-mm-window), файловый менеджер и редактор изображений в попапе
+*   [здесь](/examples/sjFilemanager/fm-in-content), только файловый менеджер на странице
+*   [здесь](/examples/sjFilemanager/mm-in-content), только редактор изображений на странице
+*   [здесь](/examples/sjFilemanager/fm-in-window), только файловый менеджер в попапе
+*   [здесь](/examples/sjFilemanager/fm-mm-window), файловый менеджер и редактор изображений в попапе
 
 Об основных изменениях можно почитать на [Хабре](http://habrahabr.ru/blogs/javascript/131489/), а здесь поговорим о настройках
 
@@ -59,7 +59,7 @@ alias: sjfilemanager---evolyutsiya-php--ajax-fajlovyj-menedzher
         sjs.ready(function(){
             sjWindow.renderView();
             MediaManager.renderView($_LANG);
- 
+
             var baseUrl = '/demos/sj_filemanager/';
 
             var w = FileManage.getInstance(null, baseUrl + "?tmpl=window&show_actions=1", {
@@ -151,9 +151,9 @@ MediaManager.renderView($_LANG);
 
 *   первый параметр - обязательный, **DOM** объект, в котором будет содержатся контент редактора
 *   второй параметр - необязательный, конфигурация
-    
+
     *   _panel_ - необязательный, селектор, по-которому можно найти панель экшенов для редактора. По умолчанию **.sjMediaPanel**
-    
+
     *   _lazy_ - необязательный, указывает, что нужно инициализировать редактор частично. По умолчанию **false**
     *   _mode_ - необязательный, указывает поведение редактора. Возможны 2 варианта: **preview**, **full**. По умолчанию **preview**
     *   _files_ - необязательный, список обрабатываемых файлов
@@ -168,16 +168,16 @@ MediaManager.renderView($_LANG);
 FileManage.createAndAttachMedia(baseUrl, rootUrl[, translations]);
 ```
 
-Конфигурация в серверной части не изменилась, она находится в _lib/php/config.php_. Более детально о ней можно узнать [здесь](http://freaksidea.com/php_and_somethings/show-2-sjfilemanager-konfighuriruem-failovyi-menedzher)
+Конфигурация в серверной части не изменилась, она находится в _lib/php/config.php_. Более детально о ней можно узнать [здесь](/php_and_somethings/show-2-sjfilemanager-konfighuriruem-failovyi-menedzher)
 
 **UPDATE**:
 
 *   исправлен баг: отсутствие сообщения при попытке создать каталог не имея на это прав доступа
 *   добавлена возможность передавать настройки для загрузчика _SWFUpload_
-    
+
     ```javascript
     FileManage.createAndAttachMedia(baseUrl, rootUrl[, translations[,uploaderConfig]]);
     ```
-    
+
 *   конфигурация на _backend_\-е вынесена _config.json_ файл
 *   [архив](./sjfm_and_tinymce.tar.gz "sjFilemanger + TineMCE") с примером интеграции **sjFilemanger** + **TinyMCE** (достаточно розархивировать его в корне виртуального хоста)

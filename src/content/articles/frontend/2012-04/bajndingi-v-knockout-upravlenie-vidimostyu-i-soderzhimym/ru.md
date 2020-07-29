@@ -14,7 +14,6 @@ meta:
   keywords:
     - javascript
     - knockout
-    - bind
 alias: bajndingi-v-knockout-upravlenie-vidimostyu-i-soderzhimym
 ---
 
@@ -28,7 +27,7 @@ KO построен по принципам _MVVM_ паттерна, т.е. пр
 <div data-bind="visible: shouldShowMessage">
     You will see this message only when "shouldShowMessage" holds a true value.
 </div>
- 
+
 <script type="text/javascript">
     var viewModel = {
         shouldShowMessage: ko.observable(true) // Message initially visible
@@ -52,7 +51,7 @@ KO построен по принципам _MVVM_ паттерна, т.е. пр
 <div data-bind="visible: myValues().length > 0">
     You will see this message only when 'myValues' has at least one member.
 </div>
- 
+
 <script type="text/javascript">
     var viewModel = {
         myValues: ko.observableArray([]) // Initially empty, so message hidden
@@ -68,7 +67,7 @@ KO построен по принципам _MVVM_ паттерна, т.е. пр
 
 ```html
 Today's message is: <span data-bind="text: myMessage"></span>
- 
+
 <script type="text/javascript">
     var viewModel = {
         myMessage: ko.observable() // Initially blank
@@ -100,7 +99,7 @@ Today's message is: <span data-bind="text: myMessage">&lt;i&gt;Hello, world&lt;i
 
 ```html
 <div data-bind="html: details"></div>
- 
+
 <script type="text/javascript">
     var viewModel = {
         details: ko.observable() // Initially blank
@@ -118,7 +117,7 @@ Today's message is: <span data-bind="text: myMessage">&lt;i&gt;Hello, world&lt;i
 <div data-bind="css: { profitWarning: currentProfit() < 0 }">
    Profit Information
 </div>
- 
+
 <script type="text/javascript">
     var viewModel = {
         currentProfit: ko.observable(150000) // Positive value, so initially we don't apply the "profitWarning" class
@@ -146,7 +145,7 @@ Today's message is: <span data-bind="text: myMessage">&lt;i&gt;Hello, world&lt;i
 <div style="background-color:#f00" data-bind="style: { width: progress + '%' }">
    Profit Information
 </div>
- 
+
 <script type="text/javascript">
     var viewModel = {
         progress: ko.observable(0)
@@ -174,7 +173,7 @@ Today's message is: <span data-bind="text: myMessage">&lt;i&gt;Hello, world&lt;i
 <a data-bind="attr: { href: url, title: details }">
     Report
 </a>
- 
+
 <script type="text/javascript">
     var viewModel = {
         url: ko.observable("year-end.html"),

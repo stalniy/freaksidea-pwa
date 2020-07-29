@@ -18,13 +18,13 @@ meta:
 alias: sostavnye-nablyudateli-v-knockout
 ---
 
-Представим ситуацию, ViewModel имеет 2 [наблюдаемых свойства](http://freaksidea.com/javascript/show-66-knockout-nabliudaem-za-vsem-i-vezde): (_firstName_, _lastName_) и нужно вывести _fullName_ (_firstName_ \+ _lastName_). Т.е. при изменении _lastName_ или _firstName_, _fullName_ должен автоматически обновится. В этом деле помогут составные наблюдатели
+Представим ситуацию, ViewModel имеет 2 [наблюдаемых свойства](/javascript/show-66-knockout-nabliudaem-za-vsem-i-vezde): (_firstName_, _lastName_) и нужно вывести _fullName_ (_firstName_ \+ _lastName_). Т.е. при изменении _lastName_ или _firstName_, _fullName_ должен автоматически обновится. В этом деле помогут составные наблюдатели
 
 ```javascript
 function AppViewModel() {
     this.firstName = ko.observable('Bob');
     this.lastName  = ko.observable('Smith');
- 
+
     this.fullName  = ko.computed(function() {
         return this.firstName() + " " + this.lastName();
     }, this);
@@ -48,9 +48,9 @@ The name is <span data-bind="text: fullName"></span>
 ```javascript
 function AppViewModel() {
     var self = this;
- 
+
     self.firstName = ko.observable('Bob');
-    self.lastName = ko.observable('Smith');    
+    self.lastName = ko.observable('Smith');
     self.fullName = ko.computed(function() {
         return self.firstName() + " " + self.lastName();
     });
@@ -66,7 +66,7 @@ function AppViewModel() {
 ```javascript
 function MyViewModel() {
     this.price = ko.observable(25.99);
-         
+
     this.formattedPrice = ko.computed({
         read: function () {
             return "$" + this.price().toFixed(2);
@@ -79,7 +79,7 @@ function MyViewModel() {
         owner: this
     });
 }
- 
+
 ko.applyBindings(new MyViewModel());
 ```
 
@@ -103,21 +103,21 @@ ko.applyBindings(new MyViewModel());
 function AppViewModel() {
     this.numericValue = ko.observable(123);
     this.isLastInputValid = ko.observable(true);
-     
+
     this.attemptedValue = ko.computed({
         read: this.numericValue,
         write: function (value) {
             if (isNaN(value)) {
-                this.isLastInputValid(false);   
+                this.isLastInputValid(false);
             } else {
                 this.isLastInputValid(true);
                 this.numericValue(value)
             }
         },
         owner: this
-    });   
+    });
 }
- 
+
 ko.applyBindings(new AppViewModel());
 ```
 

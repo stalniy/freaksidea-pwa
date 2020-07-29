@@ -3,7 +3,7 @@ title: 'Magento конфигурация от А до Я: system.xml'
 summary: |
   В Magento существует очень много настроек. Все они находятся в System ->
   Configuration. Любой модуль может добавить туда специфические параметры. Новые
-  поля, группы и табы - все это делается при помощи конфигурационного файла 
+  поля, группы и табы - все это делается при помощи конфигурационного файла
   system.xml. Рассмотрим его формат
 author: sstotskyi
 categories:
@@ -156,7 +156,7 @@ alias: magento-konfiguratsiya-ot-a-do-ya-systemxml
 
 ## Создание своих настроек
 
-Чтобы создать свои настройки для начала нужно [написать модуль](http://freaksidea.com/php_and_somethings/show-5-magento-sozdanie-crud-modulia). В модуле в директории _etc_ создаем файл _system.xml_. Создадим свой таб и секцию, а также добавим новое поле в секцию Каталог, группу _Layered Navigation_.
+Чтобы создать свои настройки для начала нужно [написать модуль](/php_and_somethings/show-5-magento-sozdanie-crud-modulia). В модуле в директории _etc_ создаем файл _system.xml_. Создадим свой таб и секцию, а также добавим новое поле в секцию Каталог, группу _Layered Navigation_.
 
 Так как _Magento_ объединяет все конфиг файлы в один большой _XML_, то чтобы добавить новый таб нужно всего лишь написать
 
@@ -239,7 +239,7 @@ alias: magento-konfiguratsiya-ot-a-do-ya-systemxml
 </adminhtml>
 ```
 
-Более детально об _ACL_ можно прочитать [здесь](http://freaksidea.com/php_and_somethings/show-59-magento-konfighuratsiia-ot-a-do-ia-bazovye-nastroiki-modulia).
+Более детально об _ACL_ можно прочитать [здесь](/php_and_somethings/show-59-magento-konfighuratsiia-ot-a-do-ia-bazovye-nastroiki-modulia).
 
 Выходим из админки, чтобы сессия очистилась, заходим обратно и вот что видим
 

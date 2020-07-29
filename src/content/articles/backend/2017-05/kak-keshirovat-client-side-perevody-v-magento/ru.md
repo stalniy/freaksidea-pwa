@@ -44,7 +44,7 @@ alias: kak-keshirovat-client-side-perevody-v-magento
 # ...
 ```
 
-Прежде чем что-то делать, нужно скопировать этот файл в свою тему и [создать отдельный Magento модуль](http://freaksidea.com/php_and_somethings/show-5-magento---sozdanie-crud-modulya) (назовем его FI\_Optimisation). Потом в файле head.phtml меняем строчку выше на
+Прежде чем что-то делать, нужно скопировать этот файл в свою тему и [создать отдельный Magento модуль](/php_and_somethings/show-5-magento---sozdanie-crud-modulya) (назовем его FI\_Optimisation). Потом в файле head.phtml меняем строчку выше на
 
 ```php
 <?php echo $this->helper('fi_optimisation/js')->getTranslatorScript() ?>

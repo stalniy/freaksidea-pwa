@@ -55,8 +55,6 @@ export default class App extends LitElement {
       return html``;
     }
 
-    console.log(this._route)
-
     return html`
       <div class="wrapper">
         <fi-header .items="${topMenu}"></fi-header>

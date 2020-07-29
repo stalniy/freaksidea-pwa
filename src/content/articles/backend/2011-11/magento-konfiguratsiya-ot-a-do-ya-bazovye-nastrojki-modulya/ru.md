@@ -14,7 +14,7 @@ meta:
     - magento
     - модуль
     - конфигурация
-alias: magento-konfiguratsiya-ot-a-do-ya-bazovye-nastrojki-modulya
+alias: magento-konfiguratsiia-ot-a-do-ya-bazovye-nastrojki-modulia
 ---
 
 _Magento_, как и любая другая современная система, состоит из модулей. Понятно, что любой модуль имеет свои настройки. По-этому для написания дополнительного функционала стоит разораться с их форматом в _Magento_.
@@ -101,7 +101,7 @@ _Magento_, как и любая другая современная систем
 
 В секции _translate_ можно указать название файла для локализации (в _Magento_ для этого используются [csv файлы](http://ru.wikipedia.org/wiki/CSV)).
 
-В секции _layout_ можно указать файл, в котором прописаны настройки для [layout-update-ов](http://freaksidea.com/php_and_somethings/show-49-magento-konfighuratsiia-ot-a-do-ia-layout-updates).
+В секции _layout_ можно указать файл, в котором прописаны настройки для [layout-update-ов](/php_and_somethings/show-49-magento-konfighuratsiia-ot-a-do-ia-layout-updates).
 
 Для секции _adminhtml_ справедливо все то, что и для _frontend_. Разница только в том, что эти настройки будут применяться для административной части, а не для фронта. Чтобы файл _config.xml_ не был слишком большим (что замедляет его загрузку и разбор **xml**), все директивы относящиеся к секции _adminhtml_ (т.е. к административному интерфейсу) можно вынести в отдельный файл - _adminhtml.xml_. Именно так и сделано в модуле **Mage\_Cms**
 
@@ -274,7 +274,7 @@ $blocksTable = $this->getTable('cms_block');
             <enabled>enabled</enabled>
         </wysiwyg>
     </cms>
-    
+
     <!-- another configs -->
 </default>
 ```

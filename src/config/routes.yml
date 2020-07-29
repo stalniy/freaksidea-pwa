@@ -37,7 +37,7 @@ routes:
         meta:
           categories: [linux]
       - name: about
-        path: writeme
+        path: about
         controller: About
       - name: page
         path: :id
@@ -48,3 +48,21 @@ routes:
           priority: 1
           changefreq: yearly
           provider: pages
+  - name: legacy-backend
+    path: php_and_somethings
+    redirect:
+      name: backend
+      params:
+        lang: ru
+  - name: legacy-frontend
+    path: javascript
+    redirect:
+      name: frontend
+      params:
+        lang: ru
+  - name: legacy-contacts
+    path: writeme
+    redirect:
+      name: about
+      params:
+        lang: ru

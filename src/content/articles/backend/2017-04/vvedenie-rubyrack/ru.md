@@ -20,7 +20,7 @@ meta:
 alias: vvedenie-rubyrack
 ---
 
-Если вдруг кто не знает, у меня есть свой _Open-Source_ проект - бесплатный [AJAX файловый менеджер](http://freaksidea.com/javascript/show-54-sjfilemanager-evoliutsiia-php-ajax-failovyi-menedzher). Начав изучать _Ruby_, первое что пришло мне в голову - это написать для него _backend_ адаптер (и для проекта хорошо и для меня практика). Конечно же, пришлось зарефакторить _JavaScript_ код, но об этом в другой статье.
+Если вдруг кто не знает, у меня есть свой _Open-Source_ проект - бесплатный [AJAX файловый менеджер](/javascript/show-54-sjfilemanager-evoliutsiia-php-ajax-failovyi-menedzher). Начав изучать _Ruby_, первое что пришло мне в голову - это написать для него _backend_ адаптер (и для проекта хорошо и для меня практика). Конечно же, пришлось зарефакторить _JavaScript_ код, но об этом в другой статье.
 
 Как оказалось создание _web_ приложения на _Ruby_ без использования фреймворков, вроде [_Rails_](http://ru.wikipedia.org/wiki/Ruby_on_Rails) или [_Sinatra_](http://ru.wikipedia.org/wiki/Sinatra), не так уж просто. Для этого необходимо полностью реализовать поддержку протокола _HTTP_, т.е. написать парсер заголовков и тела запроса, а также отдавать результат клиенту при помощи обычной функции _print_. Но все же, не все так плохо и есть дорожка выстеленная благими намерениями - это _[Rack](http://en.wikipedia.org/wiki/Rack_(web_server_interface))_.
 
@@ -67,7 +67,7 @@ require 'rack/response'
 class Application
   def call(env)
     response = Rack::Response.new
-    
+
     # Append text to response body
     response.write "This is Rack"
     response.write "!!!"

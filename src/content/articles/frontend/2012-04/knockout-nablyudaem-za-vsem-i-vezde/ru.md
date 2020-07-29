@@ -19,7 +19,7 @@ meta:
 alias: knockout---nablyudaem-za-vsem-i-vezde
 ---
 
-О [MVVM](http://ru.wikipedia.org/wiki/Model-View-ViewModel) патерне, вокруг которого все крутится, уже упоминалось [в предыдущей статье](http://freaksidea.com/javascript/show-65-vvedenie-v-knockout-novyi-vzghliad-na-postroenie-javascript-prilozhenii). В соответствии патерну, на котором построен фреймворк, Капитан Очевидность КО состоит из 3 основных частей:
+О [MVVM](http://ru.wikipedia.org/wiki/Model-View-ViewModel) патерне, вокруг которого все крутится, уже упоминалось [в предыдущей статье](/javascript/show-65-vvedenie-v-knockout-novyi-vzghliad-na-postroenie-javascript-prilozhenii). В соответствии патерну, на котором построен фреймворк, Капитан Очевидность КО состоит из 3 основных частей:
 
 *   наблюдаемые свойства и зависимости;
 *   декларативные привязки (байндинги);

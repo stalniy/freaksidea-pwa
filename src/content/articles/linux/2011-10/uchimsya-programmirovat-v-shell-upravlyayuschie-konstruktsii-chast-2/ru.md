@@ -11,13 +11,11 @@ categories:
 createdAt: 2011-10-16T13:24:00.000Z
 meta:
   keywords:
-    - linux
-    - управление
     - Bash
 alias: uchimsya-programmirovat-v-shell-upravlyayuschie-konstruktsii-chast-2
 ---
 
-Для тех кто в танке начало [здесь](http://freaksidea.com/linux/show-45-uchimsia-proghrammirovat-v-shell-upravliaiushchie-konstruktsii). Итак, продолжаем рассматривать управляющие конструкции, осталось: case, for, while, until, break, continue.
+Для тех кто в танке начало [здесь](/linux/show-45-uchimsia-proghrammirovat-v-shell-upravliaiushchie-konstruktsii). Итак, продолжаем рассматривать управляющие конструкции, осталось: case, for, while, until, break, continue.
 
 Мы уже знаем команду **if** и то, что с ее помощью можно делать ветвление логики в программе. Но если нужно проверить несколько вариантов, то можно получить очень не читаемый код, так называемое нагромождение if-ов
 
@@ -59,7 +57,7 @@ case word in
 esac
 ```
 
-Команда выполняет действия из той ветки, в которой _word_ подходит под _patterns_ (шаблоны). Шаблон может быть просто строкой или более сложным вроде **\[A-Z\] | \[0-9\]**, **\[!abc\]**. Более детально о шаблонах можно почитать [здесь](http://freaksidea.com/linux/show-33-chto-nuzhno-znat-novichku-v-linux-manipuliatsiia-failami). Нужно понимать, что проверка на совпадения начинается с первого шаблона и потом идет к следующему, по-этому _pattern_ **\***, который совпадает со всем, нужно писать в последнем случае. Это что-то вроде _default_ в **case** из других языков программирования вроде PHP.
+Команда выполняет действия из той ветки, в которой _word_ подходит под _patterns_ (шаблоны). Шаблон может быть просто строкой или более сложным вроде **\[A-Z\] | \[0-9\]**, **\[!abc\]**. Более детально о шаблонах можно почитать [здесь](/linux/show-33-chto-nuzhno-znat-novichku-v-linux-manipuliatsiia-failami). Нужно понимать, что проверка на совпадения начинается с первого шаблона и потом идет к следующему, по-этому _pattern_ **\***, который совпадает со всем, нужно писать в последнем случае. Это что-то вроде _default_ в **case** из других языков программирования вроде PHP.
 
 ## Арифметические операции
 
@@ -95,7 +93,7 @@ echo "scale = 5; $num / 2" | bc;
 где **scale** - это внутренняя переменная в **bc**, которая указывает количество знаков после запятой. Получаем желаемый результат
 
 ```bash
-enej@linux:~/tmp$ /bin/bash test.sh 
+enej@linux:~/tmp$ /bin/bash test.sh
 2.50000
 ```
 
@@ -148,7 +146,7 @@ done
 Получим
 
 ```bash
-enej@linux:~/tmp$ /bin/bash test.sh 
+enej@linux:~/tmp$ /bin/bash test.sh
 word1
 word2
 word3
@@ -217,7 +215,7 @@ enej@linux:~/tmp$ ./test.sh -h test -r www arg1 arg2 arg3
 Host name: test
 Document root: /var/www/test/www
 Host sufix: .local
-Arguments: arg1 arg2 arg3 
+Arguments: arg1 arg2 arg3
 ```
 
 Как видим наш скрипт поддерживает как опции так и аргументы. Проанализируем его работу.

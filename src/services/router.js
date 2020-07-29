@@ -19,6 +19,14 @@ function buildPath(rawRoute) {
 
 function buildRoutes(rawRoutes, controllers) {
   return rawRoutes.map((rawRoute) => {
+    if (rawRoute.redirect) {
+      return {
+        name: rawRoute.name,
+        path: buildPath(rawRoute),
+        respond: () => ({ redirect: rawRoute.redirect })
+      };
+    }
+
     const buildController = controllers[rawRoute.controller];
 
     if (!buildController) {

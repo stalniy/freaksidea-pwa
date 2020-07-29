@@ -27,10 +27,13 @@ export default class SimilarArticles extends I18nElement {
 
   async reload() {
     this._articles = await content('article').findSimilar(locale(), this.to);
-    console.log(this._articles)
   }
 
   render() {
+    if (!this._articles.length) {
+      return html``;
+    }
+
     return html`
       <h3>${t('article.readSimilar')}</h3>
       <ul>${this._renderSimilarArticles()}</ul>
