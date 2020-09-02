@@ -31,11 +31,11 @@ jobs:
       env:
         NODE_ENV: production
       run: LIT_APP_COMMIT_HASH=$(git rev-parse --short "$GITHUB_SHA") npm run build
-    - name: Build sitemap
-      working-directory: docs-src
-      run: npm run build.sitemap
-    - name: Prerender
-      run: npm run prerender
+    # - name: Build sitemap
+    #   working-directory: docs-src
+    #   run: npm run build.sitemap
+    # - name: Prerender
+    #   run: npm run prerender
     - name: Deploy
       env:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
