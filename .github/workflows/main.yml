@@ -54,10 +54,7 @@ jobs:
         git config --global user.name "$GITHUB_ACTOR"
         git fetch origin gh-pages
         git checkout -f gh-pages
-        mkdir old
-        mv * .* old/
-        mv dist/* dist/.* .
-        rm -rf dist old
+        rsync -rtvuc --delete dist docs
         git add .
         git commit -m "chore(release): deploy"
         git push --set-upstream origin gh-pages
