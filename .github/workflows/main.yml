@@ -1,0 +1,63 @@
+name: Freaksidea
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SITEMAP_WEBSITE: https://freaksidea.com
+    steps:
+    - uses: actions/checkout@v2
+    - uses: pnpm/action-setup@v1.2.0
+      with:
+        version: 5.5.1
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      env:
+        cache-name: freaksidea-deps
+      with:
+        path: ~/.pnpm-store
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+    - name: Install deps
+      run: pnpm install
+    - name: Build
+      env:
+        NODE_ENV: production
+      run: LIT_APP_COMMIT_HASH=$(git rev-parse --short "$GITHUB_SHA") npm run build
+    - name: Build sitemap
+      working-directory: docs-src
+      run: npm run build.sitemap
+    - name: Prerender
+      run: npm run prerender
+    - name: Deploy
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        GITHUB_ACTOR: docs
+      run: |
+        cat <<- EOF > $HOME/.netrc
+          machine github.com
+          login $GITHUB_ACTOR
+          password $GITHUB_TOKEN
+          machine api.github.com
+          login $GITHUB_ACTOR
+          password $GITHUB_TOKEN
+        EOF
+        chmod 600 $HOME/.netrc
+        git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+        git config --global user.name "$GITHUB_ACTOR"
+        git fetch origin gh-pages
+        git checkout -f gh-pages
+        mkdir old
+        mv * .* old/
+        mv dist/* dist/.* .
+        rm -rf dist old
+        git add .
+        git commit -m "chore(release): deploy"
+        git push --set-upstream origin gh-pages

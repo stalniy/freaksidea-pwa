@@ -4,6 +4,11 @@
   "version": "0.0.1",
   "description": "freaksidea.com blog",
   "author": "Sergii Stotskyi <sergiy.stotskiy@freaksidea.com>",
+  "husky": {
+    "hooks": {
+      "pre-commit": "./tools/generateIssue.sh"
+    }
+  },
   "scripts": {
     "build": "rm -rf dist/* && rollup -c",
     "build.watch": "npm run build -- --watch",
@@ -22,7 +27,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@architect/sandbox": "^1.13.1",
     "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-unicode-property-regex": "^7.8.8",
@@ -41,6 +45,7 @@
     "gray-matter": "^4.0.2",
     "highlight.js": "^10.0.0",
     "history-server": "^1.3.1",
+    "husky": "^4.2.5",
     "image-size": "^0.8.3",
     "js-yaml": "^3.14.0",
     "markdown-it-highlightjs": "^3.1.0",

@@ -1,4 +1,5 @@
 ---
+id: 4
 title: Magento - создание CRUD модуля
 summary: |
   Эта статья является первой в серии статей о Magento - одна из самых сложных
@@ -112,7 +113,7 @@ Magento - это одна из самых сложных для программ
 ```xml
 <?xml version="1.0"?>
 <layout version="0.1.0">
-    <freaks_quotes_index_index>  
+    <freaks_quotes_index_index>
         <reference name="content">
             <block type="freaks_quotes/content" name="quotes.all" />
         </reference>
@@ -311,7 +312,7 @@ class Freaks_Quotes_Model_Resource_Quote_Collection extends Mage_Core_Model_Mysq
 <?php
 $installer = $this;
 $installer->startSetup();
- 
+
 $installer->run("
 CREATE TABLE `{$this->getTable('freaks_quotes/quote')}` (
  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -320,7 +321,7 @@ CREATE TABLE `{$this->getTable('freaks_quotes/quote')}` (
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ");
- 
+
 $installer->endSetup();
 ```
 
@@ -338,14 +339,14 @@ class Freaks_Quotes_Block_Content extends Mage_Core_Block_Template
     {
         $this->setTemplate('freaks/quotes/view.phtml');
     }
-    
+
     public function getRowUrl(Freaks_Quotes_Model_Quote $quote)
     {
         return $this->getUrl('*/*/view', array(
             'id' => $quote->getId()
         ));
     }
-    
+
     public function getCollection()
     {
         return Mage::getModel('freaks_quotes/quote')->getCollection();
@@ -416,7 +417,7 @@ class Freaks_Quotes_Helper_Data extends Mage_Core_Helper_Abstract
             <block type="freaks_quotes/content" name="quotes.all" />
         </reference>
     </freaks_quotes_index_index>
-    
+
     <freaks_quotes_index_view>
         <reference name="content">
             <block type="freaks_quotes/quote_content" name="quote.item" />
@@ -435,7 +436,7 @@ class Freaks_Quotes_Block_Quote_Content extends Mage_Core_Block_Template
     {
         $this->setTemplate('freaks/quotes/quote/view.phtml');
     }
-    
+
     public function getQuote()
     {
         return Mage::getModel('freaks_quotes/quote')->load($this->getQuoteId());
