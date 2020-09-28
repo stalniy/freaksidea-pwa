@@ -17,6 +17,10 @@ function buildPath(rawRoute) {
   });
 }
 
+function decodeOptional(value) {
+  return typeof value === 'undefined' ? value : decodeURIComponent(value);
+}
+
 function buildRoutes(rawRoutes, controllers) {
   return rawRoutes.map((rawRoute) => {
     if (rawRoute.redirect) {
@@ -36,6 +40,9 @@ function buildRoutes(rawRoutes, controllers) {
     const route = {
       name: rawRoute.name,
       path: buildPath(rawRoute),
+      params: {
+        id: decodeOptional
+      },
       ...buildController(rawRoute),
     };
 

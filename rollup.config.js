@@ -157,7 +157,7 @@ export default {
       langs: SUPPORTED_LANGS,
       pageSchema: false, //schemas.article,
       parse: parseFrontMatter,
-      pageId: (_, { relativePath }) => basename(dirname(relativePath)),
+      pageId: (_, { relativePath }) => basename(dirname(relativePath)).slice(11),
       plugins: [
         summary({
           fields: [

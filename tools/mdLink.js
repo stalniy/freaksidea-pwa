@@ -1,6 +1,5 @@
-const { normalize: normalizePath, dirname } = require('path');
+const { normalize: normalizePath, dirname, extname, basename } = require('path');
 const fs = require('fs');
-const { parseMeta } = require('./contentParser');
 
 function isExternalUrl(url) {
   return url.startsWith('https://') || url.startsWith('http://');
@@ -10,20 +9,23 @@ function isLocalUrl(url) {
   return url.startsWith('/') || url.startsWith('../') || url.startsWith('./');
 }
 
-function getCategory(path, defaultValue) {
-  const content = parseMeta(fs.readFileSync(path, 'utf-8')).data;
+function isAsset(url) {
+  return extname(url) !== '';
+}
 
-  if (path.includes('vklyuchaem-http'))
-    console.log(path, content.categories[0])
+function getRoute(env, defaultValue) {
+  if (env.file.path.includes('/articles/')) {
+    return env.relativePath.slice(0, env.relativePath.indexOf('/'));
+  }
 
-  return content.categories ? content.categories[0] : defaultValue;
+  return defaultValue;
 }
 
 function buildInAppLinkAttrs(token, ctx, env) {
   const attrs = token.attrs.slice(0);
 
   attrs[ctx.hrefIndex][0] = 'to';
-  attrs[ctx.hrefIndex][1] = getCategory(env.file.path, 'page');
+  attrs[ctx.hrefIndex][1] = getRoute(env, 'page');
   attrs.push(['params', JSON.stringify({ id: ctx.page })]);
 
   if (ctx.hash) {
@@ -61,8 +63,8 @@ function toCustomLink(token, hrefIndex, options, env) {
   const normalizeId = options.normalizeId || identity;
   const attrs = buildAttrs(token, {
     hrefIndex,
-    page: normalizeId(page),
     hash,
+    page: normalizeId(page),
   }, env);
 
   return Object.create(token, {
@@ -86,6 +88,10 @@ module.exports = (md, config = {}) => {
         Object.keys(config.external).forEach((key) => {
           token.attrSet(key, config.external[key]);
         });
+      } else if (isAsset(hrefToken[1])) {
+        const name = basename(hrefToken[1]);
+        token.attrSet('download', name);
+        hrefToken[1] = config.asset.srcRoot + '/' + name;
       } else if (isInAppUrl(hrefToken[1]) && config.local) {
         tokens[idx] = toCustomLink(token, hrefIndex, config.local, env);
         isInAppLink = true;

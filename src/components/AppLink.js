@@ -128,8 +128,4 @@ Link.styles = css`
   a:hover {
     text-decoration: inherit;
   }
-
-  a.active {
-    color: var(--app-link-active-color);
-  }
 `;

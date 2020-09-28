@@ -21,7 +21,10 @@ const markdownOptions = {
       },
       local: {
         tagName: 'app-link',
-        normalizeId: basename
+        normalizeId: id => basename(id).slice(11)
+      },
+      asset: {
+        srcRoot: `${process.env.LIT_APP_PUBLIC_PATH || '/'}media/assets`
       }
     },
     [`${__dirname}/mdImage`]: {

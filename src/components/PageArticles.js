@@ -31,6 +31,7 @@ export default class PageArticles extends I18nElement {
     this._unwatchPage = router.observe((route) => {
       this._page = route.response.location.query.page || 1;
       this._articles = null;
+      this.requestUpdate();
     });
   }
 

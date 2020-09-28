@@ -89,6 +89,7 @@ PageArticle.styles = [
 
     app-link {
       margin-right: 5px;
+      color: #39c;
     }
   `
 ]

@@ -15,7 +15,7 @@ export default {
   Article(route) {
     const categories = route.meta ? route.meta.categories : [];
     const normalize = (rawId) => {
-      if (!rawId || rawId === 'undefined') {
+      if (!rawId) {
         return;
       }
 
