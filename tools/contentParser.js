@@ -1,8 +1,9 @@
-import { parse, getOrCreateMdParser } from 'xyaml-webpack-loader/parser';
-import matter from 'gray-matter';
-import slugify from '@sindresorhus/slugify';
+const { parse, getOrCreateMdParser } = require('xyaml-webpack-loader/parser');
+const matter = require('gray-matter');
+const slugify = require('@sindresorhus/slugify');
+const { basename } = require('path');
 
-export const markdownOptions = {
+const markdownOptions = {
   use: {
     'markdown-it-highlightjs': {},
     'markdown-it-headinganchor': {
@@ -13,34 +14,35 @@ export const markdownOptions = {
       root: `${__dirname}/..`,
       includeRe: /@include:\s*([\w._/-]+)/
     },
-    [`${__dirname}/tools/mdLink`]: {
+    [`${__dirname}/mdLink`]: {
       external: {
         target: '_blank',
         rel: 'noopener nofollow'
       },
       local: {
-        tagName: 'app-link'
+        tagName: 'app-link',
+        normalizeId: basename
       }
     },
-    [`${__dirname}/tools/mdImage`]: {
+    [`${__dirname}/mdImage`]: {
       size: 'auto',
-      srcRoot: `${process.env.LIT_APP_PUBLIC_PATH || ''}/media/assets`
+      srcRoot: `${process.env.LIT_APP_PUBLIC_PATH || '/'}media/assets`
     },
-    [`${__dirname}/tools/mdTableContainer`]: {}
+    [`${__dirname}/mdTableContainer`]: {}
   }
 };
 
 const xyamlOptions = { markdown: markdownOptions };
-
-export const parsexYaml = content => parse(content, xyamlOptions);
+const parsexYaml = content => parse(content, xyamlOptions);
 
 const grayMatterOptions = {
   language: 'xyaml',
   engines: { xyaml: parsexYaml }
 };
+const parseMeta = source => matter(source, grayMatterOptions);
 
-export function parseFrontMatter(source, context) {
-  const file = matter(source, grayMatterOptions);
+function parseFrontMatter(source, context) {
+  const file = parseMeta(source);
   const parser = getOrCreateMdParser(markdownOptions);
   const content = parser.render(file.content, context).trim();
   const headings = content.match(/<h(\d)[^>]*>(?:.+?)<\/h\1>/g) || [];
@@ -58,3 +60,10 @@ export function parseFrontMatter(source, context) {
     }),
   };
 }
+
+module.exports = {
+  markdownOptions,
+  parsexYaml,
+  parseMeta,
+  parseFrontMatter,
+};

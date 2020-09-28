@@ -14,10 +14,11 @@ import xyaml from 'xyaml-webpack-loader/rollup';
 import { generateSW } from 'rollup-plugin-workbox';
 import { dirname, basename } from 'path';
 import indexHTML from './tools/index.html';
-import { parsexYaml, parseFrontMatter, markdownOptions } from './tools/contentParser';
 import { SearchIndex } from './tools/SearchIndex';
 import getAppEnvVars from './tools/appEnvVars';
 import createWorkboxConfig from './tools/workbox.config';
+import * as schemas from './tools/contentSchemas';
+const { parsexYaml, parseFrontMatter, markdownOptions } = require('./tools/contentParser');
 
 dotenv.config({
   path: __dirname,
@@ -138,6 +139,7 @@ export default {
       ]
     }),
     copy({
+      overwrite: true,
       targets: [
         { src: 'src/content/**/*.{png,jpeg,svg,zip,tar,bz2,sh,php,js}', dest: `${DEST}/media/assets` },
       ]
@@ -153,7 +155,7 @@ export default {
       entry: /\.pages$/,
       files: '**/*.md',
       langs: SUPPORTED_LANGS,
-      pageSchema: false,
+      pageSchema: false, //schemas.article,
       parse: parseFrontMatter,
       pageId: (_, { relativePath }) => basename(dirname(relativePath)),
       plugins: [
@@ -161,7 +163,6 @@ export default {
           fields: [
             'id',
             'title',
-            'alias',
             'headings',
             'summary',
             'categories',
@@ -170,7 +171,7 @@ export default {
             'createdAt'
           ],
           sortBy: ['-createdAt'],
-          indexBy: ['alias', 'tags'],
+          indexBy: ['id', 'tags'],
           resolve: {
             tags: item => item.meta ? item.meta.keywords : null
           }

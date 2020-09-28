@@ -12,9 +12,9 @@ routes:
       provider: langs
     children:
       - name: frontend
-        path: frontend/:alias?
-        # restrictions:
-        #   id: '[\w/-]+'
+        path: frontend/:id?
+        restrictions:
+          id: '[\w/-]+'
         controller: Article
         meta:
           categories: [frontend]
@@ -23,7 +23,7 @@ routes:
           changefreq: weekly
           provider: pages
       - name: backend
-        path: backend/:alias?
+        path: backend/:id?
         controller: Article
         meta:
           categories: [backend]
@@ -32,7 +32,7 @@ routes:
           changefreq: monthly
           provider: route
       - name: linux
-        path: linux/:alias?
+        path: linux/:id?
         controller: Article
         meta:
           categories: [linux]
@@ -48,3 +48,8 @@ routes:
           priority: 1
           changefreq: yearly
           provider: pages
+
+redirects:
+  php_and_somethings: /ru/backend
+  javascript: /ru/frontend
+  writeme: /ru/about

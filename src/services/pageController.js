@@ -18,7 +18,7 @@ export const loadPages = (type, transformParams = identity) => async (match) => 
   const vars = await transformParams(match);
   const loader = content(type);
 
-  if (vars.id && vars.id.endsWith('/')) {
+  if (typeof vars.id === 'string' && vars.id.endsWith('/')) {
     vars.redirectTo = vars.id.slice(0, -1);
   } else if (vars.id && vars.id !== 'undefined') {
     vars.page = await loader.load(vars.lang, vars.id);

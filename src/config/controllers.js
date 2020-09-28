@@ -1,14 +1,8 @@
 import { html } from 'lit-element';
 import { loadPages, renderPage, renderArticles } from '../services/pageController';
-import content from '../services/content';
 import { interpolate } from '../services/utils';
 import { LOCALES, defaultLocale } from '../services/i18n';
-
-const OLD_URLS = {
-  php_and_somethings: '/ru/backend', // eslint-disable-line
-  javascript: '/ru/frontend',
-  writeme: '/ru/about'
-};
+import routes from './routes.yml';
 
 export default {
   About: () => ({
@@ -20,23 +14,25 @@ export default {
   }),
   Article(route) {
     const categories = route.meta ? route.meta.categories : [];
-    const findIdByAlias = async (lang, rawAlias) => {
-      if (!rawAlias || rawAlias === 'undefined') {
+    const normalize = (rawId) => {
+      if (!rawId || rawId === 'undefined') {
         return;
       }
 
-      const alias = rawAlias && rawAlias.startsWith('show-')
-        ? rawAlias.replace(/^show-\d+-/, '')
-        : rawAlias;
-      const article = await content('article').find('byAlias', lang, alias);
-      return article.id;
+      if (!rawId.startsWith('show-')) {
+        return rawId;
+      }
+
+      return rawId.replace(/^show-\d+-+/, '')
+        .replace(/-{2,}/g, '-')
+        .replace(/-$/, '');
     };
 
     return {
       resolve: loadPages('article', async ({ params }) => ({
         ...params,
         categories,
-        id: await findIdByAlias(params.lang, params.alias)
+        id: normalize(params.id)
       })),
       respond: renderArticles,
     };
@@ -60,8 +56,9 @@ export default {
       const lang = index === -1 ? pathname.slice(1) : pathname.slice(1, index);
       const { search: query, hash } = window.location;
 
-      if (OLD_URLS[lang]) {
-        const url = `${OLD_URLS[lang]}${index === - 1 ? '' : pathname.slice(index)}${query}${hash}`;
+      if (routes.redirects[lang]) {
+        const prefix = index === - 1 ? '' : pathname.slice(index);
+        const url = routes.redirects[lang] + prefix + query + hash;
         return {
           redirect: { url }
         };

@@ -1,5 +1,6 @@
 const { normalize: normalizePath, dirname } = require('path');
 const fs = require('fs');
+const { parseMeta } = require('./contentParser');
 
 function isExternalUrl(url) {
   return url.startsWith('https://') || url.startsWith('http://');
@@ -9,11 +10,20 @@ function isLocalUrl(url) {
   return url.startsWith('/') || url.startsWith('../') || url.startsWith('./');
 }
 
-function buildInAppLinkAttrs(token, ctx) {
+function getCategory(path, defaultValue) {
+  const content = parseMeta(fs.readFileSync(path, 'utf-8')).data;
+
+  if (path.includes('vklyuchaem-http'))
+    console.log(path, content.categories[0])
+
+  return content.categories ? content.categories[0] : defaultValue;
+}
+
+function buildInAppLinkAttrs(token, ctx, env) {
   const attrs = token.attrs.slice(0);
 
   attrs[ctx.hrefIndex][0] = 'to';
-  attrs[ctx.hrefIndex][1] = 'page';
+  attrs[ctx.hrefIndex][1] = getCategory(env.file.path, 'page');
   attrs.push(['params', JSON.stringify({ id: ctx.page })]);
 
   if (ctx.hash) {
@@ -22,6 +32,8 @@ function buildInAppLinkAttrs(token, ctx) {
 
   return attrs;
 }
+
+const identity = x => x;
 
 function toCustomLink(token, hrefIndex, options, env) {
   let page = token.attrs[hrefIndex][1];
@@ -45,10 +57,16 @@ function toCustomLink(token, hrefIndex, options, env) {
     page = normalizePath(`${dirname(env.relativePath)}/${page}`);
   }
 
-  const attrs = options.attrs || buildInAppLinkAttrs;
+  const buildAttrs = options.attrs || buildInAppLinkAttrs;
+  const normalizeId = options.normalizeId || identity;
+  const attrs = buildAttrs(token, {
+    hrefIndex,
+    page: normalizeId(page),
+    hash,
+  }, env);
 
   return Object.create(token, {
-    attrs: { value: attrs(token, { hrefIndex, page, hash }, env) },
+    attrs: { value: attrs },
     tag: { value: options.tagName }
   });
 }
