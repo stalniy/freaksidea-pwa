@@ -76,6 +76,6 @@ export function setPageMeta(page) {
 
   setTitle(page.title);
   setMeta('keywords', meta.keywords || '', t('meta.keywords'));
-  setDescription(meta.description);
+  setDescription(meta.description || page.summary);
   setCanonicalUrl(currentUrl());
 }
