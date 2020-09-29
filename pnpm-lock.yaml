@@ -33,7 +33,7 @@ devDependencies:
   puppeteer: 5.2.1
   regenerator-runtime: 0.13.7
   rollup: 2.26.9
-  rollup-plugin-content: 0.6.1_1f98733251d255d73c3d1426c855e6af
+  rollup-plugin-content: 0.7.1_1f98733251d255d73c3d1426c855e6af
   rollup-plugin-copy: 3.3.0
   rollup-plugin-legacy-bundle: 0.2.1_rollup@2.26.9
   rollup-plugin-minify-html-literals: 1.2.5_rollup@2.26.9
@@ -3325,7 +3325,7 @@ packages:
       rollup: '>=0.60.0 <3'
     resolution:
       integrity: sha512-Lek/TYp1+7g7I+uMfJnnSJ7YWoD58ajo6Oarhlex7lvUce+RCKRuGRSgztDO3/MF/PuGKmUL5iTHKf208UNszw==
-  /rollup-plugin-content/0.6.1_1f98733251d255d73c3d1426c855e6af:
+  /rollup-plugin-content/0.7.1_1f98733251d255d73c3d1426c855e6af:
     dependencies:
       '@rollup/pluginutils': 3.1.0_rollup@2.26.9
       '@sindresorhus/slugify': 0.11.0
@@ -3339,7 +3339,7 @@ packages:
       '@rollup/pluginutils': ^3.0.0
       rollup: ^1.20.0 || ^2.0.0
     resolution:
-      integrity: sha512-Bd/dAeZouMejO3St/SQtfY5gxuDD1UTrmCwXwnVa6uomjKHQyJLW8D4RayhmDAkkN/NTTs81ax2fEtT71vuGaw==
+      integrity: sha512-qcAs/y96yYb9zEOzM/nDwuFxbejeatCu5qbivCOvzxdzZr61nRZ2BTx4rHb0Piv0dld6kR/aPl0CeS/gS09enQ==
   /rollup-plugin-copy/3.3.0:
     dependencies:
       '@types/fs-extra': 8.1.1
@@ -4146,7 +4146,7 @@ specifiers:
   puppeteer: ^5.0.0
   regenerator-runtime: ^0.13.3
   rollup: ^2.0.0
-  rollup-plugin-content: 0.6.1
+  rollup-plugin-content: 0.7.1
   rollup-plugin-copy: ^3.3.0
   rollup-plugin-legacy-bundle: 0.2.1
   rollup-plugin-minify-html-literals: ^1.2.3

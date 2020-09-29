@@ -157,7 +157,16 @@ export default {
       langs: SUPPORTED_LANGS,
       pageSchema: false, //schemas.article,
       parse: parseFrontMatter,
-      pageId: (_, { relativePath }) => basename(dirname(relativePath)).slice(11),
+      main: {
+        resolve: {
+          id(_1, _2, { relativePath, file }) {
+            const id = basename(dirname(relativePath));
+            return file.path.includes('/articles/')
+              ? id.slice(11)
+              : id;
+          },
+        }
+      },
       plugins: [
         summary({
           fields: [
@@ -168,12 +177,14 @@ export default {
             'categories',
             'tags',
             'author',
-            'createdAt'
+            'createdAt',
+            'path'
           ],
           sortBy: ['-createdAt'],
           indexBy: ['id', 'tags'],
           resolve: {
-            tags: item => item.meta ? item.meta.keywords : null
+            tags: item => item.meta ? item.meta.keywords : null,
+            path: (_1, _2, ctx) => ctx.file.path.slice(__dirname.length)
           }
         }),
         summary(SearchIndex.factory()),

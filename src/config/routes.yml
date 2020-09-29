@@ -21,7 +21,7 @@ routes:
         sitemap:
           priority: 1
           changefreq: weekly
-          provider: pages
+          provider: articles
       - name: backend
         path: backend/:id?
         controller: Article
@@ -30,15 +30,23 @@ routes:
         sitemap:
           priority: 1
           changefreq: monthly
-          provider: route
-      - name: linux
-        path: linux/:id?
+          provider: articles
+      - name: devops
+        path: devops/:id?
         controller: Article
         meta:
           categories: [linux]
+        sitemap:
+          priority: 1
+          changefreq: monthly
+          provider: articles
       - name: about
         path: about
         controller: About
+        sitemap:
+          priority: 1
+          changefreq: monthly
+          provider: pages
       - name: page
         path: :id
         restrictions:
@@ -52,4 +60,5 @@ routes:
 redirects:
   php_and_somethings: /ru/backend
   javascript: /ru/frontend
+  linux: /ru/devops
   writeme: /ru/about

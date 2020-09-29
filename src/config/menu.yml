@@ -6,4 +6,4 @@ menu:
     exact: true
   - name: frontend
   - name: backend
-  - name: linux
+  - name: devops

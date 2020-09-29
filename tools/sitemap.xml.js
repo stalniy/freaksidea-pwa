@@ -7,13 +7,13 @@ const exec = promisify(childProcess.exec);
 const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
 const readdir = promisify(fs.readdir);
-const WEBSITE = (process.env.SITEMAP_WEBSITE || 'http://localhost:8080') + (process.env.LIT_APP_PUBLIC_PATH || '');
+const WEBSITE = process.env.LIT_APP_WEBSITE_URL + (process.env.LIT_APP_PUBLIC_PATH || '');
 const CONTENT_PATH = `${__dirname}/../src/content`;
 const DIST_PATH = `${__dirname}/../dist`;
 
-async function findFileByPrefix(dir, prefix) {
+async function findFile(dir, callback) {
   const files = await readdir(dir);
-  const file = files.find(f => f.startsWith(prefix));
+  const file = files.find(callback);
 
   if (!file) {
     throw new Error(`Unable to find file by prefix "${prefix}" in "${dir}"`);
@@ -22,45 +22,48 @@ async function findFileByPrefix(dir, prefix) {
   return `${dir}/${file}`;
 }
 
-const jsonCache = {};
+const jsonCache = new Map();
 async function parseJSON(directory, prefix) {
   const pathToFile = `${directory}/${prefix}`;
 
-  if (!jsonCache[pathToFile]) {
-    const realPath = await findFileByPrefix(directory, prefix);
+  if (!jsonCache.has(pathToFile)) {
+    const realPath = await findFile(directory, f => f.startsWith(prefix));
     const rawContent = await readFile(realPath, 'utf8');
-    jsonCache[pathToFile] = JSON.parse(rawContent);
+    jsonCache.set(pathToFile, JSON.parse(rawContent));
   }
 
-  return jsonCache[pathToFile];
+  return jsonCache.get(pathToFile);
 }
 
-const sitemapEntriesProviders = {
-  async pages({ route, parentItem }) {
-    const content = await parseJSON(`${DIST_PATH}/assets`, `content_pages_summaries.${parentItem.lang}`);
-    const categories = route.meta ? route.meta.categories : null;
-    let items = content.items;
+const contentProvider = (filePrefix) => async ({ route, parentItem }) => {
+  const content = await parseJSON(`${DIST_PATH}/assets`, `${filePrefix}.${parentItem.lang}`);
+  const categories = route.meta ? route.meta.categories : null;
+  let items = content.items;
 
-    if (Array.isArray(categories)) {
-      const hasCategory = categories.includes.bind(categories);
-      items = items.filter(item => item.categories.some(hasCategory));
+  if (Array.isArray(categories)) {
+    const hasCategory = categories.includes.bind(categories);
+    items = items.filter(item => item.categories.some(hasCategory));
+  }
+
+  const shouldIgnoreIdPrefix = route.meta && route.meta.ignoreIdPrefix;
+
+  return items.map((item) => {
+    let doc = item;
+
+    if (shouldIgnoreIdPrefix) {
+      doc = { ...item, id: doc.id.slice(doc.id.indexOf('/') + 1) };
     }
 
-    const shouldIgnoreIdPrefix = route.meta && route.meta.ignoreIdPrefix;
+    return {
+      doc,
+      lastmodFrom: item.path.slice('src/content/'.length)
+    };
+  });
+};
 
-    return items.map((item) => {
-      const doc = { ...item };
-
-      if (shouldIgnoreIdPrefix) {
-        doc.id = doc.id.slice(doc.id.indexOf('/') + 1);
-      }
-
-      return {
-        doc,
-        lastmodFrom: `pages/${item.id}/${parentItem.lang}.md`
-      };
-    });
-  },
+const sitemapEntriesProviders = {
+  pages: contentProvider('content_pages_summaries'),
+  articles: contentProvider('content_articles_summaries'),
   route({ route, parentItem }) {
     return [{
       doc: { id: route.path },
@@ -68,12 +71,10 @@ const sitemapEntriesProviders = {
     }];
   },
   langs() {
-    return [
-      {
-        doc: { lang: 'en' },
-        lastmodFrom: 'app/en.yml'
-      }
-    ];
+    return ['ru'].map((lang) => ({
+      doc: { lang },
+      lastmodFrom: `app/${lang}.yml`
+    }));
   }
 };
 
@@ -118,7 +119,7 @@ async function getLastModified(path) {
   ].join('-');
 }
 
-async function urlEntriesFrom(route, context = {}) {
+async function urlEntriesFrom(route, context, entries) {
   const basePath = context.basePath || '';
   const details = {
     path: basePath + (Array.isArray(route.path) ? route.path[0] : route.path),
@@ -137,6 +138,13 @@ async function urlEntriesFrom(route, context = {}) {
   const regexp = /:([\w_-]+)\??/g
   const parseItems = items.map(async ({ doc, lastmodFrom }) => {
     const path = details.path.replace(regexp, (_, prop) => doc[prop]);
+
+    if (entries.has(path)) {
+      return '';
+    }
+
+    entries.add(path);
+
     const itemEntry = urlEntry({
       ...details,
       path,
@@ -149,7 +157,7 @@ async function urlEntriesFrom(route, context = {}) {
 
     const childContext = { basePath: `${path}/`, parentItem: doc };
     const parseChildren = route.children
-      .map(childRoute => urlEntriesFrom(childRoute, childContext));
+      .map(childRoute => urlEntriesFrom(childRoute, childContext, entries));
     const childrenUrls = await Promise.all(parseChildren);
 
     return childrenUrls.concat(itemEntry);
@@ -160,7 +168,8 @@ async function urlEntriesFrom(route, context = {}) {
 
 async function generate() {
   const { routes } = yaml.load(fs.readFileSync(`${__dirname}/../src/config/routes.yml`));
-  const requests = routes.map(route => urlEntriesFrom(route));
+  const entries = new Set();
+  const requests = routes.map(route => urlEntriesFrom(route, {}, entries));
   const urls = await Promise.all(requests);
   const content = `
     <?xml version="1.0" encoding="UTF-8"?>
