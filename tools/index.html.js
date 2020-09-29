@@ -41,11 +41,13 @@ export default options => ({ attributes, files, publicPath, title }) => `
   <link rel="mask-icon" href="${publicPath}app-icons/safari-pinned-tab.svg" color="#5bbad5">
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="theme-color" content="#ffffff">
-  <meta name="keywords" content="roles management, permissions, permission management, ACL, ABAC, RBAC, CASL, javascript" />
-  <meta name="description" content="CASL (pronounced /ˈkæsəl/, like castle) is an isomorphic authorization JavaScript library which restricts what resources a given user is allowed to access. It's designed to be incrementally adoptable and can easily scale between a simple claim based and fully featured subject and attribute based authorization. It makes it easy to manage and share permissions across UI components, API services, and database queries." />
-  <meta property="og:title" content="CASL. Isomorphic Authorization JavaScript library" />
-  <meta property="og:description" content="CASL (pronounced /ˈkæsəl/, like castle) is an isomorphic authorization JavaScript library which restricts what resources a given user is allowed to access. It's designed to be incrementally adoptable and can easily scale between a simple claim based and fully featured subject and attribute based authorization. It makes it easy to manage and share permissions across UI components, API services, and database queries." />
-  <meta property="og:image" content="${publicPath}app-icons/android-chrome-256x256.png" />
+  <meta name="author" content="Sergii Stotskyi"/>
+  <meta name="twitter:site" content="@sergiy_stotskiy">
+  <meta name="twitter:creator" content="@sergiy_stotskiy">
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="${title}" />
+  <link rel="canonical" href="${options.websiteUrl}" />
   <style>${
   globalCSS
     .replace(/~@\//g, publicPath)

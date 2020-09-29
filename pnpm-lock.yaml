@@ -1,5 +1,5 @@
 dependencies:
-  '@curi/router': 2.1.1
+  '@curi/router': 2.1.2
   '@hickory/browser': 2.1.0
   '@webcomponents/webcomponentsjs': 2.4.4
   lit-element: 2.4.0
@@ -968,22 +968,22 @@ packages:
     dev: true
     resolution:
       integrity: sha512-bvM7Qz6eKnJVFIn+1LPtjlBFPVN5jNDc1XmN15vWe7Q3DPBufWWsLiIvUu7xW87uTG6QoggpIDnUgLQvPheU+Q==
-  /@curi/interactions/2.0.2:
+  /@curi/interactions/2.0.3:
     dependencies:
       '@curi/types': 2.0.2
       '@hickory/root': 2.1.0
     dev: false
     resolution:
-      integrity: sha512-VFotUrVkHrWJ83nlF0kaUYYq9yIy3GrE4DAVpzlWiQQIlSGg+iTOcXbXTUGsOCfEGzZXIwX5xIA0k+F22scsQg==
-  /@curi/router/2.1.1:
+      integrity: sha512-/d58jYFnWhqO4cMoFehxS/RWx3I22yCPnm6uAAE/1KEQG29k4uSkDKtxdIOMGcy6DnqFsOXXEFrh+ZLPIDQMBw==
+  /@curi/router/2.1.2:
     dependencies:
-      '@curi/interactions': 2.0.2
+      '@curi/interactions': 2.0.3
       '@curi/types': 2.0.2
       '@hickory/root': 2.1.0
       path-to-regexp: 2.4.0
     dev: false
     resolution:
-      integrity: sha512-E0g+x/ghlSdNpUXgx+thTx/EQ4lv3Nn7PzRBcDId9+MCCodZgfjaqIoALfh5SyzpjP27VtJgq+oqDHnq6oVeJQ==
+      integrity: sha512-XqESNXnlxlpiYl8VRyAsAkWjs3O4RFjH/crIodPE8gU314t/QRoD/G72GDq6xPRd90I4XekNA2y2uvMS1RAhKA==
   /@curi/types/2.0.2:
     dependencies:
       '@hickory/root': 2.1.0
@@ -4117,7 +4117,7 @@ specifiers:
   '@babel/plugin-proposal-class-properties': ^7.8.3
   '@babel/plugin-proposal-unicode-property-regex': ^7.8.8
   '@babel/preset-env': ^7.8.4
-  '@curi/router': ^2.1.0
+  '@curi/router': ^2.1.2
   '@hickory/browser': ^2.1.0
   '@rollup/plugin-babel': ^5.0.2
   '@rollup/plugin-commonjs': ^14.0.0

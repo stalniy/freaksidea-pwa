@@ -1,7 +1,40 @@
 name: Freaksidea.com
+title: Simplicity Craftsmanship
 meta:
-  keywords: fullstack, software development
-  description: some description here
+  keywords: |
+    фреймворки, базы данных, fullstack, разработка програм,
+    архитектура програм, шаблоны программирования, принципы программирования, DDD,
+    микросервисы, микрофронтенды, тестирование
+  description: Простота - залог надежности (c) E. Dijkstra
+
+  frontend:
+    title: Разработка Frontend-а
+    keywords: |
+      Angular, Ionic, React, Vue, lit-html,
+      PWA, SPA, static website generator, JavaScript,
+      REST, DOM, browser, IE, firefox, opera, safari, cross browser
+      webpack, rollup, ES2015, ESM
+    description: |
+      Разбор производительности, создание кастомизированных статических генераторов сайтом,
+      painless state management
+  backend:
+    title: Разработка Backend-а
+    keywords: |
+      Node.js, PHP, Ruby, .Net, Magento, Symfony, Doctrine, TDD, BDD, DDD,
+      шаблоны программирование, архитектура приложений, разделенные вычисления,
+      CQRS, REST, RPC
+    description: |
+      Разработка еффективных API, микросервисы, протоколы передачи данных, подходы к
+      организации структуры приложение, шаблоны проектирования и многое другое.
+  linux:
+    title: Администрирование и Devops
+    keywords: |
+      bash, VPS, docker, gitlab, github, vcs, настройка CI/CD,
+      Continious Integration, Continious Delivery, terraform
+    description: |
+      От новичка к профессионалу в Devops: изучение Bash, настройка CI/CD,
+      системы контроля версий и рекомендации как с ними работать, настройка cloud технологий
+
 copyright: "© 2011-%{year} Sergii Stotskyi"
 dateTimeFormats:
   default:
@@ -9,22 +42,21 @@ dateTimeFormats:
     month: long
     day: numeric
 topMenu:
-  friends: Мої друзі
-  about: Контакти
+  about: Контакты
 categories:
   home:
-    title: Свежачок
+    title: Все
   backend:
     title: Backend
   frontend:
-    title: Прогрессивный Frontend
+    title: Frontend
   linux:
-    title: Linux для Всех
+    title: DevOps
 article:
   author: "Автор: "
-  readMore: Читати далі
+  readMore: Поброднее
   emptyCategory: К сожалению в этой категории еще нет статей
-  popular: Популярные посты
+  popular: Популярное
   emptyPopular: Пока еще нет популярных постов
   popularTags: Теги
   tagsTitle: "Теги:"
@@ -40,13 +72,7 @@ search:
   placeholder: Поиск
   title: Поиск "%{query}"
   empty: За даным запросом ничего не найдено
-blocks:
-  0step-checkout:
-    title: 0 Step Checkout
-    content: !md |
-      Хотите упростить процесс оформления заказа в Magento? [0 Step Checkout](https://github.com/stalniy/0step-checkout) поможет Вам решить эту проблему!
-
-      [![](http://freaksidea.com/uploads/php/magento/0-step-checkout/BOX-icon.jpg)](https://github.com/stalniy/0step-checkout)
+blocks: ~
 about:
   script: !md |
     ```js

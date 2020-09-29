@@ -191,6 +191,7 @@ export default {
       template: indexHTML({
         analyticsId: process.env.LIT_APP_GA_ID,
         sharethis: process.env.SHARETHIS_SRC,
+        websiteUrl: process.env.LIT_APP_WEBSITE_URL
       }),
       attributes: {
         html: null,

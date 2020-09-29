@@ -65,7 +65,6 @@ export default class App extends LitElement {
             <fi-search-block reset-after-search></fi-search-block>
             <fi-popular-articles></fi-popular-articles>
             <fi-popular-tags></fi-popular-tags>
-            <fi-block name="0step-checkout"></fi-block>
           </aside>
         </section>
       </div>
