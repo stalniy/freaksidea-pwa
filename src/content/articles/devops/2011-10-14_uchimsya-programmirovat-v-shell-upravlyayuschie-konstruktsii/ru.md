@@ -5,7 +5,7 @@ summary: |
   один язык не обходится без этого. Это относится и к Bash
 author: sstotskyi
 categories:
-  - linux
+  - devops
   - important
 createdAt: 2011-10-13T22:50:00.000Z
 meta:

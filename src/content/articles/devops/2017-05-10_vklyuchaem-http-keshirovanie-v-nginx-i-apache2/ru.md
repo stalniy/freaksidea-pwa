@@ -7,7 +7,7 @@ summary: |
   доступность сайта еще для одной сотни пользователей.
 author: sstotskyi
 categories:
-  - linux
+  - devops
   - important
 createdAt: 2017-05-10T08:00:00.000Z
 meta:

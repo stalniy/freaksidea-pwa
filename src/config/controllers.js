@@ -29,7 +29,7 @@ export default {
     };
 
     return {
-      resolve: loadPages('article', async ({ params }) => ({
+      resolve: loadPages('article', ({ params }) => ({
         ...params,
         categories,
         id: normalize(params.id)

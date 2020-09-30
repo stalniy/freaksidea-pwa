@@ -6,7 +6,7 @@ summary: |
   управляющих конструкций, таких как while и case. Давайте знакомится ближе
 author: sstotskyi
 categories:
-  - linux
+  - devops
   - important
 createdAt: 2011-10-16T13:24:00.000Z
 meta:

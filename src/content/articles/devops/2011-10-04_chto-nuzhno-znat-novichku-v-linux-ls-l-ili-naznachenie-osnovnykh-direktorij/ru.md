@@ -6,7 +6,7 @@ summary: |
   основными директориями и их назначением
 author: sstotskyi
 categories:
-  - linux
+  - devops
   - important
 createdAt: 2011-10-04T15:15:00.000Z
 meta:
@@ -24,7 +24,7 @@ alias: chto-nuzhno-znat-novichku-v-linux-ls--l---ili-naznachenie-osnovnykh-direk
 Команда **ls** имеет несколько базовых флагов:
 
 *   **ls -l** - выводит содержимое директории в расширенном формате
-    
+
     ```bash
     enej@linux:~$ ls -l
     total 444
@@ -35,7 +35,7 @@ alias: chto-nuzhno-znat-novichku-v-linux-ls--l---ili-naznachenie-osnovnykh-direk
     drwxr-xr-x  7 enej enej   4096 2011-10-02 12:41 Downloads
     ............................................................
     ```
-    
+
 *   **ls -la** - делает тоже что и предыдущая команда + показывает все скрытые файлы (имена скрытых файлов в Linux начинаются из символа точки "**.**")
 
 Посмотрим поближе на расширенный формат.
@@ -54,7 +54,7 @@ drwxr-xr-x  7    enej     enej     4096   2011-10-02 12:41   Downloads
     |             |        |
     |             |        +-----------------------  Група
     |             |
-    |             +--------------------------------  Пользователь     
+    |             +--------------------------------  Пользователь
     |
     +----------------------------------------------  Права доступа на файл/папку
 ```
@@ -64,7 +64,7 @@ drwxr-xr-x  7    enej     enej     4096   2011-10-02 12:41   Downloads
 По скольку в Linux "все есть файлом", то очень полезным окажется команда **file**, которая определяет тип содержимого файла.
 
 ```bash
-enej@linux:/home/pub/www/vv$ file viland.sql.bz2 
+enej@linux:/home/pub/www/vv$ file viland.sql.bz2
 viland.sql.bz2: bzip2 compressed data, block size = 900k
 ```
 

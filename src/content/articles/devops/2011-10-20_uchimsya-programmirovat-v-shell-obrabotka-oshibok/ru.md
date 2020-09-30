@@ -9,7 +9,7 @@ summary: |
   кардинально и невозвратимо не в ту сторону
 author: sstotskyi
 categories:
-  - linux
+  - devops
   - important
 createdAt: 2011-10-19T21:24:00.000Z
 meta:

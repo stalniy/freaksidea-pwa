@@ -72,7 +72,19 @@ search:
   placeholder: Поиск
   title: Поиск "%{query}"
   empty: За даным запросом ничего не найдено
-blocks: ~
+blocks:
+  sidebarAd:
+    title: Реклама
+    content: |
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- Баннер справа -->
+      <ins class="adsbygoogle"
+          style="display:inline-block;width:300px;height:250px"
+          data-ad-client="ca-pub-5129274777209544"
+          data-ad-slot="8551486343"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
 about:
   script: !md |
     ```js

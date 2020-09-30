@@ -4,7 +4,7 @@ import { iconsCss, pageCss, mdCss, codeCss } from '../styles';
 import { t } from '../directives/i18n';
 import { setPageMeta } from '../services/meta';
 import I18nElement from './I18nElement';
-import { tryToNavigateElement, scrollToSectionIn } from '../hooks/scrollToSection';
+import { tryToNavigateElement, scrollToSectionIn, scrollToElement } from '../hooks/scrollToSection';
 
 export default class PageArticle extends I18nElement {
   static cName = 'fi-page-article';
@@ -32,7 +32,7 @@ export default class PageArticle extends I18nElement {
     if (this.page === null || changed.has('page')) {
       setPageMeta(this.page);
       await this.updateComplete;
-      scrollToSectionIn(this.shadowRoot);
+      scrollToSectionIn(this.shadowRoot) || scrollToElement(this.parentNode.parentNode);
     }
   }
 

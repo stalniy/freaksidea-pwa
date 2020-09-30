@@ -6,7 +6,7 @@ summary: |
   это заработало. Итак купил я МТС Коннект...
 author: sstotskyi
 categories:
-  - linux
+  - devops
 createdAt: 2011-01-27T06:55:00.000Z
 meta:
   keywords:

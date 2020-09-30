@@ -6,6 +6,7 @@ import { locale } from '../services/i18n';
 import content from '../services/content';
 import router from '../services/router';
 import I18nElement from './I18nElement';
+import { scrollToElement } from '../hooks/scrollToSection';
 
 export default class PageArticles extends I18nElement {
   static cName = 'fi-page-articles';
@@ -29,9 +30,14 @@ export default class PageArticles extends I18nElement {
   connectedCallback() {
     super.connectedCallback();
     this._unwatchPage = router.observe((route) => {
-      this._page = route.response.location.query.page || 1;
+      const page = route.response.location.query.page;
+      this._page = page || 1;
       this._articles = null;
       this.requestUpdate();
+
+      if (page) {
+        scrollToElement(this.parentNode.parentNode);
+      }
     });
   }
 

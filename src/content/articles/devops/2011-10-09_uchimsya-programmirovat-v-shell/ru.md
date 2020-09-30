@@ -6,7 +6,7 @@ summary: |
   этом деле является Shell
 author: sstotskyi
 categories:
-  - linux
+  - devops
 createdAt: 2011-10-09T11:07:00.000Z
 meta:
   keywords:

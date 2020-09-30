@@ -5,7 +5,7 @@ summary: |
   ошибки при написании скриптов и методы их устранения
 author: sstotskyi
 categories:
-  - linux
+  - devops
   - important
 createdAt: 2011-10-15T12:26:00.000Z
 meta:
@@ -46,7 +46,7 @@ fi
 Запустив этот вариант скрипта - увидим
 
 ```bash
-enej@linux:~/tmp$ /bin/bash problem.sh 
+enej@linux:~/tmp$ /bin/bash problem.sh
 problem.sh: line 5: [: =: unary operator expected
 Option != 5
 ```
@@ -82,7 +82,7 @@ if [ "" = "5" ]; then
 Еще одной проблемой является пропущенная кавычка. Например, уберите из строки 6 закрывающую кавычку и запустите скрипт
 
 ```bash
-enej@linux:~/tmp$ /bin/bash problem.sh 
+enej@linux:~/tmp$ /bin/bash problem.sh
 problem.sh: line 8: unexpected EOF while looking for matching `"'
 problem.sh: line 10: syntax error: unexpected end of file
 ```
@@ -96,12 +96,12 @@ problem.sh: line 10: syntax error: unexpected end of file
 *   комментирование блоков кода. Суть метода состоит в комментировании нескольких строк кода и запустить скрипт вновь. Если проблема исчезла, значит она находится в закомментированном блоке, например, в случае с пропущенной кавычкой: если закомментировать блок else и запустим программу, то увидим, что ошибка не исчезла, значить проблема не в нем и тогда продолжаем комментировать дальше или что-то другое.
 *   вывод переменных. С помощью команды **echo**, выводим любые переменные из скрипта, чтобы посмотреть, является ли их значение ожидаем для нас.
 *   дебагинг. Вы наверно думаете, что я прекрасный **Bash** программист раз умею смотреть на код его глазами? Но здесь никакой магии. Вы можете смотреть тоже! При помощи опции **\-x** можно установить debug режим интерпретатора, при котором на своем экране можно увидеть ход выполнения скрипта. Например, рассмотрим наш вариант неработающего скрипта, тот где _option_ равно **null**
-    
+
     ```bash
     #!/bin/bash
-    
+
     option=;
-    
+
     # enable debug mode
     set -x;
     if [ $option = "5" ]; then
@@ -109,21 +109,21 @@ problem.sh: line 10: syntax error: unexpected end of file
     else
       echo "Option != 5";
     fi
-    
+
     # disable debug mode
     set +x;
     ```
-    
+
     и вот что увидим запустив скрипт
-    
+
     ```bash
-    enej@linux:~/tmp$ /bin/bash problem.sh 
+    enej@linux:~/tmp$ /bin/bash problem.sh
     + '[' = 1 ']'
     problem.sh: line 6: [: =: unary operator expected
     + echo 'Option != 1'
     Option != 1
     ```
-    
+
     т.е. именно то, что мы уже знаем.
 
 По мотивам [http://linuxcommand.org](http://linuxcommand.org)

@@ -9,7 +9,7 @@ summary: |
   предоставляет нам Bash
 author: sstotskyi
 categories:
-  - linux
+  - devops
   - important
 createdAt: 2011-10-20T21:21:00.000Z
 meta:

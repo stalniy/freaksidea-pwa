@@ -7,7 +7,7 @@ summary: |
   записывать в массив.
 author: sstotskyi
 categories:
-  - linux
+  - devops
   - important
 createdAt: 2011-10-16T15:33:00.000Z
 meta:
@@ -36,7 +36,7 @@ echo "You entered: $text"
 Как видно в 3 строке кода вызывается **echo** с флагом "**\-n**", который указывает на то, что после вывода текста на экран не нужно перемещать курсор на следующую строку. Потом команда **read** останавливает выполнение скрипта и ждет ввода данных с клавиатуры. Пример скрипта в действии
 
 ```bash
-enej@linux:~/tmp$ ./test.sh 
+enej@linux:~/tmp$ ./test.sh
 Enter some text > bla
 You entered: bla
 ```
@@ -98,7 +98,7 @@ echo "$text";
 Но по-моему так менее читабельно. Запустив этот скрипт получим
 
 ```bash
-enej@linux:~/tmp$ ./test.sh 
+enej@linux:~/tmp$ ./test.sh
 Hi Sergiy Stotskiy.
 
 How are you?

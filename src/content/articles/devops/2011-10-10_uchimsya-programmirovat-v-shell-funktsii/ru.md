@@ -6,7 +6,7 @@ summary: |
   понятиями. Посмотрим на них поближе
 author: sstotskyi
 categories:
-  - linux
+  - devops
   - important
 createdAt: 2011-10-10T11:36:00.000Z
 meta:

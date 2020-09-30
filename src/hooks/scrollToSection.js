@@ -1,7 +1,7 @@
 import router from '../services/router';
 
-function scrollToElement(root, id) {
-  const element = root.getElementById(id);
+export function scrollToElement(root, id = null) {
+  const element = id ? root.getElementById(id) : root;
 
   if (!element) {
     return;
@@ -12,9 +12,8 @@ function scrollToElement(root, id) {
   document.documentElement.scrollTop -= headerHeight;
 }
 
-function closest(startNode, tagName) {
+function closest(startNode, tagName, maxIterations = 10) {
   let current = startNode;
-  const maxIterations = 3;
   let i = 0;
 
   while (current && i < maxIterations) {
@@ -56,7 +55,8 @@ export function scrollToSectionIn(root) {
 
   if (hash) {
     scrollToElement(root, hash);
-  } else {
-    window.scroll(0, 0);
+    return true;
   }
+
+  return false;
 }

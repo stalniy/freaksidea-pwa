@@ -7,7 +7,7 @@ summary: |
   момент времени, по-этому Linux ставит процессы в очередь на выполнения.
 author: sstotskyi
 categories:
-  - linux
+  - devops
   - important
 createdAt: 2011-10-08T11:36:00.000Z
 meta:
