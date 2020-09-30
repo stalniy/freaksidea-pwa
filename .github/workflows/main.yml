@@ -52,7 +52,7 @@ jobs:
         git fetch origin gh-pages
         git checkout -f gh-pages
         mv docs/CNAME dist
-        rsync -rtvuc --delete dist/ docs/
+        rsync -rtvc --delete dist/ docs/
         git add .
         git commit -m "chore(release): deploy"
         git push --set-upstream origin gh-pages
