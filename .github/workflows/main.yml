@@ -30,7 +30,7 @@ jobs:
         NODE_ENV: production
       run: LIT_APP_COMMIT_HASH=$(git rev-parse --short "$GITHUB_SHA") npm run build
     - name: Build sitemap
-      run: npm run build.sitemap
+      run: NODE_ENV=production npm run build.sitemap
     - name: Prerender
       run: npm run prerender
     - name: Deploy
