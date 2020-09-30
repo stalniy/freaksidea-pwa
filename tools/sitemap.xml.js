@@ -2,12 +2,18 @@ const yaml = require('js-yaml');
 const childProcess = require('child_process');
 const { promisify } = require('util');
 const fs = require('fs');
+const dotenv = require('dotenv-flow');
+
+dotenv.config({
+  path: `${__dirname}/..`,
+  node_env: process.env.NODE_ENV || 'development',
+});
 
 const exec = promisify(childProcess.exec);
 const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
 const readdir = promisify(fs.readdir);
-const WEBSITE = process.env.LIT_APP_WEBSITE_URL + (process.env.LIT_APP_PUBLIC_PATH || '');
+const WEBSITE = process.env.LIT_APP_WEBSITE_URL + (process.env.LIT_APP_PUBLIC_PATH || '/');
 const CONTENT_PATH = `${__dirname}/../src/content`;
 const DIST_PATH = `${__dirname}/../dist`;
 
@@ -95,7 +101,7 @@ function getSitemapEntriesProviderFor(route) {
 
 const urlEntry = (value) => `
   <url>
-    <loc>${WEBSITE}/${value.path}</loc>
+    <loc>${WEBSITE}${value.path}</loc>
     <lastmod>${value.lastmod}</lastmod>
     <changefreq>${value.changefreq}</changefreq>
     <priority>${value.priority}</priority>
@@ -129,7 +135,7 @@ async function urlEntriesFrom(route, context, entries) {
   const getItems = getSitemapEntriesProviderFor(route);
   let items;
 
-  if (getItems) {
+  if (getItems && details.path.includes(':')) {
     items = await getItems({ contentPath: CONTENT_PATH, route, ...context });
   } else {
     items = [{ doc: {}, lastmodFrom: route.sitemap.lastmodFrom }];
@@ -144,6 +150,10 @@ async function urlEntriesFrom(route, context, entries) {
     }
 
     entries.add(path);
+
+    if (!lastmodFrom) {
+      console.log(route)
+    }
 
     const itemEntry = urlEntry({
       ...details,
@@ -162,8 +172,20 @@ async function urlEntriesFrom(route, context, entries) {
 
     return childrenUrls.concat(itemEntry);
   });
-  const urls = await Promise.all(parseItems);
+  const urls = await Promise.all(parseItems.concat(
+    entriesFromOptionalVars(route, context, entries)
+  ));
+
   return urls.flat(2);
+}
+
+async function entriesFromOptionalVars(route, context, entries) {
+  if (!route.path.includes('?')) {
+    return [];
+  }
+
+  const path = route.path.replace(/\/:([\w_-]+)\?/g, '');
+  return urlEntriesFrom({ ...route, path }, context, entries);
 }
 
 async function generate() {

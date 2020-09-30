@@ -21,6 +21,7 @@ routes:
         sitemap:
           priority: 1
           changefreq: weekly
+          lastmodFrom: articles/frontend
           provider: articles
       - name: backend
         path: backend/:id?
@@ -30,6 +31,7 @@ routes:
         sitemap:
           priority: 1
           changefreq: monthly
+          lastmodFrom: articles/backend
           provider: articles
       - name: devops
         path: devops/:id?
@@ -39,14 +41,15 @@ routes:
         sitemap:
           priority: 1
           changefreq: monthly
+          lastmodFrom: articles/devops
           provider: articles
       - name: about
         path: about
         controller: About
         sitemap:
           priority: 1
-          changefreq: monthly
-          provider: pages
+          changefreq: yearly
+          lastmodFrom: pages/about
       - name: page
         path: :id
         restrictions:
