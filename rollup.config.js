@@ -139,7 +139,7 @@ export default {
     copy({
       overwrite: true,
       targets: [
-        { src: 'src/content/**/*.{png,jpeg,svg,gif,zip,tar,bz2,sh,php,js}', dest: `${DEST}/media/assets` },
+        { src: 'src/content/**/*.{png,jpeg,jpg,svg,gif,zip,tar,bz2,sh,php,js}', dest: `${DEST}/media/assets` },
       ]
     }),
     content({
