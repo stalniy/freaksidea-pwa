@@ -28,6 +28,15 @@ export default css`
     margin-bottom: 10px;
   }
 
+  article .title app-link,
+  .article .title app-link {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    overflow: hidden;
+  }
+
   article .title a,
   .article .title a {
     font-size: inherit;

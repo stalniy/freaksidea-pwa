@@ -103,5 +103,20 @@ PageArticles.styles = [
     fi-article-details {
       padding-left: 5px;
     }
+
+    .summary {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    @media(min-width: 768px) {
+      .summary {
+        line-clamp: none;
+        -webkit-line-clamp: none;
+      }
+    }
   `
 ]

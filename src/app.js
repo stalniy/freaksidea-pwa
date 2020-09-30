@@ -55,4 +55,6 @@ export default function bootstrap(selector) {
 
     setRouteMeta(route);
   });
+
+  return app;
 }

@@ -61,5 +61,15 @@ ArticleDetails.styles = [
     app-link > [class^="icon-"] {
       margin-right: 5px;
     }
+
+    .more {
+      display: none;
+    }
+
+    @media(min-width: 768px) {
+      .more {
+        display: inline-block;
+      }
+    }
   `
 ]
