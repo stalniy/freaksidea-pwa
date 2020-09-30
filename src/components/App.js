@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'lit-element';
 import { topMenu, menu } from '../config/menu.yml';
 import router from '../services/router';
 import gridCss from '../styles/grid';
+import watchMedia from '../hooks/watchMedia';
 
 function createNotificationsRoot() {
   const root = document.createElement('div');
@@ -17,10 +18,24 @@ function createNotificationsRoot() {
   return root;
 }
 
+function renderSidebar() {
+  return html`
+    <aside>
+      <fi-search-block reset-after-search></fi-search-block>
+      <fi-popular-articles></fi-popular-articles>
+      <fi-popular-tags></fi-popular-tags>
+      <fi-block name="sidebarAd" sticky>
+        <slot name="sidebar.ad"></slot>
+      </fi-block>
+    </aside>
+  `;
+}
+
 export default class App extends LitElement {
   static cName = 'fi-app';
   static properties = {
-    ready: { type: Boolean }
+    ready: { type: Boolean },
+    _isDesktop: { type: Boolean }
   };
 
   constructor() {
@@ -31,6 +46,7 @@ export default class App extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    watchMedia('(min-width: 1024px)', v => this._isDesktop = v);
     router.observe((route) => {
       this._route = route.response;
       this.requestUpdate();
@@ -56,19 +72,12 @@ export default class App extends LitElement {
     }
 
     return html`
+      <fi-header .items="${topMenu}"></fi-header>
       <div class="wrapper">
-        <fi-header .items="${topMenu}"></fi-header>
         <fi-menu .items="${menu}" .activeItem="${this._route.name}"></fi-menu>
-        <section class="row content" id="content">
+        <section class="content ${this._isDesktop ? 'row' : ''}" id="content">
           <main>${this._route.body.main}</main>
-          <aside>
-            <fi-search-block reset-after-search></fi-search-block>
-            <fi-popular-articles></fi-popular-articles>
-            <fi-popular-tags></fi-popular-tags>
-            <fi-block name="sidebarAd" sticky>
-              <slot name="sidebar.ad"></slot>
-            </fi-block>
-          </aside>
+          ${this._isDesktop ? renderSidebar() : null}
         </section>
       </div>
       <fi-footer></fi-footer>
@@ -84,26 +93,37 @@ App.styles = [
     }
 
     fi-menu {
-      margin-top: 50px;
-    }
-
-    .wrapper {
-      padding: 0 40px;
+      margin-top: 20px;
     }
 
     .content {
       margin-top: 35px;
     }
 
-    .content > main {
+    .row.content > main {
       flex-basis: 70%;
       max-width: 70%;
     }
 
-    .content > aside {
+    .row.content > aside {
       flex-basis: 30%;
       max-width: 30%;
       padding-left: 20px;
+    }
+
+    .wrapper {
+      padding: 0 20px;
+    }
+
+    @media(min-width: 768px) {
+      .wrapper,
+      fi-header {
+        padding: 0 40px;
+      }
+
+      fi-menu {
+        margin-top: 50px;
+      }
     }
   `
 ];

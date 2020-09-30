@@ -51,6 +51,12 @@ app-link.active {
 }
 
 app-link + app-link {
-  margin-left: 35px;
+  margin-left: 10px;
+}
+
+@media(min-width: 768px) {
+  app-link + app-link {
+    margin-left: 35px;
+  }
 }
 `;
