@@ -65,7 +65,9 @@ export default class App extends LitElement {
             <fi-search-block reset-after-search></fi-search-block>
             <fi-popular-articles></fi-popular-articles>
             <fi-popular-tags></fi-popular-tags>
-            <fi-block name="sidebarAd" sticky></fi-block>
+            <fi-block name="sidebarAd" sticky>
+              <slot name="sidebar.ad"></slot>
+            </fi-block>
           </aside>
         </section>
       </div>

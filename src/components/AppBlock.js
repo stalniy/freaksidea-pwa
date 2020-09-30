@@ -20,7 +20,9 @@ export default class Block extends LitElement {
     return html`
       <section class="block">
         <h3 class="title">${t(`blocks.${this.name}.title`)}</h3>
-        <div class="md">${ut(`blocks.${this.name}.content`)}</div>
+        <slot>
+          <div class="md">${ut(`blocks.${this.name}.content`)}</div>
+        </slot>
       </section>
     `;
   }

@@ -75,11 +75,6 @@ search:
 blocks:
   sidebarAd:
     title: Реклама
-    content: |
-      <ins class="adsbygoogle"
-        style="display:inline-block;width:300px;height:250px"
-        data-ad-client="ca-pub-5129274777209544"
-        data-ad-slot="8551486343"></ins>
 about:
   script: !md |
     ```js

@@ -36,8 +36,6 @@ const minify = terser({
       reserved: [
         '_classProperties',
         '__isAppExecuted__',
-        '_tree',
-        '_prefix',
       ],
       regex: /^_/
     }

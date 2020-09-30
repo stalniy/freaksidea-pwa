@@ -57,7 +57,14 @@ export default options => ({ attributes, files, publicPath, title }) => `
   ${generateCss(files.css, { publicPath, attrs: attributes.link })}
 </head>
 <body>
-  <fi-app></fi-app>
+  <fi-app>
+    <ins slot="sidebar.ad"
+      class="adsbygoogle"
+      style="display:inline-block;width:300px;height:250px"
+      data-ad-client="ca-pub-5129274777209544"
+      data-ad-slot="8551486343"
+    ></ins>
+  </fi-app>
 
   <script src="${publicPath}@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
   <script src="${publicPath}@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
