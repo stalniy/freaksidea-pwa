@@ -63,6 +63,8 @@ export default options => ({ attributes, files, publicPath, title }) => `
   <script src="${publicPath}@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
   ${generateJs(files.js, { publicPath, attrs: attributes.script, includeSafariFix: true })}
   ${options.sharethis ? `<script async src="${options.sharethis}"></script>` : ''}
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </body>
 </html>
 `.trim();
