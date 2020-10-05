@@ -17,8 +17,14 @@ import indexHTML from './tools/index.html';
 import { SearchIndex } from './tools/SearchIndex';
 import getAppEnvVars from './tools/appEnvVars';
 import createWorkboxConfig from './tools/workbox.config';
+import runMarkdownPostParsingTasks from './tools/rollup/markdownPostParsingTasks';
 import * as schemas from './tools/contentSchemas';
-const { parsexYaml, parseFrontMatter, markdownOptions } = require('./tools/contentParser');
+const {
+  parsexYaml,
+  parseFrontMatter,
+  markdownOptions,
+  markdown
+} = require('./tools/contentParser');
 
 dotenv.config({
   path: __dirname,
@@ -208,6 +214,7 @@ export default {
         script: null,
       },
     }),
-    generateSW(createWorkboxConfig(DEST, PUBLIC_PATH))
+    generateSW(createWorkboxConfig(DEST, PUBLIC_PATH)),
+    runMarkdownPostParsingTasks(markdown),
   ]
 };

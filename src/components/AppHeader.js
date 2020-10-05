@@ -1,6 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
 import { codeCss } from '../styles';
-import logoUrl from '../assets/main.jpg';
 import { t } from '../directives/i18n';
 
 export default class Header extends LitElement {
@@ -18,7 +17,21 @@ export default class Header extends LitElement {
     return html`
       <header>
         <app-link to="home">
-          <img src="${logoUrl}" />
+          <img
+            src="/img/header.jpg"
+            srcset="
+              /img/header-375w.jpg 375w,
+              /img/header-768w.jpg 768w,
+              /img/header-1024.jpg 1024w,
+              /img/header.jpg 1280w
+            "
+            sizes="
+              (max-width: 375px) 375px,
+              (max-width: 768px) 768px,
+              (max-width: 1024px) 1024px,
+              1280px
+            "
+          />
         </app-link>
       </header>
       <!-- <fi-lang-picker></fi-lang-picker> -->
@@ -44,7 +57,6 @@ Header.styles = [
     header {
       display: flex;
       align-items: flex-end;
-      min-height: 150px;
     }
 
     header img {

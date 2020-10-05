@@ -20,18 +20,19 @@ export default (DEST, PUBLIC_PATH) => ({
   globPatterns: [
     'assets/*.json',
     'app-icons/*',
+    'img/*',
     'fonts/*',
     'manifest.json',
     'index.html',
     '*.js',
-    '*.{png,jpeg}'
+    '*.{png,jpeg,jpg,gif}'
   ],
   navigateFallback: `${PUBLIC_PATH}/index.html`,
   runtimeCaching: [
-    route(`${PUBLIC_PATH}/images/`, 'StaleWhileRevalidate', {
+    route(`${PUBLIC_PATH}/media/assets/`, 'StaleWhileRevalidate', {
       cacheName: 'images',
       expiration: {
-        maxEntries: 100
+        maxEntries: 150
       }
     }),
     route(`${PUBLIC_PATH}/@webcomponents/`, 'CacheFirst', {

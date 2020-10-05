@@ -14,7 +14,7 @@ const markdownOptions = {
       root: `${__dirname}/..`,
       includeRe: /@include:\s*([\w._/-]+)/
     },
-    [`${__dirname}/mdLink`]: {
+    [`${__dirname}/markdown/link`]: {
       external: {
         target: '_blank',
         rel: 'noopener nofollow'
@@ -27,11 +27,14 @@ const markdownOptions = {
         srcRoot: `${process.env.LIT_APP_PUBLIC_PATH || '/'}media/assets`
       }
     },
-    [`${__dirname}/mdImage`]: {
+    [`${__dirname}/markdown/image`]: {
       size: 'auto',
-      srcRoot: `${process.env.LIT_APP_PUBLIC_PATH || '/'}media/assets`
+      srcRoot: `${process.env.LIT_APP_PUBLIC_PATH || '/'}media/assets`,
+      responsive: [
+        [/.+/, ['xs', 'sm', 'md']]
+      ]
     },
-    [`${__dirname}/mdTableContainer`]: {}
+    [`${__dirname}/markdown/tableContainer`]: {}
   }
 };
 
@@ -43,11 +46,29 @@ const grayMatterOptions = {
   engines: { xyaml: parsexYaml }
 };
 const parseMeta = source => matter(source, grayMatterOptions);
+const markdownParser = getOrCreateMdParser(markdownOptions);
+
+const postParsingTasks = [];
+markdownParser.addPostParsingTask = (task) => postParsingTasks.push(task);
+markdownParser.processPostParsingTasks = (handlers, options) => {
+  const iterator = postParsingTasks.slice(0).values();
+  postParsingTasks.length = 0;
+  const jobs = Array.from({ length: 20 }).map(async () => {
+    for (const task of iterator) {
+      if (!handlers[task.type]) {
+        throw new Error(`No handler for "${task.type}"`);
+      }
+
+      await handlers[task.type](task, options);
+    }
+  });
+
+  return Promise.all(jobs);
+};
 
 function parseFrontMatter(source, context) {
   const file = parseMeta(source);
-  const parser = getOrCreateMdParser(markdownOptions);
-  const content = parser.render(file.content, context).trim();
+  const content = markdownParser.render(file.content, context).trim();
   const headings = content.match(/<h(\d)[^>]*>(?:.+?)<\/h\1>/g) || [];
   const summaryIndex = content.indexOf('<summary-cut/>');
 
@@ -65,6 +86,7 @@ function parseFrontMatter(source, context) {
 }
 
 module.exports = {
+  markdown: markdownParser,
   markdownOptions,
   parsexYaml,
   parseMeta,
