@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "description": "freaksidea.com blog",
-  "author": "Sergii Stotskyi <sergiy.stotskiy@freaksidea.com>",
+  "author": "Sergii Stotskyi <sergiy.stotskiy@gmail.com>",
   "husky": {
     "hooks": {
       "pre-commit": "./tools/generateIssue.sh"
