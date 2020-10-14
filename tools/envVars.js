@@ -21,7 +21,7 @@ export function parseEnvVars(directory, overrides) {
   env.LIT_APP_PUBLIC_PATH = env.LIT_APP_PUBLIC_PATH
     ? env.LIT_APP_PUBLIC_PATH.replace(/\/$/, '')
     : '';
-  env.LIT_APP_SUPPORTED_LANGS = env.LIT_APP_SUPPORTED_LANGS || 'en';
+  env.LIT_APP_SUPPORTED_LANGS = (env.LIT_APP_SUPPORTED_LANGS || 'en').split(',');
   env.NODE_ENV = env.NODE_ENV || 'development';
 
   Object.keys(env).forEach((key) => {
