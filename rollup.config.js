@@ -148,6 +148,13 @@ export default {
       langs: env.LIT_APP_SUPPORTED_LANGS,
       pageSchema: false, // schemas.page,
       parse: parseFrontMatter,
+      plugins: [
+        summary({
+          fields: [
+            'id',
+          ],
+        }),
+      ]
     }),
     content({
       entry: /\/articles\.md$/,

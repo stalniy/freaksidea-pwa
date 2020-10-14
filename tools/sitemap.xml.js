@@ -22,7 +22,7 @@ async function findFile(dir, callback) {
   const file = files.find(callback);
 
   if (!file) {
-    throw new Error(`Unable to find file by prefix "${prefix}" in "${dir}"`);
+    throw new Error(`Unable to find file by prefix "${callback}" in "${dir}"`);
   }
 
   return `${dir}/${file}`;
