@@ -20,7 +20,7 @@ export default class PageArticles extends I18nElement {
     super();
 
     this.category = null;
-    this.pageSize = Number(process.env.ARTICLES_PAGE_SIZE);
+    this.pageSize = Number(process.env.LIT_APP_ARTICLES_PAGE_SIZE || 10);
     this._articles = null;
     this._page = 1;
     this._pagesAmount = 1;

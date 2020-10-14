@@ -1,6 +1,6 @@
 import ContentType from './ContentType';
-import * as pagesDetails from '../content/pages.pages';
-import * as articlesDetails from '../content/articles.pages';
+import * as pagesDetails from '../content/pages.md';
+import * as articlesDetails from '../content/articles.md';
 
 const contentTypes = {
   page: new ContentType(pagesDetails),

@@ -11,35 +11,34 @@ const route = (url, handler, options) => ({
   options
 });
 
-export default (DEST, PUBLIC_PATH) => ({
-  swDest: `${DEST}/sw.js`,
+export default (env) => ({
+  swDest: `${env.LIT_APP_DIST_FOLDER}/sw.js`,
   cleanupOutdatedCaches: true,
-  inlineWorkboxRuntime: process.env.NODE_ENV === 'production',
+  inlineWorkboxRuntime: false,
   maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
-  globDirectory: DEST,
+  globDirectory: env.LIT_APP_DIST_FOLDER,
   globPatterns: [
-    'assets/*.json',
-    'app-icons/*',
+    'assets/content_articles_summaries.*.json',
     'img/*',
     'fonts/*',
     'manifest.json',
     'index.html',
     '*.js',
-    '*.{png,jpeg,jpg,gif}'
+    './*.{png,jpeg,jpg,gif}'
   ],
-  navigateFallback: `${PUBLIC_PATH}/index.html`,
+  navigateFallback: `${env.LIT_APP_PUBLIC_PATH}/index.html`,
   runtimeCaching: [
-    route(`${PUBLIC_PATH}/media/assets/`, 'StaleWhileRevalidate', {
+    route(`${env.LIT_APP_PUBLIC_PATH}/media/assets/`, 'StaleWhileRevalidate', {
       cacheName: 'images',
       expiration: {
         maxEntries: 150
       }
     }),
-    route(`${PUBLIC_PATH}/@webcomponents/`, 'CacheFirst', {
+    route(`${env.LIT_APP_PUBLIC_PATH}/@webcomponents/`, 'CacheFirst', {
       cacheName: 'polyfills'
     })
   ],
   manifestTransforms: [
-    prependBaseUrl(PUBLIC_PATH)
+    prependBaseUrl(env.LIT_APP_PUBLIC_PATH)
   ]
 });

@@ -1,38 +1,28 @@
-import dotenv from 'dotenv-flow';
 import babel from '@rollup/plugin-babel';
 import url from '@rollup/plugin-url';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import html from '@rollup/plugin-html';
+import xyaml from 'xyaml-webpack-loader/rollup';
 import { terser } from 'rollup-plugin-terser';
 import minifyHTML from 'rollup-plugin-minify-html-literals';
 import replace from '@rollup/plugin-replace';
 import copy from 'rollup-plugin-copy';
 import { content, summary } from 'rollup-plugin-content';
 import { legacyBundle } from 'rollup-plugin-legacy-bundle';
-import xyaml from 'xyaml-webpack-loader/rollup';
 import { generateSW } from 'rollup-plugin-workbox';
 import { dirname, basename } from 'path';
 import indexHTML from './tools/index.html';
 import { SearchIndex } from './tools/SearchIndex';
-import getAppEnvVars from './tools/appEnvVars';
+import { appEnvVars, parseEnvVars, collectMetas } from './tools/envVars';
 import createWorkboxConfig from './tools/workbox.config';
 import runMarkdownPostParsingTasks from './tools/rollup/markdownPostParsingTasks';
+import createContentParser from './tools/contentParser';
 import * as schemas from './tools/contentSchemas';
-const {
-  parsexYaml,
-  parseFrontMatter,
-  markdownOptions,
-  markdown
-} = require('./tools/contentParser');
 
-dotenv.config({
-  path: __dirname,
-  node_env: process.env.NODE_ENV || 'development',
-});
-
-const env = (name, plugins) => process.env.NODE_ENV === name ? plugins() : [];
-const SUPPORTED_LANGS = (process.env.LIT_APP_SUPPORTED_LANGS || 'en').split(',');
+const env = parseEnvVars(__dirname, process.env);
+const { parsexYaml, parseFrontMatter, parser: markdown } = createContentParser(__dirname, env);
+const ifEnv = (name, plugins) => env.NODE_ENV === name ? plugins() : [];
 const minify = terser({
   output: {
     comments: false,
@@ -48,30 +38,27 @@ const minify = terser({
   }
 });
 
-const DEST = process.env.LIT_APP_DIST_FOLDER;
-const PUBLIC_PATH = process.env.LIT_APP_PUBLIC_PATH.replace(/\/$/, '');
-
 export default {
   input: 'src/bootstrap.js',
-  treeshake: process.env.NODE_ENV === 'production',
+  treeshake: env.NODE_ENV === 'production',
   output: {
     format: 'es',
-    dir: DEST,
+    dir: env.LIT_APP_DIST_FOLDER,
     sourcemap: true,
-    assetFileNames: process.env.NODE_ENV === 'production'
+    assetFileNames: env.NODE_ENV === 'production'
       ? 'assets/[name].[hash].[ext]'
       : 'assets/[name].[ext]',
-    entryFileNames: process.env.NODE_ENV === 'production'
+    entryFileNames: env.NODE_ENV === 'production'
       ? '[name].[hash].js'
       : '[name].js',
     plugins: [
-      ...env('production', () => [
+      ...ifEnv('production', () => [
         minify,
       ]),
     ]
   },
   plugins: [
-    ...env('production', () => [
+    ...ifEnv('production', () => [
       minifyHTML(),
       legacyBundle({
         format: 'iife',
@@ -107,7 +94,7 @@ export default {
         ]
       }),
     ]),
-    url({ publicPath: `${PUBLIC_PATH}/` }),
+    url({ publicPath: `${env.LIT_APP_PUBLIC_PATH}/` }),
     resolve({
       mainFields: ['es2015', 'module', 'main']
     }),
@@ -123,51 +110,55 @@ export default {
       },
     }),
     commonjs(),
-    xyaml({
-      markdown: markdownOptions,
-      esm: true,
-      namedExports: false,
-    }),
     copy({
       copyOnce: true,
       flatten: false,
       targets: [
-        { src: 'public/**/*', dest: DEST },
+        { src: 'public/**/*', dest: env.LIT_APP_DIST_FOLDER },
         {
           src: [
             'node_modules/@webcomponents/webcomponentsjs/**/*.js',
             '!node_modules/@webcomponents/webcomponentsjs/src'
           ],
-          dest: DEST
+          dest: env.LIT_APP_DIST_FOLDER
         }
       ]
     }),
     copy({
       overwrite: true,
       targets: [
-        { src: 'src/content/**/*.{png,jpeg,jpg,svg,gif,zip,tar,bz2,sh,php,js}', dest: `${DEST}/media/assets` },
+        { src: 'src/content/**/*.{png,jpeg,jpg,svg,gif,zip,tar,bz2,sh,php,js}', dest: `${env.LIT_APP_DIST_FOLDER}/media/assets` },
       ]
+    }),
+    xyaml({
+      markdown: { parser: markdown },
+      esm: true,
+      namedExports: false,
     }),
     content({
       entry: /\.i18n$/,
-      langs: SUPPORTED_LANGS,
+      langs: env.LIT_APP_SUPPORTED_LANGS,
       summarizer: false,
       pageSchema: false,
       parse: parsexYaml,
     }),
     content({
-      entry: /\.pages$/,
+      entry: /\/pages\.md$/,
       files: '**/*.md',
-      langs: SUPPORTED_LANGS,
-      pageSchema: false, //schemas.article,
+      langs: env.LIT_APP_SUPPORTED_LANGS,
+      pageSchema: false, // schemas.page,
+      parse: parseFrontMatter,
+    }),
+    content({
+      entry: /\/articles\.md$/,
+      files: '**/*.md',
+      langs: env.LIT_APP_SUPPORTED_LANGS,
+      pageSchema: false, // schemas.article,
       parse: parseFrontMatter,
       main: {
         resolve: {
-          id(_1, _2, { relativePath, file }) {
-            const id = basename(dirname(relativePath));
-            return file.path.includes('/articles/')
-              ? id.slice(11)
-              : id;
+          id(_1, _2, { relativePath }) {
+            return basename(dirname(relativePath)).slice(11);
           },
         }
       },
@@ -194,27 +185,23 @@ export default {
         summary(SearchIndex.factory()),
       ]
     }),
-    replace({
-      ...getAppEnvVars(process.env),
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.SUPPORTED_LANGS': JSON.stringify(SUPPORTED_LANGS),
-      'process.env.BASE_URL': JSON.stringify(PUBLIC_PATH),
-    }),
+    replace(appEnvVars(env)),
     html({
-      title: process.env.LIT_APP_TITLE,
-      publicPath: `${PUBLIC_PATH}/`,
+      title: env.LIT_APP_TITLE,
+      publicPath: `${env.LIT_APP_PUBLIC_PATH}/`,
       template: indexHTML({
-        analyticsId: process.env.LIT_APP_GA_ID,
-        sharethis: process.env.SHARETHIS_SRC,
-        websiteUrl: process.env.LIT_APP_WEBSITE_URL
+        analyticsId: env.LIT_APP_GA_ID,
+        websiteUrl: env.LIT_APP_WEBSITE_URL,
+        sharethis: env.SHARETHIS_URL,
       }),
+      meta: collectMetas(env),
       attributes: {
         html: null,
         link: null,
         script: null,
       },
     }),
-    generateSW(createWorkboxConfig(DEST, PUBLIC_PATH)),
+    generateSW(createWorkboxConfig(env)),
     runMarkdownPostParsingTasks(markdown),
   ]
 };

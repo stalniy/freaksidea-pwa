@@ -8,7 +8,7 @@ async function resizeImage({ path, dest, width }, options) {
     return Promise.resolve();
   }
 
-  const resultingFile = `${options.dir}${dest}`;
+  const resultingFile = `${options.dir}/${dest}`;
 
   if (!fs.existsSync(resultingFile)) {
     await sharp(path)

@@ -88,7 +88,7 @@ export function register(config) {
   }
 
   window.addEventListener('load', () => {
-    const swUrl = `${process.env.BASE_URL}/sw.js`;
+    const swUrl = `${process.env.LIT_APP_PUBLIC_PATH}/sw.js`;
 
     if (isLocalhost) {
       checkValidServiceWorker(swUrl, config);
