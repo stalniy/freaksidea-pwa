@@ -152,7 +152,11 @@ export default {
         summary({
           fields: [
             'id',
+            'path'
           ],
+          resolve: {
+            path: (_1, _2, ctx) => ctx.file.path.slice(__dirname.length)
+          }
         }),
       ]
     }),
