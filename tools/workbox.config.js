@@ -24,7 +24,6 @@ export default (env) => ({
     'manifest.json',
     'index.html',
     '*.js',
-    './*.{png,jpeg,jpg,gif}'
   ],
   navigateFallback: `${env.LIT_APP_PUBLIC_PATH}/index.html`,
   runtimeCaching: [

@@ -40,7 +40,7 @@ devDependencies:
   rollup-plugin-terser: 6.1.0_rollup@2.26.9
   rollup-plugin-workbox: 5.2.1_rollup@2.26.9
   sharp: 0.26.1
-  xyaml-webpack-loader: 0.6.0
+  xyaml-webpack-loader: 0.7.1
 lockfileVersion: 5.1
 packages:
   /@babel/code-frame/7.10.4:
@@ -4403,7 +4403,7 @@ packages:
         optional: true
     resolution:
       integrity: sha512-D3RuNkynyHmEJIpD2qrgVkc9DQ23OrN/moAwZX4L8DfvszsJxpjQuUq3LMx6HoYji9fbIOBY18XWBsAux1ZZUA==
-  /xyaml-webpack-loader/0.6.0:
+  /xyaml-webpack-loader/0.7.1:
     dependencies:
       js-yaml: 3.14.0
       lodash: 4.17.20
@@ -4415,7 +4415,7 @@ packages:
       node: ^8.0.0 || ^9.0.0 || ^10.0.0 || ^12.0.0
       npm: ^6.0.0
     resolution:
-      integrity: sha512-Ml2kk+WhpnbTDuXQ9qzJQlrTGisPUbo7PlLlymMasbdJOBjmmV8btVCr0hDaBAFj3LLhiHFyO+M01QWTbDwyrA==
+      integrity: sha512-1MlAIK0vem6zGqj8OaYZvuK2kI2haDawbXPBKaZAnatoOYwhOVf9twIrO9jmvaclLvXaN2zE1M1tLnsgy6FzBw==
   /yaml/1.10.0:
     dev: true
     engines:
@@ -4470,4 +4470,4 @@ specifiers:
   rollup-plugin-terser: ^6.0.0
   rollup-plugin-workbox: ^5.0.1
   sharp: ^0.26.1
-  xyaml-webpack-loader: 0.6.0
+  xyaml-webpack-loader: 0.7.1

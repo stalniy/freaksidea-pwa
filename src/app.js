@@ -49,7 +49,6 @@ export default function bootstrap(selector) {
     const lang = route.response.params.lang || defaultLocale;
 
     if (locale() !== lang) {
-      console.log(locale(), lang, defaultLocale)
       await setLocale(lang);
       app.ready = true;
     }
