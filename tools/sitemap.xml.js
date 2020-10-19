@@ -22,7 +22,7 @@ async function findFile(dir, callback) {
   const file = files.find(callback);
 
   if (!file) {
-    throw new Error(`Unable to find file by prefix "${callback}" in "${dir}"`);
+    return null;
   }
 
   return `${dir}/${file}`;
@@ -34,7 +34,9 @@ async function parseJSON(directory, prefix) {
 
   if (!jsonCache.has(pathToFile)) {
     const realPath = await findFile(directory, f => f.startsWith(prefix));
-    const rawContent = await readFile(realPath, 'utf8');
+    const rawContent = realPath !== null
+      ? await readFile(realPath, 'utf8')
+      : 'null';
     jsonCache.set(pathToFile, JSON.parse(rawContent));
   }
 
@@ -43,6 +45,12 @@ async function parseJSON(directory, prefix) {
 
 const contentProvider = (filePrefix) => async ({ route, parentItem }) => {
   const content = await parseJSON(`${DIST_PATH}/assets`, `${filePrefix}.${parentItem.lang}`);
+
+  if (content === null) {
+    console.warn(`No file found with prefix "${filePrefix}.${parentItem.lang}". Skip it.`);
+    return [];
+  }
+
   const categories = route.meta ? route.meta.categories : null;
   let items = content.items;
 
@@ -77,7 +85,7 @@ const sitemapEntriesProviders = {
     }];
   },
   langs() {
-    return ['ru'].map((lang) => ({
+    return ['ru', 'en'].map((lang) => ({
       doc: { lang },
       lastmodFrom: `app/${lang}.yml`
     }));
