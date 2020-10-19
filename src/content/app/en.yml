@@ -1,0 +1,78 @@
+name: Freaksidea.com
+title: Simplicity Craftsmanship
+updateAvailable: !md |
+  An update is available, **click here to refresh**.
+meta:
+  keywords: |
+    frameworks, databases, fullstack development,
+    architecture, design patterns, design principles, DDD,
+    microservices, micro-frontend, testing, e2e testing, unit testing
+  description: Simplicity is prerequisite of reliability (c) E. Dijkstra
+
+  frontend:
+    title: Frontend Development
+    keywords: |
+      Angular, Ionic, React, Vue, lit-html,
+      PWA, SPA, static website generator, JavaScript,
+      REST, DOM, browser, IE, firefox, opera, safari, cross browser
+      webpack, rollup, ES2015, ESM
+    description: |
+      Performance optimization, custom static website generators, webcomponents, lit-html, lit-element,
+      painless state management
+  backend:
+    title: Backend Development
+    keywords: |
+      Node.js, PHP, Ruby, .Net, Magento, Symfony, Doctrine, TDD, BDD, DDD,
+      design patterns, software architecture, CQRS, REST, RPC
+    description: |
+      Effective API development, micro-services, data transfer protocols,
+      application structure, design patterns and many more!
+  linux:
+    title: Admin & Devops
+    keywords: |
+      bash, VPS, docker, gitlab, github, vcs, настройка CI/CD,
+      Continious Integration, Continious Delivery, terraform
+    description: |
+      From the beginner to professional in Devops: learning Bash, configure CI/CD,
+      version control systems and recommendations how to approach them, configure cloud environments
+
+copyright: "© 2011-%{year} Sergii Stotskyi"
+dateTimeFormats:
+  default:
+    year: numeric
+    month: long
+    day: numeric
+topMenu:
+  about: Contacts
+categories:
+  home:
+    title: Everything
+  backend:
+    title: Backend
+  frontend:
+    title: Frontend
+  devops:
+    title: DevOps
+article:
+  author: "Author: "
+  readMore: More
+  emptyCategory: Unfortunately, I've not published articles in this category yet
+  popular: Popular
+  emptyPopular: No popular articles
+  popularTags: Tags
+  tagsTitle: "Tags:"
+  readSimilar: "SIMILAR ARTICLES:"
+  authors:
+    sstotskyi: Sergii Stotskyi
+contacts:
+  name: Full name
+  email: E-mail
+  message: Message
+  submit: Submit
+search:
+  placeholder: Search
+  title: Search "%{query}"
+  empty: Nothing found by the specified query
+blocks:
+  sidebarAd:
+    title: Ads
