@@ -22,7 +22,7 @@ export default class Header extends LitElement {
             srcset="
               /img/header-375w.jpg 375w,
               /img/header-768w.jpg 768w,
-              /img/header-1024.jpg 1024w,
+              /img/header-1024w.jpg 1024w,
               /img/header.jpg 1280w
             "
             sizes="
