@@ -11,10 +11,14 @@ export default css`
     padding-left: 5px;
   }
 
+  article .summary p:first-child {
+    margin: 0;
+  }
+
   article .summary img,
   .article .summary img {
-    width: 100%;
-    max-height: 200px;
+    max-width: 100%;
+    max-height: 200px !important;
     object-fit: cover;
   }
 

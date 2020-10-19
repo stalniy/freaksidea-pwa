@@ -71,7 +71,9 @@ export default {
       }
 
       return {
-        body: html`<app-page name="notfound"></app-page>`
+        body: {
+          main: html`<app-page name="notfound"></app-page>`
+        }
       };
     }
   })

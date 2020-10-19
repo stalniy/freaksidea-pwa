@@ -67,9 +67,11 @@ export default class App extends LitElement {
   }
 
   render() {
+    console.log(this._route)
     if (!this._route || !this.ready) {
       return html``;
     }
+
 
     return html`
       <fi-header .items="${topMenu}"></fi-header>

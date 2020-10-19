@@ -1,7 +1,7 @@
 name: Freaksidea.com
 title: Simplicity Craftsmanship
-updateAvailable: |
-  Доступный новый контент. Чтобы обновить кликните на это собщение
+updateAvailable: !md |
+  Доступный новый контент. **Чтобы обновить кликните на это собщение**
 meta:
   keywords: |
     фреймворки, базы данных, fullstack, разработка програм,

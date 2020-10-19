@@ -2,7 +2,7 @@ routes:
   - name: home
     path: :lang
     restrictions:
-      lang: ru
+      lang: ru|en
     controller: Article
     meta:
       categories: [frontend, backend, linux]
