@@ -30,9 +30,16 @@ export default class PageArticles extends I18nElement {
   connectedCallback() {
     super.connectedCallback();
     this._unwatchPage = router.observe((route) => {
-      const page = route.response.location.query.page;
+      const page = Number(route.response.location.query.page);
       this._page = page || 1;
       this._articles = null;
+
+      if (!page || page <= 0) {
+        this._redirectToPage(1);
+        return;
+      }
+
+
       this.requestUpdate();
 
       if (page) {
@@ -61,6 +68,27 @@ export default class PageArticles extends I18nElement {
     });
     this._pagesAmount = pagesAmount;
     this._articles = items;
+
+    if (this._page > pagesAmount) {
+      this._redirectToPage(pagesAmount);
+    }
+  }
+
+  _redirectToPage(page) {
+    const current = router.current().response
+
+    return router.navigate({
+      method: 'replace',
+      url: router.url({
+        name: current.name,
+        params: current.params,
+        query: {
+          ...current.location.query,
+          page
+        },
+        hash: current.location.hash,
+      })
+    });
   }
 
   _categoryOf(article) {
