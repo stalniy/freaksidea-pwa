@@ -30,11 +30,11 @@ export default class PageArticles extends I18nElement {
   connectedCallback() {
     super.connectedCallback();
     this._unwatchPage = router.observe((route) => {
-      const page = Number(route.response.location.query.page);
-      this._page = page || 1;
+      const page = route.response.location.query.page
+      this._page = Number(page || 1);
       this._articles = null;
 
-      if (!page || page <= 0) {
+      if (!this._page || this._page <= 0) {
         this._redirectToPage(1);
         return;
       }
@@ -69,7 +69,7 @@ export default class PageArticles extends I18nElement {
     this._pagesAmount = pagesAmount;
     this._articles = items;
 
-    if (this._page > pagesAmount) {
+    if (pagesAmount > 0 && this._page > pagesAmount) {
       this._redirectToPage(pagesAmount);
     }
   }

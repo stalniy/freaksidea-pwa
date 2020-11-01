@@ -3,17 +3,19 @@ const fs = require('fs');
 const puppeteer = require('puppeteer');
 const { promisify } = require('util');
 const { createServer } = require('history-server');
+const Spinnies = require('dreidels');
 
 const writeFile = promisify(fs.writeFile);
 const mkdir = promisify(fs.mkdir);
 let LOCAL_APP = 'http://localhost:';
 const BASE_URL = process.env.LIT_APP_PUBLIC_PATH || '';
+const spinnies = new Spinnies();
 
 async function readSitemapUrls(browser) {
   const page = await browser.newPage();
   await page.goto(LOCAL_APP);
 
-  return page.evaluate(async () => {
+  const urls = await page.evaluate(async () => {
     const response = await fetch('/sitemap.xml');
     const source = await response.text();
     const doc = (new DOMParser()).parseFromString(source, 'application/xml');
@@ -25,9 +27,14 @@ async function readSitemapUrls(browser) {
         return loc.textContent.slice(startIndex);
       });
   });
+  await page.close();
+
+  return urls;
 }
 
-async function renderPage({ page, iterator }, options) {
+async function openTab(browser) {
+  const page = await browser.newPage();
+
   await page.setRequestInterception(true);
   page.on('request', (req) => {
     const isAbortedRequest = req.resourceType() === 'stylesheet' ||
@@ -42,47 +49,65 @@ async function renderPage({ page, iterator }, options) {
     }
   });
 
-  for (const url of iterator) {
-    console.log(`[fetching]: ${url}`);
-    await page.goto(LOCAL_APP + url, { waitUntil: 'networkidle2' });
-
-    const html = await page.content();
-    const fullPath = options.basePath + url.slice(BASE_URL.length);
-
-    console.log(`[saving]: ${url}`);
-    await mkdir(fullPath, { recursive: true });
-    await writeFile(`${fullPath}/index.html`, html);
-    console.log(`[saved]: ${url}`);
-  }
+  return page;
 }
 
-async function render(options) {
-  const browser = await puppeteer.launch();
+async function renderPage({ id, browser, iterator }, options) {
+  const page = await openTab(browser);
+  const output = spinnies.add(`render.${id}`);
+
+  for (const url of iterator) {
+    try {
+      output.text(`[fetching]: ${url}`);
+      await page.goto(LOCAL_APP + url, { waitUntil: 'networkidle2' });
+
+      const html = await page.content();
+      const fullPath = options.basePath + url.slice(BASE_URL.length);
+
+      output.text(`[saving]: ${url}`);
+      await mkdir(fullPath, { recursive: true });
+      await writeFile(`${fullPath}/index.html`, html);
+    } catch (error) {
+      output.fail({ text: `${url}: ${error.message}` });
+      break;
+    }
+  }
+
+  if (output.options.status !== 'fail') {
+    output.success();
+  }
+
+  await page.close();
+}
+
+async function render(browser, options) {
+  let iterator;
 
   try {
+    spinnies.add('sitemap', { text: '[sitemap]: fetching' });
     const urls = await readSitemapUrls(browser);
-    console.log('read urls from sitemap');
-    const iterator = urls.values();
-    const createWorkers = Array.from({ length: 16 }).map(async () => ({
-      iterator,
-      page: await browser.newPage()
-    }));
-    const workers = await Promise.all(createWorkers);
-    const jobs = workers.map(w => renderPage(w, options));
-
-    await Promise.all(jobs);
-    await Promise.allSettled(workers.map(w => w.page.close()));
-  } finally {
-    await browser.close();
+    iterator = urls.values();
+    spinnies.get('sitemap').success();
+  } catch (error) {
+    spinnies.get('sitemap').fail({ text: `[sitemap]: ${error.message}` });
+    return;
   }
+
+  const jobs = Array.from({ length: 20 })
+    .map((_, id) => renderPage({
+      id,
+      iterator,
+      browser,
+    }, options));
+
+  await Promise.all(jobs);
 }
 
 async function listen(server) {
   return new Promise((resolve) => {
     server.listen(0, () => {
       LOCAL_APP += server.address().port;
-      console.log(`started http server on port ${LOCAL_APP}`);
-      resolve();
+      resolve(LOCAL_APP);
     });
   });
 }
@@ -94,11 +119,18 @@ async function run() {
     { path: '/', root: basePath },
   ]);
   const server = http.createServer(app);
+  const output = spinnies.add('server');
+  const browser = await puppeteer.launch();
 
   try {
-    await listen(server);
-    await render({ basePath });
+    output.text('start server');
+    const url = await listen(server);
+    output.success({ text: `server has been started at ${url}` });
+    await render(browser, { basePath });
+  } catch (error) {
+    output.fail({ text: `Server error: ${error.message}` });
   } finally {
+    await browser.close();
     server.close();
   }
 }
