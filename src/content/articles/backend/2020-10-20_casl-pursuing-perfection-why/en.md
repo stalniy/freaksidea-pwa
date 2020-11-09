@@ -19,7 +19,7 @@ This is the first part in the series of articles where I plan to share my experi
 <summary-cut/>
 
 * **CASL. Pursuing Perfection I: Why?**
-* CASL. Pursuing Perfection II: New Engine
+* [CASL. Pursuing Perfection II: New Engine](../2020-11-10_casl-pursuing-perfection-new-engine)
 * CASL. Pursuing Perfection III: Big O
 * CASL. Pursuing Perfection IV: Type Safety
 
